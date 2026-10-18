@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1",
   "reviewed_on": "10-18-2026",
   "canonical": "profile.json",
   "compact_character_budget": 1500,
@@ -197,6 +197,7 @@
         "work-do-it",
         "work-persist",
         "work-real-status",
+        "work-stop-scope",
         "work-memory",
         "code-rust"
       ]

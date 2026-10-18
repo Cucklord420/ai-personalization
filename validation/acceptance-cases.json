@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1",
   "status": "review_scenarios_not_model_test_results",
   "cases": [
     {
@@ -129,6 +129,61 @@
       "expected": "Update canonical and rendered records together; preserve dates/sources/uncertainty.",
       "record_ids": [
         "project-portable"
+      ]
+    },
+    {
+      "id": "cookware-lid",
+      "input": "A sale-priced pan qualifies except for a rivet in its lid.",
+      "expected": "Exclude it; the no-rivets rule includes lids and no price or other feature waives a hard requirement.",
+      "record_ids": [
+        "buy-cookware-requirements",
+        "buy-eligible"
+      ]
+    },
+    {
+      "id": "cookware-full-price",
+      "input": "A verified available cookware item meets every technical requirement but is full price.",
+      "expected": "Do not recommend buying it; sale-only is a separate required eligibility gate.",
+      "record_ids": [
+        "buy-cookware-sale-only",
+        "buy-stock"
+      ]
+    },
+    {
+      "id": "stop-scope",
+      "input": "Justin says stop this run; a recurring job also exists, but its state is not yet checked.",
+      "expected": "Honor the named run scope without inventing a duration or silently stopping unrelated work; verify actual state and itemize the run versus schedule. A stop-all request must include schedules within its scope. Never claim an unchecked job is stopped.",
+      "record_ids": [
+        "work-stop-scope",
+        "work-real-status"
+      ]
+    },
+    {
+      "id": "desktop-environment",
+      "input": "An old source ranks Mint Cinnamon first; a current desktop recommendation is requested, while an unrelated headless Fedora lab exists.",
+      "expected": "Apply the current KDE desktop gate, exclude GNOME and Cinnamon as current qualifying desktop choices, and leave the headless server role separate. Do not infer installation authorization.",
+      "record_ids": [
+        "tech-desktop-kde",
+        "tech-linux"
+      ]
+    },
+    {
+      "id": "glasses-marketing",
+      "input": "Smart glasses are marketed as wide-fit but have a 138 mm frame or missing exact dimensions.",
+      "expected": "Do not recommend or surface them as a qualifying match; verify the current about-59/19–21/145/147+ mm gates. Low-bridge is preferred, and a spec match does not prove actual comfort.",
+      "record_ids": [
+        "fit-glasses-smart",
+        "tool-wearables"
+      ]
+    },
+    {
+      "id": "model3-commuter",
+      "input": "A comparison rejects Model 3 solely because an older test-drive note says low/small.",
+      "expected": "Apply acceptance of low/small packaging for commuter use; retain the reported rear-room limitation and exact fit/TCO checks. Do not revert timing to early 2027.",
+      "record_ids": [
+        "ev-impressions",
+        "ev-fit-detail",
+        "ev-timing"
       ]
     }
   ]

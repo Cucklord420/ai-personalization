@@ -1,12 +1,12 @@
 {
   "$schema": "./schema/profile.schema.json",
   "profile_id": "justin-portable-ai-profile",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "reviewed_on": "10-18-2026",
   "timezone": "America/New_York",
   "visibility": "public",
   "source_of_truth": "profile.json",
-  "coverage": "All reachable archived project transcript text, the JSON-only missing primary conversation, current supplied instructions/memory, targeted newer history, all eight saved Muse configuration files, current hardware inventory, saved memory/feed, five later archived update threads, and 177 current/supporting project text files. See COVERAGE.md for exact coverage and inaccessible archives; not a complete ChatGPT account export or live-system audit.",
+  "coverage": "All reachable archived project transcript text, the JSON-only missing primary conversation, current supplied instructions/memory, targeted newer history, all eight saved Muse configuration files, current hardware inventory, saved memory/feed, five later archived update threads, and 177 current/supporting project text files. See COVERAGE.md for exact coverage and inaccessible archives; not a complete ChatGPT account export or live-system audit. Includes the Muse correction report in issue #1 and Justin's explicit 10-18-2026 confirmation; the live Muse files themselves were not accessed.",
   "sources": [
     {
       "id": "S01",
@@ -151,6 +151,24 @@
       "reviewed_on": "10-18-2026",
       "access": "private_not_bundled",
       "notes": "Recovered an explicit OLED requirement and competing summarized battery-exception wording. No unambiguous later original exception was established; conflict is documented."
+    },
+    {
+      "id": "S17",
+      "title": "Muse correction report in GitHub issue #1",
+      "kind": "derived_personal_document",
+      "source_date": "10-18-2026",
+      "reviewed_on": "10-18-2026",
+      "access": "public",
+      "notes": "Read https://github.com/Cucklord420/ai-personalization/issues/1 in full. Reports newer Muse cookware, stop-scope, KDE, glasses-fit and Model 3 commuter corrections. Original 10-12/10-14/10-16 dates are reported by Muse; the live Muse files were not independently read. Justin explicitly confirmed using these corrections on 10-18-2026 (S18)."
+    },
+    {
+      "id": "S18",
+      "title": "Justin confirms Muse issue corrections and requests the fix",
+      "kind": "direct_user",
+      "source_date": "10-18-2026",
+      "reviewed_on": "10-18-2026",
+      "access": "current_session",
+      "notes": "Explicitly instructed fixing issue #1 because Muse knows these preferences and some existing profile content is wrong. Current confirmation supports the corrections without backdating their verification or claiming live Muse access."
     }
   ],
   "groups": [
@@ -587,6 +605,36 @@
       ]
     },
     {
+      "id": "buy-cookware-sale-only",
+      "group": "buying",
+      "text": "Buy cookware on sale only; never recommend a full-price listing as a purchase even when it meets every other requirement.",
+      "kind": "preference",
+      "strength": "required",
+      "status": "active",
+      "evidence": "explicit",
+      "confidence": "high",
+      "last_supported_on": "10-18-2026",
+      "source_ids": [
+        "S17",
+        "S18"
+      ]
+    },
+    {
+      "id": "buy-cookware-requirements",
+      "group": "buying",
+      "text": "Cookware hard requirements: no rivets anywhere, including lids; an uncoated cooking surface; metal-utensil safe; dishwasher safe; and manageable weight. Omit anything that fails a hard requirement from buying recommendations. If no verified option qualifies, say so rather than relaxing a requirement.",
+      "kind": "preference",
+      "strength": "required",
+      "status": "active",
+      "evidence": "explicit",
+      "confidence": "high",
+      "last_supported_on": "10-18-2026",
+      "source_ids": [
+        "S17",
+        "S18"
+      ]
+    },
+    {
       "id": "buy-count",
       "group": "buying",
       "text": "Prefer a few strong choices. For tools and standing shopping/watch shortlists, recommend at most three worthwhile items unless the task explicitly requests a broader comparison.",
@@ -781,6 +829,21 @@
         "S01",
         "S03",
         "S05"
+      ]
+    },
+    {
+      "id": "work-stop-scope",
+      "group": "execution",
+      "text": "Treat a stop command literally at exactly the scope Justin names. Never invent a timebox. Include scheduled jobs when the named stop scope covers them; stopping foreground work alone does not disable its schedule. Check live runtime state before claiming work started, stopped or is running. Report itemized what stopped and what continues; if state cannot be checked, say it is unverified.",
+      "kind": "preference",
+      "strength": "required",
+      "status": "active",
+      "evidence": "explicit",
+      "confidence": "high",
+      "last_supported_on": "10-18-2026",
+      "source_ids": [
+        "S17",
+        "S18"
       ]
     },
     {
@@ -1041,16 +1104,33 @@
     {
       "id": "tech-linux",
       "group": "technology",
-      "text": "Prefer a low-maintenance system that works without continual repair. Earlier server briefs required Ubuntu/LTS; newer focused records permit Fedora/Cockpit/KVM as a compute/lab candidate. Keep those roles distinct. Mint Cinnamon leads the saved desktop shortlist, with Kubuntu/Fedora KDE alternatives; no installation is implied.",
+      "text": "Prefer a low-maintenance system that works without continual repair. Earlier server briefs required Ubuntu/LTS; newer focused records permit Fedora/Cockpit/KVM as a compute/lab candidate. Keep those roles distinct. Apply tech-desktop-kde to desktop choices; the older Mint Cinnamon-first shortlist is superseded for current desktop recommendations. No installation is implied.",
       "kind": "preference",
       "strength": "preferred",
       "status": "active",
       "evidence": "documented",
       "confidence": "high",
-      "last_supported_on": null,
+      "last_supported_on": "10-18-2026",
       "source_ids": [
         "S10",
-        "S11"
+        "S11",
+        "S17",
+        "S18"
+      ]
+    },
+    {
+      "id": "tech-desktop-kde",
+      "group": "technology",
+      "text": "For desktop Linux, KDE Plasma is mandatory; Justin does not like GNOME. Use the Fedora KDE spin rather than Workstation and Kubuntu rather than default Ubuntu when considering those families. The older Mint Cinnamon shortlist is historical context and does not satisfy the current KDE requirement. This desktop-environment rule does not impose KDE on headless servers or authorize an installation.",
+      "kind": "preference",
+      "strength": "required",
+      "status": "active",
+      "evidence": "explicit",
+      "confidence": "high",
+      "last_supported_on": "10-18-2026",
+      "source_ids": [
+        "S17",
+        "S18"
       ]
     },
     {
@@ -1504,16 +1584,19 @@
     {
       "id": "ev-impressions",
       "group": "vehicles",
-      "text": "Past test-drive impressions: Model 3 felt low/small, Model Y height was preferred, IONIQ 5 access/height was difficult, and Mach-E felt stiff with screen interference and less-smooth one-pedal operation. These are subjective historical impressions, not current specifications.",
+      "text": "Model 3 felt low/small during the test drive, but Justin accepts that feel for commuter use; do not reject it solely for low sedan packaging. Rear-seat room behind his driving position remains tight. Model Y height was preferred, IONIQ 5 access/height was difficult, and Mach-E felt stiff with screen interference and less-smooth one-pedal operation. These are subjective reported impressions, not current specifications or proof every fit requirement is met.",
       "kind": "context",
       "strength": "context",
-      "status": "historical",
-      "evidence": "documented",
+      "status": "reported",
+      "evidence": "explicit",
       "confidence": "high",
-      "last_supported_on": null,
+      "last_supported_on": "10-18-2026",
       "source_ids": [
         "S02",
-        "S05"
+        "S05",
+        "S12",
+        "S17",
+        "S18"
       ]
     },
     {
@@ -2969,6 +3052,21 @@
       ]
     },
     {
+      "id": "fit-glasses-smart",
+      "group": "travel",
+      "text": "Smart-glasses fit requirements: about 59 mm lenses, a 19–21 mm bridge, about 145 mm temples, and about 147 mm or greater overall frame width; low-bridge fit is preferred. Do not report or recommend smart glasses that fail these dimensions. Wide-fit marketing alone does not qualify, and vaporware does not count. Verify exact frame measurements and actual comfort; a matching specification is not proof of a successful fit test.",
+      "kind": "preference",
+      "strength": "required",
+      "status": "active",
+      "evidence": "explicit",
+      "confidence": "high",
+      "last_supported_on": "10-18-2026",
+      "source_ids": [
+        "S17",
+        "S18"
+      ]
+    },
+    {
       "id": "travel-umbrella",
       "group": "travel",
       "text": "For umbrella shopping prefer a plain portable design that fits a backpack or wet bag, rather than a giant golf umbrella.",
@@ -3232,15 +3330,17 @@
     {
       "id": "tool-wearables",
       "group": "tools",
-      "text": "For ring/wearable research, comfort, a thin normal-ring feel, comparable required features and full subscription TCO matter. A named comparison baseline does not prove ownership, best-in-class independent performance or a purchase decision. Smart-glasses fit requires the actual frame reference and a real fit test.",
+      "text": "For ring/wearable research, comfort, a thin normal-ring feel, comparable required features and full subscription TCO matter. A named comparison baseline does not prove ownership, best-in-class independent performance or a purchase decision. For smart glasses, apply fit-glasses-smart for the current dimensions and retain a real fit test; do not substitute an older frame reference or wide-fit marketing.",
       "kind": "preference",
       "strength": "preferred",
       "status": "active",
       "evidence": "documented",
       "confidence": "high",
-      "last_supported_on": null,
+      "last_supported_on": "10-18-2026",
       "source_ids": [
-        "S11"
+        "S11",
+        "S17",
+        "S18"
       ]
     }
   ]

@@ -10,7 +10,7 @@ One place for Justin's preferences, working rules, reported setup, project decis
 
 ## Contents
 
-- 203 sourced records across 21 topics in [profile.json](profile.json), with scope, status, dates, confidence and provenance.
+- 208 sourced records across 21 topics in [profile.json](profile.json), with scope, status, dates, confidence and provenance.
 - Readable topic files in [context/](context/), plus [native adapters](ADAPTERS.md), compact instructions and a complete agent import.
 - [Learning rules](LEARN.md), [corrections](CONFLICTS.md), [unknowns](UNKNOWNS.md), [coverage](COVERAGE.md) and [sources](SOURCES.md).
 - [Maintenance rules](MAINTAINING.md), JSON schema, render contract and behavior acceptance cases.

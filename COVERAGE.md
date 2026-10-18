@@ -12,6 +12,10 @@ The wider archive fetch covered **724 text paths**, including **663 Markdown pat
 
 The additional current/source project review ingested **177 text files**: 67 Technology, 101 Car and 9 finance-method/implementation records, all matching their Git blob hashes. The JSON-only primary conversation was fetched separately. The accessible later updates ZIP was decoded and its user messages for **five threads** were read.
 
+## Muse correction follow-up — 10-18-2026
+
+Read the complete public issue #1 and Justin's explicit instruction to apply what Muse knows because parts of the existing profile were wrong. Added five records and corrected desktop, Model 3 commuter and wearable-reference wording. The issue's reported original correction dates are distinguished from the current confirmation date; S17/S18 record this provenance. The live Muse USER/AGENTS files were not accessed or claimed read in this follow-up. The focused Car timing was rechecked and retained.
+
 ## Review method
 
 Full reachable text was ingested and fingerprinted before extraction. User turns were separated from assistant responses. Duplicate messages and truncated reader prefixes were reconciled with readable full-message supplements; explicit preference candidates were reviewed in context.

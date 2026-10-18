@@ -24,6 +24,11 @@ Reviewed: 10-18-2026, America/New_York. Source dates can be unknown; review is n
 | S15 | Later archived conversation updates | archive_text | 09-28-2026 | private_not_bundled |
 | S16 | Additional targeted laptop conflict retrieval | retrieved_history | unknown | private_not_bundled |
 
+| ID | Source | Evidence class | Source date | Access |
+|---|---|---|---|---|
+| S17 | Muse correction report in GitHub issue #1 | derived_personal_document | 10-18-2026 | public |
+| S18 | Justin confirms Muse issue corrections and requests the fix | direct_user | 10-18-2026 | current_session |
+
 **S01**: Explicit standing instructions and the request to populate this repository.
 
 **S02**: Summarized user statements with varying original dates; not a complete chat export or a live inventory.
@@ -55,6 +60,10 @@ Reviewed: 10-18-2026, America/New_York. Source dates can be unknown; review is n
 **S15**: Decoded the accessible updates archive and read its user messages for five threads. Larger live-capture archives were not provided by the available file endpoint.
 
 **S16**: Recovered an explicit OLED requirement and competing summarized battery-exception wording. No unambiguous later original exception was established; conflict is documented.
+
+**S17**: Read https://github.com/Cucklord420/ai-personalization/issues/1 in full. Reports newer Muse cookware, stop-scope, KDE, glasses-fit and Model 3 commuter corrections. Original 10-12/10-14/10-16 dates are reported by Muse; the live Muse files were not independently read. Justin explicitly confirmed using these corrections on 10-18-2026 (S18).
+
+**S18**: Explicitly instructed fixing issue #1 because Muse knows these preferences and some existing profile content is wrong. Current confirmation supports the corrections without backdating their verification or claiming live Muse access.
 
 ## Official adapter documentation
 
