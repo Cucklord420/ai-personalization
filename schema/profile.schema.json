@@ -1,0 +1,235 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "profile_id",
+    "version",
+    "reviewed_on",
+    "timezone",
+    "visibility",
+    "source_of_truth",
+    "coverage",
+    "sources",
+    "groups",
+    "records"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "./schema/profile.schema.json"
+    },
+    "profile_id": {
+      "const": "justin-portable-ai-profile"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "reviewed_on": {
+      "$ref": "#/$defs/date"
+    },
+    "timezone": {
+      "const": "America/New_York"
+    },
+    "visibility": {
+      "const": "public"
+    },
+    "source_of_truth": {
+      "const": "profile.json"
+    },
+    "coverage": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "kind",
+          "source_date",
+          "reviewed_on",
+          "access",
+          "notes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^S[0-9]{2,}$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "direct_user",
+              "memory_summary",
+              "retrieved_history",
+              "derived_personal_document",
+              "inventory_record",
+              "archive_text",
+              "current_project_record"
+            ]
+          },
+          "source_date": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/date"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reviewed_on": {
+            "$ref": "#/$defs/date"
+          },
+          "access": {
+            "enum": [
+              "current_session",
+              "private_not_bundled",
+              "public"
+            ]
+          },
+          "notes": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "groups": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "path"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^(PROFILE\\.md|context/[a-z0-9-]+\\.md)$"
+          }
+        }
+      }
+    },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "group",
+          "text",
+          "kind",
+          "strength",
+          "status",
+          "evidence",
+          "confidence",
+          "last_supported_on",
+          "source_ids"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          },
+          "group": {
+            "type": "string",
+            "minLength": 1
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "preference",
+              "fact",
+              "context"
+            ]
+          },
+          "strength": {
+            "enum": [
+              "required",
+              "preferred",
+              "context"
+            ]
+          },
+          "status": {
+            "enum": [
+              "active",
+              "reported",
+              "planned",
+              "historical",
+              "unresolved",
+              "retired"
+            ]
+          },
+          "evidence": {
+            "enum": [
+              "explicit",
+              "retrieved_explicit",
+              "documented",
+              "archive_explicit",
+              "implementation_rule"
+            ]
+          },
+          "confidence": {
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "last_supported_on": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/date"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^S[0-9]{2,}$"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Justin's portable AI profile",
+  "$defs": {
+    "date": {
+      "type": "string",
+      "pattern": "^(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])-[0-9]{4}$"
+    }
+  }
+}

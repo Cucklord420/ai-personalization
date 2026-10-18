@@ -1,0 +1,205 @@
+{
+  "version": "1.0.0",
+  "reviewed_on": "10-18-2026",
+  "canonical": "profile.json",
+  "compact_character_budget": 1500,
+  "outputs": [
+    {
+      "path": "PROFILE.md",
+      "groups": [
+        "basics",
+        "communication",
+        "research",
+        "buying",
+        "execution"
+      ],
+      "mode": "detailed"
+    },
+    {
+      "path": "context/software-and-ai.md",
+      "groups": [
+        "coding"
+      ],
+      "mode": "detailed"
+    },
+    {
+      "path": "context/technology.md",
+      "groups": [
+        "technology"
+      ],
+      "mode": "detailed"
+    },
+    {
+      "path": "context/laptops.md",
+      "groups": [
+        "laptops"
+      ],
+      "mode": "detailed"
+    },
+    {
+      "path": "context/hardware.md",
+      "groups": [
+        "hardware"
+      ],
+      "mode": "detailed"
+    },
+    {
+      "path": "context/vehicles.md",
+      "groups": [
+        "vehicles"
+      ],
+      "mode": "detailed"
+    },
+    {
+      "path": "context/food-and-entertainment.md",
+      "groups": [
+        "food",
+        "entertainment"
+      ],
+      "mode": "detailed"
+    },
+    {
+      "path": "context/monitoring.md",
+      "groups": [
+        "monitoring"
+      ],
+      "mode": "detailed"
+    },
+    {
+      "path": "context/projects.md",
+      "groups": [
+        "projects"
+      ],
+      "mode": "detailed"
+    },
+    {
+      "path": "context/documents-and-learning.md",
+      "groups": [
+        "documents",
+        "learning"
+      ],
+      "mode": "detailed"
+    },
+    {
+      "path": "context/finance.md",
+      "groups": [
+        "finance"
+      ],
+      "mode": "detailed"
+    },
+    {
+      "path": "context/home-and-energy.md",
+      "groups": [
+        "home"
+      ],
+      "mode": "detailed"
+    },
+    {
+      "path": "context/travel-and-fit.md",
+      "groups": [
+        "travel"
+      ],
+      "mode": "detailed"
+    },
+    {
+      "path": "context/mobile-and-media.md",
+      "groups": [
+        "mobile"
+      ],
+      "mode": "detailed"
+    },
+    {
+      "path": "context/tools-and-resale.md",
+      "groups": [
+        "tools"
+      ],
+      "mode": "detailed"
+    },
+    {
+      "path": "START_HERE.md",
+      "groups": [
+        "basics",
+        "communication",
+        "research",
+        "buying",
+        "execution",
+        "coding",
+        "technology",
+        "laptops",
+        "hardware",
+        "vehicles",
+        "food",
+        "entertainment",
+        "monitoring",
+        "projects",
+        "documents",
+        "learning",
+        "finance",
+        "home",
+        "travel",
+        "mobile",
+        "tools"
+      ],
+      "mode": "complete_with_contract"
+    },
+    {
+      "path": "exports/agent-instructions.md",
+      "groups": [
+        "basics",
+        "communication",
+        "research",
+        "buying",
+        "execution",
+        "coding",
+        "technology",
+        "laptops",
+        "hardware",
+        "vehicles",
+        "food",
+        "entertainment",
+        "monitoring",
+        "projects",
+        "documents",
+        "learning",
+        "finance",
+        "home",
+        "travel",
+        "mobile",
+        "tools"
+      ],
+      "mode": "complete_with_contract"
+    },
+    {
+      "path": "exports/compact-profile.md",
+      "groups": [
+        "basics",
+        "communication",
+        "research",
+        "buying",
+        "execution",
+        "coding"
+      ],
+      "mode": "selected_records",
+      "record_ids": [
+        "basic-name",
+        "basic-time",
+        "style-answer-first",
+        "style-no-filler",
+        "style-no-assignments",
+        "style-code",
+        "style-comparisons",
+        "research-current",
+        "research-source-line",
+        "research-uncertainty",
+        "buy-stock",
+        "buy-value",
+        "buy-tco",
+        "work-do-it",
+        "work-persist",
+        "work-real-status",
+        "work-memory",
+        "code-rust"
+      ]
+    }
+  ]
+}

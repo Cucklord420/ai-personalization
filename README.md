@@ -1,30 +1,30 @@
-# AI Personalization
+# Justin's portable AI personalization
 
-A portable set of instructions and user-approved context for AI assistants. Point an assistant at this repository at the start of a conversation; it should load the core files, adapt to the task, and keep the profile current when new durable preferences become clear.
+One place for Justin's preferences, working rules, reported setup, project decisions and correction history, built from accessible ChatGPT history/memory, archived project conversations, saved Muse files and newer source records.
 
-> **Privacy:** this repository is public. Keep raw chat exports, personal records, credentials, and sensitive details out of it. Store only concise, low-risk preferences here. Use a private repository before adding private context.
+## Give an AI this
 
-## For an assistant
+> Read https://raw.githubusercontent.com/Cucklord420/ai-personalization/main/START_HERE.md and use it to personalize how you help me. Apply the relevant parts, follow LEARN.md for durable updates, and do not guess missing facts or claim settings were saved unless they were.
 
-Read [AI.md](AI.md), then [PROFILE.md](PROFILE.md). Use [LEARN.md](LEARN.md) when the user asks you to learn from chat history or update this profile. If the platform supports persistent instructions, link or copy the short instruction in [PROMPT.md](PROMPT.md).
+[Complete import](START_HERE.md) · [Copyable setup prompt](PROMPT.md) · [Core profile](PROFILE.md)
 
-When available, use the user's directly supplied chat export or memory source. Do not imply you inspected a source you could not access. Separate confirmed preferences from hypotheses, keep provenance and dates, and ask only when ambiguity affects the outcome.
+## Contents
 
-## Quick start
+- 203 sourced records across 21 topics in [profile.json](profile.json), with scope, status, dates, confidence and provenance.
+- Readable topic files in [context/](context/), plus [native adapters](ADAPTERS.md), compact instructions and a complete agent import.
+- [Learning rules](LEARN.md), [corrections](CONFLICTS.md), [unknowns](UNKNOWNS.md), [coverage](COVERAGE.md) and [sources](SOURCES.md).
+- [Maintenance rules](MAINTAINING.md), JSON schema, render contract and behavior acceptance cases.
 
-Tell an AI:
+This public profile contains curated context, not raw chats or private records. Exact coverage and inaccessible formats are documented; it does not claim every current ChatGPT account conversation was available.
 
-> Read https://github.com/Cucklord420/ai-personalization and follow AI.md. Apply the profile to this task. If you have access to my chat history or memory, follow LEARN.md and update the profile only with durable, useful preferences. Do not copy raw chats or sensitive details into this public repository.
+## Application and persistence
 
-For an agent that can clone repositories, clone this repository and read the same files. A public link cannot grant access to private chats or account memory; those sources must be available through that platform or provided separately.
+A capable AI can read the link and adapt in that session. Persistence needs the destination's actual memory/instruction mechanism. Files in this checkout do not automatically change unrelated projects or accounts. A URL cannot grant private history or cross-app access.
 
-## Files
+Canonical data lives in profile.json. The Markdown exports make importing easy. Read relevant modules for routine work; use the complete file for initial personalization.
 
-- [AI.md](AI.md): behavior expected from any assistant using this repo.
-- [PROFILE.md](PROFILE.md): the concise current profile, with confidence and provenance.
-- [LEARN.md](LEARN.md): process for extracting preferences from conversation history without overfitting.
-- [PROMPT.md](PROMPT.md): short reusable setup prompt for platforms with limited instruction space.
+## Cost/TCO
 
-## Profile status
+Required additional paid software/services: **$0**. This introduces no API key, database, cloud service, scheduled job or executable dependency. Existing assistant/account usage, hosting and maintenance time remain environment-dependent and are not included in a verified dollar total.
 
-This is a starter profile. The current session establishes that you want a reusable personalization repo for ChatGPT and other agents, and that “Muse” is an example of prior work. It does not expose your ChatGPT memory or past conversation contents, so the detailed profile has not yet been inferred from them.
+Reviewed: 10-18-2026, America/New_York. Existing repository license preserved.

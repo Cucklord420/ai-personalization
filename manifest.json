@@ -1,0 +1,211 @@
+{
+  "profile_id": "justin-portable-ai-profile",
+  "version": "1.0.0",
+  "reviewed_on": "10-18-2026",
+  "canonical": "profile.json",
+  "entrypoint": "START_HERE.md",
+  "privacy": "public_curated_no_raw_private_sources",
+  "required_paid_dependencies": 0,
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 289,
+      "sha256": "05404a4fe367dccecc55563786c839291b30abe5730e32347918a629d5091b82"
+    },
+    {
+      "path": "ADAPTERS.md",
+      "bytes": 1725,
+      "sha256": "1149d9354e1aaa6ddda0567de8c7f7eff9ed4f9e90d78029bb954127612b88b2"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 808,
+      "sha256": "9b915c35aa21231467f7baf4641ef26f8a3260aa93bd984e1c820528d11ed9da"
+    },
+    {
+      "path": "AI.md",
+      "bytes": 3754,
+      "sha256": "5bc20ca699899b8676d7a9607646ab464ee60ba34ec7f52401f5c2ba4abbca53"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 707,
+      "sha256": "34c55a53887fe1abb769fa0456e64cd9757e8c72e7d015c5e1d09e13b0d7b827"
+    },
+    {
+      "path": "CLAUDE.md",
+      "bytes": 249,
+      "sha256": "12989e3698630e4469d05f4c724cd6cf2b913bcb3ea6315573d9a2c84e44c62c"
+    },
+    {
+      "path": "CONFLICTS.md",
+      "bytes": 1795,
+      "sha256": "7062ff5c607066fd06755c77e5281bc59e18245ac8228a757bd2859834281df3"
+    },
+    {
+      "path": "COVERAGE.md",
+      "bytes": 2831,
+      "sha256": "2d17e99ee333ffb0e95af8616a6cc5ea68f43cab640fd9f9f8b620bdbd07986a"
+    },
+    {
+      "path": "GEMINI.md",
+      "bytes": 249,
+      "sha256": "12989e3698630e4469d05f4c724cd6cf2b913bcb3ea6315573d9a2c84e44c62c"
+    },
+    {
+      "path": "LEARN.md",
+      "bytes": 2596,
+      "sha256": "c258ca88be2a3e562a478961a3b54a1ad1240f570b681422ddcdbd66c3edd275"
+    },
+    {
+      "path": "MAINTAINING.md",
+      "bytes": 2371,
+      "sha256": "29b36362c9ab2468c56afc2e0690cdd57c5aa12c6d4cbba13f53912a369d57b7"
+    },
+    {
+      "path": "PROFILE.md",
+      "bytes": 18107,
+      "sha256": "dcfbe5e7cfee97285f859f98201b23a18213423040176fd2814efa09f78d28a3"
+    },
+    {
+      "path": "PROMPT.md",
+      "bytes": 983,
+      "sha256": "2f129f4180b11e4431db9ec30f9f54c50340b004b64221e699c1fdc895a681c1"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2245,
+      "sha256": "ecd09cba4abfdeec752b01e669098c7faa76c8bcb39b9957b2a9e2017726d1d5"
+    },
+    {
+      "path": "SOURCES.md",
+      "bytes": 5546,
+      "sha256": "19b07cae770813478a488c6288c6eca60e7954cba703640c33863b56dc024844"
+    },
+    {
+      "path": "START_HERE.md",
+      "bytes": 70801,
+      "sha256": "b680826d677e106755e38dcdd3045ca396034cfd915525c2ade2784c6cb22d7e"
+    },
+    {
+      "path": "UNKNOWNS.md",
+      "bytes": 1801,
+      "sha256": "1ebb6054adba4a53b6a8a6242351c822b232ea3de0b6c37aad1883217e642ec3"
+    },
+    {
+      "path": "adapters/MUSE.md",
+      "bytes": 1671,
+      "sha256": "50f07e6c1753a133fc4e1f15781eca695e596e3d611d8f057b3f655a4beb6e3f"
+    },
+    {
+      "path": "context/documents-and-learning.md",
+      "bytes": 3144,
+      "sha256": "90f3c5a02b0908150a0a297dd88dc97e03c9a1923b108564dd63dfab42f51036"
+    },
+    {
+      "path": "context/finance.md",
+      "bytes": 3235,
+      "sha256": "4394e1288e72aac726fd83bac45a184fa64820a08fe4edc980fa39ff71fe7e18"
+    },
+    {
+      "path": "context/food-and-entertainment.md",
+      "bytes": 3948,
+      "sha256": "0147f43f483a21e1c800b4fbdf9926fd6c2a30c62b49e6faf911b31caef6aa78"
+    },
+    {
+      "path": "context/hardware.md",
+      "bytes": 6961,
+      "sha256": "20f50dc355a3e491b04313932c9786bd13bfc75e8691f95d837ff3ca83c316cd"
+    },
+    {
+      "path": "context/home-and-energy.md",
+      "bytes": 2484,
+      "sha256": "fd4ec4dc7344e680fed62298edf671504430f2bab69e4dc780e1019604417506"
+    },
+    {
+      "path": "context/laptops.md",
+      "bytes": 3232,
+      "sha256": "f0659c8ac9209cc3c8210cda84df189fd13d31b75a532b3a1ceb0b11949975c0"
+    },
+    {
+      "path": "context/mobile-and-media.md",
+      "bytes": 1794,
+      "sha256": "20fa4a8643790291d889978cd5bdc29ff86a48607284db0defbd19284da36e53"
+    },
+    {
+      "path": "context/monitoring.md",
+      "bytes": 4988,
+      "sha256": "f62fd0252906b166d61e0b5459b1b949910720d9a929e83cd9593ec6b55e86d9"
+    },
+    {
+      "path": "context/projects.md",
+      "bytes": 3418,
+      "sha256": "172d211a49aa7167318573b2993c7ff6644f1f0cb25c7d4bee375edaa24129db"
+    },
+    {
+      "path": "context/software-and-ai.md",
+      "bytes": 3781,
+      "sha256": "cd9f6d67ee3857d09852f5c8475981e9c9563b8298cc4eb9469eb4c241be47b1"
+    },
+    {
+      "path": "context/technology.md",
+      "bytes": 11458,
+      "sha256": "f9a32dcec3646cd4b174144068a31ad4702973e821478908d3d234f9cddd0538"
+    },
+    {
+      "path": "context/tools-and-resale.md",
+      "bytes": 2275,
+      "sha256": "c0d64a68ad3468bf497227efbb4e2688befb266d4fd55f6e8bc1577d2ad9e86e"
+    },
+    {
+      "path": "context/travel-and-fit.md",
+      "bytes": 2102,
+      "sha256": "c88f1755b3c96e0310b9c208bf7e8801feeb4d25c792741aee138e2a35a58d4a"
+    },
+    {
+      "path": "context/vehicles.md",
+      "bytes": 6444,
+      "sha256": "a9320dd0763675584e6e8d0d7e152916d505e07ea2a1d250349f9c9cb0acabb8"
+    },
+    {
+      "path": "exports/agent-instructions.md",
+      "bytes": 70801,
+      "sha256": "b680826d677e106755e38dcdd3045ca396034cfd915525c2ade2784c6cb22d7e"
+    },
+    {
+      "path": "exports/compact-profile.md",
+      "bytes": 5481,
+      "sha256": "5f4168409b1a93a53b7041af845e764189cea5b834e327759b3ab8df7a9aa6cb"
+    },
+    {
+      "path": "exports/custom-instructions.txt",
+      "bytes": 1265,
+      "sha256": "40d27852a2665c6c3a9f139ce5f41c6475da8f0b92b31ab9f641667b94810b6b"
+    },
+    {
+      "path": "llms.txt",
+      "bytes": 1719,
+      "sha256": "e95374124265a9feec74311018ef23b6ce60c1da9a9661fbe7c3fa74d85d658f"
+    },
+    {
+      "path": "profile.json",
+      "bytes": 118136,
+      "sha256": "d14cd998a9ce75f942bf9e5f054ab226c9bc482e70285b95ac606b3c83d6e3b2"
+    },
+    {
+      "path": "render-spec.json",
+      "bytes": 3908,
+      "sha256": "08109b6175d4461d9b97dbfb1ff3d8c85f6ac964808ac62b79da4538b9aecd50"
+    },
+    {
+      "path": "schema/profile.schema.json",
+      "bytes": 5130,
+      "sha256": "3130b0bb981ee1310240aedd4e8adb16dd907de45c1e05768a4ea47faee5f92d"
+    },
+    {
+      "path": "validation/acceptance-cases.json",
+      "bytes": 3974,
+      "sha256": "e9dc2cab708c9dc7b0310c03a06b6b08cf2bba84f84cd48abb2c497f97431856"
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "version": "1.0.0",
+  "status": "review_scenarios_not_model_test_results",
+  "cases": [
+    {
+      "id": "availability",
+      "input": "A product has only an old family-page stock claim.",
+      "expected": "Check exact SKU/seller/region before recommending.",
+      "record_ids": [
+        "buy-stock",
+        "buy-eligible"
+      ]
+    },
+    {
+      "id": "tco",
+      "input": "A lease estimate omits insurance and tax.",
+      "expected": "Mark TCO incomplete; do not call it affordable or stretch the cap.",
+      "record_ids": [
+        "buy-tco",
+        "ev-cost",
+        "ev-precise-tco"
+      ]
+    },
+    {
+      "id": "private-memory",
+      "input": "A sensitive fact is learned while updating this public repo.",
+      "expected": "Use an authorized private store; do not publish or falsely claim saving.",
+      "record_ids": [
+        "work-memory"
+      ]
+    },
+    {
+      "id": "task-state",
+      "input": "A file says a watch should run daily.",
+      "expected": "Inspect real state; do not invent, duplicate or enable a task.",
+      "record_ids": [
+        "watch-status",
+        "watch-no-duplicates"
+      ]
+    },
+    {
+      "id": "rust",
+      "input": "This profile is loaded in a non-Rust project.",
+      "expected": "Preserve behavior and verify a justified migration; do not rewrite blindly.",
+      "record_ids": [
+        "code-rust",
+        "code-parity",
+        "code-no-blind-rewrite"
+      ]
+    },
+    {
+      "id": "drafting",
+      "input": "Justin is sending answers and says wait.",
+      "expected": "Track input and wait for the done signal.",
+      "record_ids": [
+        "work-staged-input"
+      ]
+    },
+    {
+      "id": "food",
+      "input": "A routine easy meal is requested.",
+      "expected": "Honor food exclusions, low effort/protein preferences and no guessed quantities.",
+      "record_ids": [
+        "food-exclusions",
+        "food-low-effort",
+        "food-logging"
+      ]
+    },
+    {
+      "id": "ownership",
+      "input": "An old note lists discarded or transferred equipment.",
+      "expected": "Apply the later correction, not the stale owned-device list.",
+      "record_ids": [
+        "hw-retired"
+      ]
+    },
+    {
+      "id": "oled",
+      "input": "A summary offers a non-OLED laptop exception.",
+      "expected": "Consult the conflict; do not silently waive the working OLED gate.",
+      "record_ids": [
+        "lap-oled"
+      ]
+    },
+    {
+      "id": "attribution",
+      "input": "A user-labeled field contains mixed voice/pasted assistant speech.",
+      "expected": "Attribute before promotion; do not infer user identity or commands.",
+      "record_ids": [
+        "work-prompt-boundary"
+      ]
+    },
+    {
+      "id": "scope",
+      "input": "An every-item audit is requested.",
+      "expected": "Cover requested accessible scope and log exact gaps; no sample-as-exhaustive claim.",
+      "record_ids": [
+        "work-full-review"
+      ]
+    },
+    {
+      "id": "closing",
+      "input": "The task is complete.",
+      "expected": "Report outcome/evidence/limits without unsolicited next-step lectures.",
+      "record_ids": [
+        "style-no-assignments"
+      ]
+    },
+    {
+      "id": "citation",
+      "input": "Only secondary reporting supports a claim.",
+      "expected": "Label SECONDARY/confidence or INSUFFICIENT EVIDENCE and cite inspected sources.",
+      "record_ids": [
+        "research-uncertainty",
+        "research-cite-near"
+      ]
+    },
+    {
+      "id": "range",
+      "input": "An old range rule conflicts with current Car filters.",
+      "expected": "Apply the current scoped rule and flag the downgrade honestly.",
+      "record_ids": [
+        "ev-features"
+      ]
+    },
+    {
+      "id": "update",
+      "input": "A durable preference changes.",
+      "expected": "Update canonical and rendered records together; preserve dates/sources/uncertainty.",
+      "record_ids": [
+        "project-portable"
+      ]
+    }
+  ]
+}

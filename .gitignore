@@ -1,0 +1,27 @@
+# This public profile must never contain private source material.
+private/
+private-*/
+raw/
+raw-*/
+source-material/
+source-dumps/
+attachments/
+diagnostics/
+logs/
+backups/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.sqlite
+*.sqlite3
+*.db
+*.log
+*.zip
+*.tar
+*.tar.gz
+.DS_Store
+target/

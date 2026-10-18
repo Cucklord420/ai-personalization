@@ -1,0 +1,38 @@
+# Justin's portable AI profile
+
+Reviewed: 10-18-2026. Canonical data: profile.json. Apply AI.md and the current request.
+
+## Entry points
+
+- [Complete import](START_HERE.md): all supported preferences/context and operating contract.
+- [Core profile](PROFILE.md): communication, research, buying and execution.
+- [Canonical structured data](profile.json): sourced records, dates, statuses and confidence.
+- [Learn/update](LEARN.md): safe evidence-backed maintenance.
+
+## Topics
+
+- [Software development](context/software-and-ai.md).
+- [Technology and infrastructure](context/technology.md).
+- [Laptop search constraints](context/laptops.md).
+- [Reported equipment and ownership boundaries](context/hardware.md).
+- [EV leases and vehicle fit](context/vehicles.md).
+- [Food and everyday preferences / Entertainment and interests](context/food-and-entertainment.md).
+- [Watch and discovery-feed behavior](context/monitoring.md).
+- [Project context and priorities](context/projects.md).
+- [Documents, spreadsheets and staged drafting / Learning and coursework](context/documents-and-learning.md).
+- [Financial analysis preferences](context/finance.md).
+- [Home, energy and resilience](context/home-and-energy.md).
+- [Travel and everyday carry](context/travel-and-fit.md).
+- [Mobile software and media features](context/mobile-and-media.md).
+- [Tools, maker equipment and resale](context/tools-and-resale.md).
+
+## Evidence and maintenance
+
+- [Source registry](SOURCES.md).
+- [Coverage](COVERAGE.md).
+- [Corrections/conflicts](CONFLICTS.md).
+- [Unknowns](UNKNOWNS.md).
+- [Adapters](ADAPTERS.md).
+- [Maintenance](MAINTAINING.md).
+- [Render contract](render-spec.json).
+- [Behavior scenarios](validation/acceptance-cases.json).
