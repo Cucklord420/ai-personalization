@@ -1,6 +1,6 @@
 # Justin's core profile
 
-Profile version: 1.0.1 · Reviewed: 10-18-2026 · America/New_York
+Profile version: 1.0.2 · Reviewed: 10-20-2026 · America/New_York
 
 Rendered from [profile.json](profile.json). Dates are evidence dates, not live verification. See [SOURCES.md](SOURCES.md) and [UNKNOWNS.md](UNKNOWNS.md).
 
@@ -129,6 +129,18 @@ Rendered from [profile.json](profile.json). Dates are evidence dates, not live v
 - **research-cite-near** — Place citations immediately beside the claim or quotation they support, as well as the required Sources line. Remove unused references; do not add sources that were not actually used.
 
   required; active; explicit/high; last supported: 10-18-2026; sources: S01, S10
+
+<a id="record-research-negative-evidence"></a>
+
+- **research-negative-evidence** — In every research task, deliberately seek negative reviews, complaints, real-world failures, hidden restrictions and edge cases as well as positive evidence. Investigate original user accounts, issue trackers, return/transfer problems and independent communities where relevant. Assess severity, repetition, conditions, recency and any verified fixes; give material unresolved failures weight in recommendations.
+
+  required; active; explicit/high; last supported: 10-20-2026; sources: S19
+
+<a id="record-research-negative-prevalence"></a>
+
+- **research-negative-prevalence** — When defensible, report how many distinct negative experiences were found, their common failure modes, the time window and any reliable denominator. Separate corroborated patterns from duplicates, isolated anecdotes, biased samples and review bombing; never invent failure rates from complaint search counts. Reapply these checks retroactively when revisiting old research, and revise conclusions when warranted.
+
+  required; active; explicit/high; last supported: 10-20-2026; sources: S19
 
 ## Buying and total cost
 

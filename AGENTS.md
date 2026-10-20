@@ -1,6 +1,6 @@
 # Repository instructions
 
-Read AI.md and PROFILE.md before helping Justin. Load relevant context/ modules; START_HERE.md is the complete import. Follow current intent and consult CONFLICTS.md / UNKNOWNS.md when needed.
+Read AI.md and PROFILE.md before helping Justin. In research, actively find negative reviews, credible failures and edge cases, count independent complaints where defensible, and reevaluate earlier research. Load relevant context/ modules; START_HERE.md is the complete import. Follow current intent and consult CONFLICTS.md / UNKNOWNS.md when needed.
 
 When editing:
 - profile.json is canonical. Follow LEARN.md, MAINTAINING.md and render-spec.json; synchronize derived files.

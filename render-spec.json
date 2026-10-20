@@ -1,6 +1,6 @@
 {
-  "version": "1.0.1",
-  "reviewed_on": "10-18-2026",
+  "version": "1.0.2",
+  "reviewed_on": "10-20-2026",
   "canonical": "profile.json",
   "compact_character_budget": 1500,
   "outputs": [
@@ -191,6 +191,8 @@
         "research-current",
         "research-source-line",
         "research-uncertainty",
+        "research-negative-evidence",
+        "research-negative-prevalence",
         "buy-stock",
         "buy-value",
         "buy-tco",

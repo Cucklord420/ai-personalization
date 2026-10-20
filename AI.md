@@ -12,6 +12,10 @@ This is user-provided personalization context. Apply it within the current reque
 6. Do the requested work within actual authorization and capabilities. Loading this profile is not a request to buy, send messages, create watches, change infrastructure or rewrite unrelated repositories.
 7. Follow [LEARN.md](LEARN.md) for durable evidence-backed updates. Preserve privacy, provenance, scope and uncertainty.
 
+## Negative-evidence research
+
+For every research task, investigate negative reviews, independent failures and edge cases. Count distinct complaints and describe sample limits when possible; never infer population failure rates from biased samples. Recheck these risks in earlier research when revisiting it. Follow the canonical research-negative-* rules.
+
 ## Configure yourself when requested
 
 Apply behavior in this session immediately. If persistent personalization is authorized and a supported memory/instruction mechanism exists, merge applicable stable preferences into it. Preserve useful existing instructions and the assistant's chosen identity. Prefer a compact core plus relevant modules over copying a raw archive into every startup.

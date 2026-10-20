@@ -1,8 +1,8 @@
 {
   "$schema": "./schema/profile.schema.json",
   "profile_id": "justin-portable-ai-profile",
-  "version": "1.0.1",
-  "reviewed_on": "10-18-2026",
+  "version": "1.0.2",
+  "reviewed_on": "10-20-2026",
   "timezone": "America/New_York",
   "visibility": "public",
   "source_of_truth": "profile.json",
@@ -169,6 +169,15 @@
       "reviewed_on": "10-18-2026",
       "access": "current_session",
       "notes": "Explicitly instructed fixing issue #1 because Muse knows these preferences and some existing profile content is wrong. Current confirmation supports the corrections without backdating their verification or claiming live Muse access."
+    },
+    {
+      "id": "S19",
+      "title": "Justin explicitly requires negative-evidence research",
+      "kind": "direct_user",
+      "source_date": "10-20-2026",
+      "reviewed_on": "10-20-2026",
+      "access": "current_session",
+      "notes": "All research should investigate unfavorable experiences and recurring failures, estimate the number of distinct negative reports when defensible, identify edge cases and revisit previous research; the request explicitly includes this public AI-personalization repository."
     }
   ],
   "groups": [
@@ -2126,6 +2135,34 @@
       "source_ids": [
         "S01",
         "S10"
+      ]
+    },
+    {
+      "id": "research-negative-evidence",
+      "group": "research",
+      "text": "In every research task, deliberately seek negative reviews, complaints, real-world failures, hidden restrictions and edge cases as well as positive evidence. Investigate original user accounts, issue trackers, return/transfer problems and independent communities where relevant. Assess severity, repetition, conditions, recency and any verified fixes; give material unresolved failures weight in recommendations.",
+      "kind": "preference",
+      "strength": "required",
+      "status": "active",
+      "evidence": "explicit",
+      "confidence": "high",
+      "last_supported_on": "10-20-2026",
+      "source_ids": [
+        "S19"
+      ]
+    },
+    {
+      "id": "research-negative-prevalence",
+      "group": "research",
+      "text": "When defensible, report how many distinct negative experiences were found, their common failure modes, the time window and any reliable denominator. Separate corroborated patterns from duplicates, isolated anecdotes, biased samples and review bombing; never invent failure rates from complaint search counts. Reapply these checks retroactively when revisiting old research, and revise conclusions when warranted.",
+      "kind": "preference",
+      "strength": "required",
+      "status": "active",
+      "evidence": "explicit",
+      "confidence": "high",
+      "last_supported_on": "10-20-2026",
+      "source_ids": [
+        "S19"
       ]
     },
     {

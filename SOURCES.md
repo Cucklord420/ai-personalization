@@ -1,6 +1,6 @@
 # Source registry
 
-Reviewed: 10-18-2026, America/New_York. Source dates can be unknown; review is not reconfirmation. Private sources are not bundled and their private locators are not published. Coverage is detailed in [COVERAGE.md](COVERAGE.md).
+Reviewed: 10-20-2026, America/New_York. Source dates can be unknown; review is not reconfirmation. Private sources are not bundled and their private locators are not published. Coverage is detailed in [COVERAGE.md](COVERAGE.md).
 
 | ID | Source | Evidence class | Source date | Access |
 |---|---|---|---|---|
@@ -28,6 +28,8 @@ Reviewed: 10-18-2026, America/New_York. Source dates can be unknown; review is n
 |---|---|---|---|---|
 | S17 | Muse correction report in GitHub issue #1 | derived_personal_document | 10-18-2026 | public |
 | S18 | Justin confirms Muse issue corrections and requests the fix | direct_user | 10-18-2026 | current_session |
+
+| S19 | Justin explicitly requires negative-evidence research | direct_user | 10-20-2026 | current_session |
 
 **S01**: Explicit standing instructions and the request to populate this repository.
 
@@ -64,6 +66,8 @@ Reviewed: 10-18-2026, America/New_York. Source dates can be unknown; review is n
 **S17**: Read https://github.com/Cucklord420/ai-personalization/issues/1 in full. Reports newer Muse cookware, stop-scope, KDE, glasses-fit and Model 3 commuter corrections. Original 10-12/10-14/10-16 dates are reported by Muse; the live Muse files were not independently read. Justin explicitly confirmed using these corrections on 10-18-2026 (S18).
 
 **S18**: Explicitly instructed fixing issue #1 because Muse knows these preferences and some existing profile content is wrong. Current confirmation supports the corrections without backdating their verification or claiming live Muse access.
+
+**S19**: Justin explicitly prioritizes finding negative experiences, failures, edge cases and complaint quantities in all future research and older research when revisited; requires this behavior in the portable AI profile. This is a user preference, not an externally measured product failure rate.
 
 ## Official adapter documentation
 

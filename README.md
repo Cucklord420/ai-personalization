@@ -10,12 +10,16 @@ One place for Justin's preferences, working rules, reported setup, project decis
 
 ## Contents
 
-- 208 sourced records across 21 topics in [profile.json](profile.json), with scope, status, dates, confidence and provenance.
+- 210 sourced records across 21 topics in [profile.json](profile.json), with scope, status, dates, confidence and provenance.
 - Readable topic files in [context/](context/), plus [native adapters](ADAPTERS.md), compact instructions and a complete agent import.
 - [Learning rules](LEARN.md), [corrections](CONFLICTS.md), [unknowns](UNKNOWNS.md), [coverage](COVERAGE.md) and [sources](SOURCES.md).
 - [Maintenance rules](MAINTAINING.md), JSON schema, render contract and behavior acceptance cases.
 
 This public profile contains curated context, not raw chats or private records. Exact coverage and inaccessible formats are documented; it does not claim every current ChatGPT account conversation was available.
+
+## Research policy
+
+Seek credible negative experiences, recurring failures, complaints, export/transfer limitations and edge cases in all research. Explain severity and distinct report counts where possible without inventing failure rates; revisit old research with the same standard.
 
 ## Application and persistence
 
@@ -27,4 +31,4 @@ Canonical data lives in profile.json. The Markdown exports make importing easy. 
 
 Required additional paid software/services: **$0**. This introduces no API key, database, cloud service, scheduled job or executable dependency. Existing assistant/account usage, hosting and maintenance time remain environment-dependent and are not included in a verified dollar total.
 
-Reviewed: 10-18-2026, America/New_York. Existing repository license preserved.
+Reviewed: 10-20-2026, America/New_York. Existing repository license preserved.

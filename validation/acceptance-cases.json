@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1",
+  "version": "1.0.2",
   "status": "review_scenarios_not_model_test_results",
   "cases": [
     {
@@ -184,6 +184,31 @@
         "ev-impressions",
         "ev-fit-detail",
         "ev-timing"
+      ]
+    },
+    {
+      "id": "negative-review-audit",
+      "input": "An otherwise top-rated voice recorder receives complaints about being unable to export original audio.",
+      "expected": "Verify and prominently weigh distinct export-failure reports, recurrence, workarounds and severity before recommendation.",
+      "record_ids": [
+        "research-negative-evidence",
+        "research-negative-prevalence"
+      ]
+    },
+    {
+      "id": "negative-report-count",
+      "input": "A complaint thread has 20 posts but includes duplicates with no known number of total owners.",
+      "expected": "Count distinct incidents when verifiable; avoid claiming 20 failures or a failure percentage.",
+      "record_ids": [
+        "research-negative-prevalence"
+      ]
+    },
+    {
+      "id": "retrospective-negative-check",
+      "input": "User asks to revisit an earlier favorable review that ignored failures.",
+      "expected": "Recheck relevant negative evidence and revise the old conclusion when warranted.",
+      "record_ids": [
+        "research-negative-prevalence"
       ]
     }
   ]
