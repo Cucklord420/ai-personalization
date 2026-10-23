@@ -8,6 +8,11 @@
   "required_paid_dependencies": 0,
   "files": [
     {
+      "path": ".github/workflows/profile-date-validation.yml",
+      "bytes": 903,
+      "sha256": "b4ca5fa8947f138bf4c9d7ee54fdb60f6cef0876fb7c201295351d225b7f7bd0"
+    },
+    {
       "path": ".gitignore",
       "bytes": 289,
       "sha256": "05404a4fe367dccecc55563786c839291b30abe5730e32347918a629d5091b82"
@@ -29,8 +34,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 2013,
-      "sha256": "fc8012669135706fe545e326de3fa06ab6dc5e8615246353c1b45e92496e6b8f"
+      "bytes": 2449,
+      "sha256": "02f1da52216676a88186221e9e7d64d2b33f4bd63369a070c9b634d99b71741d"
     },
     {
       "path": "CLAUDE.md",
@@ -59,8 +64,8 @@
     },
     {
       "path": "MAINTAINING.md",
-      "bytes": 2371,
-      "sha256": "29b36362c9ab2468c56afc2e0690cdd57c5aa12c6d4cbba13f53912a369d57b7"
+      "bytes": 2773,
+      "sha256": "b7409e88597bfd4caa06f11d7bf8c7738c6536fc504af0bdfa4a35fb72f9789d"
     },
     {
       "path": "PROFILE.md",
@@ -199,13 +204,18 @@
     },
     {
       "path": "schema/profile.schema.json",
-      "bytes": 5130,
-      "sha256": "3130b0bb981ee1310240aedd4e8adb16dd907de45c1e05768a4ea47faee5f92d"
+      "bytes": 5343,
+      "sha256": "8c49e26c82dc8b4d28be2eb052aa16e225fadd57d22e0450e03432ea15984ad9"
     },
     {
       "path": "validation/acceptance-cases.json",
       "bytes": 7594,
       "sha256": "3f7abc0bc73beb0a2fa5fc9ff69c276da8032da194e22b30b8ca273c366a404a"
+    },
+    {
+      "path": "validation/profile-date.test.mjs",
+      "bytes": 2134,
+      "sha256": "e94a87769673a4463c478ba0b205a72c6f037cebe02dd5ad0d934f1efc53a41c"
     }
   ]
 }

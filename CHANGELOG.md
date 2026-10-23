@@ -1,5 +1,9 @@
 # Changelog
 
+## 10-23-2026 — Gregorian profile date validation (issue #7)
+
+The date schema now accepts only real Gregorian MM-DD-YYYY dates. Added dependency-free Node tests for leap years, month boundaries, year-zero rejection, malformed values, and all non-null dates in the current profile; added a focused CI job for relevant changes. Profile data and rendered outputs were unchanged. Broader profile/export validation remains tracked in #3.
+
 ## 10-20-2026 — v1.0.2, negative-evidence research
 
 Added direct-user source S19 and two required rules: always investigate negative experiences and edge-case failures, quantify distinct negative reports responsibly, and revisit past research using the same standard. Updated canonical profile, full and compact exports, agent entrypoints, scenarios and manifest hashes. Total: 210 records across 21 topics. No unsupported incidence or cross-app memory claims.
