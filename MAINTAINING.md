@@ -19,6 +19,8 @@ Any capable editing agent can render this using its own tools; reading the profi
 
 Check JSON/schema shape, unique IDs, valid dates, resolved source/group references, allowed statuses and nonempty sourced text. Review contradictory active requirements, unsupported claims, privacy and stale dates.
 
+For focused regression coverage of custom MM-DD-YYYY calendar dates, run `node --test validation/profile-date.test.mjs`. The test exercises the schema date pattern against leap-year and month-boundary cases and scans every non-null date in `profile.json`. GitHub Actions runs it for relevant pull requests and pushes to `main`; this focused check does not replace the remaining validation steps here.
+
 Verify exact canonical record text appears once in its assigned core/topic file and each complete export. Check local links/anchors, compact character budget and manifest hashes. Behavior cases in validation/acceptance-cases.json support review/future model evaluation; static file checks do not prove live AI behavior.
 
 Read the latest branch head, preserve unrelated edits/history/license, make one coherent update and verify remote commit/files. Never force-push a stale head or publish private source material merely to improve traceability.
