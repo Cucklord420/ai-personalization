@@ -196,11 +196,7 @@ fn verify_manifest_entries(manifest: &Value, files: &HashMap<String, Vec<u8>>) -
     findings
 }
 
-fn validate_rendered_records(
-    content: &str,
-    records: &Value,
-    selected_ids: &[&str],
-) -> Vec<String> {
+fn validate_rendered_records(content: &str, records: &Value, selected_ids: &[&str]) -> Vec<String> {
     let mut findings = Vec::new();
     let Some(records) = records.as_array() else {
         return vec!["profile records are not an array".to_string()];
@@ -231,13 +227,13 @@ fn validate_rendered_records(
         let line = format!("- **{id}** — {text}");
         let anchor_position = content.find(&anchor);
         let line_position = content.find(&line);
-        let exactly_once = content.matches(&anchor).count() == 1
-            && content.matches(&line).count() == 1;
+        let exactly_once =
+            content.matches(&anchor).count() == 1 && content.matches(&line).count() == 1;
         let contiguous = match (anchor_position, line_position) {
-            (Some(anchor_position), Some(line_position))
-                if line_position >= anchor_position + anchor.len() =>
-            {
-                content[anchor_position + anchor.len()..line_position].trim().is_empty()
+            (Some(anchor_position), Some(line_position)) if line_position >= anchor_position + anchor.len() => {
+                content[anchor_position + anchor.len()..line_position]
+                    .trim()
+                    .is_empty()
             }
             _ => false,
         };
@@ -442,8 +438,16 @@ fn privacy_patterns() -> &'static [(String, Regex)] {
             ("government identifier", r"\b[0-9]{3}-[0-9]{2}-[0-9]{4}\b"),
             ("payment card", r"\b(?:[0-9][ -]?){13,19}\b"),
             (
+                "account number",
+                r"(?i)\baccount(?:\s*(?:number|no\.?|#))\s*[:=]\s*[0-9][0-9 -]{5,}\b",
+            ),
+            (
                 "raw transcript",
                 r"(?im)^\s*(?:begin (?:private )?chat|raw (?:chat|conversation) (?:export|transcript)|chat transcript)\s*$",
+            ),
+            (
+                "raw transcript",
+                r"(?im)^(?:[ \t]*(?:user|assistant|system|developer|human|chatgpt|claude|gemini)[ \t]*:[ \t]*[^\n]+\n){3,}",
             ),
         ]
         .into_iter()
@@ -615,11 +619,7 @@ fn scan_git_privacy(root: &Path) -> Vec<PrivacyFinding> {
                 Some((object_id.to_owned(), format!("staged:{path}")))
             })
             .collect();
-        findings.extend(scan_batch_objects(
-            root,
-            &staged_objects,
-            "staged:index",
-        ));
+        findings.extend(scan_batch_objects(root, &staged_objects, "staged:index"));
     } else {
         findings.push(PrivacyFinding {
             category: "git-scan-unavailable".to_string(),
@@ -682,7 +682,13 @@ fn parse_json_file(bytes: &[u8], path: &str) -> Result<Value, String> {
 fn git_tracked_and_unignored_paths(root: &Path) -> Result<Vec<String>, String> {
     let paths = git_output(
         root,
-        &["ls-files", "--cached", "--others", "--exclude-standard", "-z"],
+        &[
+            "ls-files",
+            "--cached",
+            "--others",
+            "--exclude-standard",
+            "-z",
+        ],
     )
     .ok_or_else(|| "unable to enumerate repository files".to_string())?;
     Ok(paths
@@ -813,9 +819,7 @@ fn validate_render_spec(
                     .as_array()
                     .into_iter()
                     .flatten()
-                    .filter_map(|record| {
-                        record.get("id").and_then(Value::as_str).map(str::to_owned)
-                    })
+                    .filter_map(|record| record.get("id").and_then(Value::as_str).map(str::to_owned))
                     .collect()
             }
             "selected_records" => {
@@ -1304,25 +1308,40 @@ mod tests {
         let token = format!("ghp_{}", "x".repeat(36));
         let address = ["person", "@", "fixture", ".", "invalid"].concat();
         let content = format!(
-            "token={token}\ncontact {address}\nphone {}-{}-{}\naddress 123 Test Street\ncard={}",
-            "202", "555", "0123", "4111111111111111"
+            "token={token}\ncontact {address}\nphone {}-{}-{}\naddress 123 Test Street\ncard={}\naccount number={}",
+            "202", "555", "0123", "4111111111111111", "9876543210"
         );
         let findings = scan_privacy_text(&content, "fixture.md");
         assert!(findings.iter().any(|item| item.category == "credential"));
         assert!(findings.iter().any(|item| item.category == "email"));
         let rendered = format!("{findings:?}");
         assert!(findings.iter().any(|item| item.category == "phone"));
-        assert!(findings.iter().any(|item| item.category == "street address"));
+        assert!(
+            findings
+                .iter()
+                .any(|item| item.category == "street address")
+        );
         assert!(findings.iter().any(|item| item.category == "payment card"));
+        assert!(findings.iter().any(|item| item.category == "account number"));
+
+        let transcript = [
+            "User: synthetic request",
+            "Assistant: synthetic answer",
+            "User: another synthetic request",
+            "",
+        ]
+        .join("\n");
+        assert!(
+            scan_privacy_text(&transcript, "transcript-fixture.md")
+                .iter()
+                .any(|item| item.category == "raw transcript")
+        );
         assert!(!rendered.contains(&token));
         assert!(!rendered.contains(&address));
         assert!(!rendered.contains("202-555-0123"));
         assert!(!rendered.contains("123 Test Street"));
         assert!(!rendered.contains("4111111111111111"));
-        assert!(
-            scan_privacy_text("Public text with [REDACTED] placeholders only.", "safe.md")
-                .is_empty()
-        );
+        assert!(scan_privacy_text("Public text with [REDACTED] placeholders only.", "safe.md").is_empty());
     }
 
     #[test]
