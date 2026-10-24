@@ -230,7 +230,9 @@ fn validate_rendered_records(content: &str, records: &Value, selected_ids: &[&st
         let exactly_once =
             content.matches(&anchor).count() == 1 && content.matches(&line).count() == 1;
         let contiguous = match (anchor_position, line_position) {
-            (Some(anchor_position), Some(line_position)) if line_position >= anchor_position + anchor.len() => {
+            (Some(anchor_position), Some(line_position))
+                if line_position >= anchor_position + anchor.len() =>
+            {
                 content[anchor_position + anchor.len()..line_position]
                     .trim()
                     .is_empty()
@@ -819,7 +821,9 @@ fn validate_render_spec(
                     .as_array()
                     .into_iter()
                     .flatten()
-                    .filter_map(|record| record.get("id").and_then(Value::as_str).map(str::to_owned))
+                    .filter_map(|record| {
+                        record.get("id").and_then(Value::as_str).map(str::to_owned)
+                    })
                     .collect()
             }
             "selected_records" => {
@@ -1322,7 +1326,11 @@ mod tests {
                 .any(|item| item.category == "street address")
         );
         assert!(findings.iter().any(|item| item.category == "payment card"));
-        assert!(findings.iter().any(|item| item.category == "account number"));
+        assert!(
+            findings
+                .iter()
+                .any(|item| item.category == "account number")
+        );
 
         let transcript = [
             "User: synthetic request",
@@ -1341,7 +1349,10 @@ mod tests {
         assert!(!rendered.contains("202-555-0123"));
         assert!(!rendered.contains("123 Test Street"));
         assert!(!rendered.contains("4111111111111111"));
-        assert!(scan_privacy_text("Public text with [REDACTED] placeholders only.", "safe.md").is_empty());
+        assert!(
+            scan_privacy_text("Public text with [REDACTED] placeholders only.", "safe.md")
+                .is_empty()
+        );
     }
 
     #[test]
