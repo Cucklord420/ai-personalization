@@ -1361,7 +1361,7 @@ mod tests {
         init_git(root.path());
 
         let historical_token = format!("ghp_{}", "x".repeat(36));
-        fs::write(root.path().join("history.txt"), historical_token).unwrap();
+        fs::write(root.path().join("history.txt"), &historical_token).unwrap();
         git(root.path(), &["add", "history.txt"]);
         git(root.path(), &["commit", "-q", "-m", "synthetic fixture"]);
         fs::write(root.path().join("history.txt"), "safe current content").unwrap();
