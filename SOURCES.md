@@ -1,6 +1,6 @@
 # Source registry
 
-Reviewed: 10-20-2026, America/New_York. Source dates can be unknown; review is not reconfirmation. Private sources are not bundled and their private locators are not published. Coverage is detailed in [COVERAGE.md](COVERAGE.md).
+Reviewed: 10-24-2026, America/New_York. Source dates can be unknown; review is not reconfirmation. Private sources are not bundled and their private locators are not published. Coverage is detailed in [COVERAGE.md](COVERAGE.md).
 
 | ID | Source | Evidence class | Source date | Access |
 |---|---|---|---|---|
@@ -30,6 +30,7 @@ Reviewed: 10-20-2026, America/New_York. Source dates can be unknown; review is n
 | S18 | Justin confirms Muse issue corrections and requests the fix | direct_user | 10-18-2026 | current_session |
 
 | S19 | Justin explicitly requires negative-evidence research | direct_user | 10-20-2026 | current_session |
+| S20 | Direct user instruction: mature open technology preference across all domains | direct_user | 10-24-2026 | current_session |
 
 **S01**: Explicit standing instructions and the request to populate this repository.
 
@@ -68,6 +69,8 @@ Reviewed: 10-20-2026, America/New_York. Source dates can be unknown; review is n
 **S18**: Explicitly instructed fixing issue #1 because Muse knows these preferences and some existing profile content is wrong. Current confirmation supports the corrections without backdating their verification or claiming live Muse access.
 
 **S19**: Justin explicitly prioritizes finding negative experiences, failures, edge cases and complaint quantities in all future research and older research when revisited; requires this behavior in the portable AI profile. This is a user preference, not an externally measured product failure rate.
+
+**S20**: Direct user instruction recorded in the canonical profile on 10-24-2026: favor openness, privacy, ownership and portability where practical, while prioritizing mature, supported, ready-to-use, low-maintenance options across domains. Technical experience is not a request for DIY upkeep; a proven proprietary option or keeping existing equipment may be preferable. This preference grants no purchase, deployment or account-change authority.
 
 ## Official adapter documentation
 

@@ -1,8 +1,8 @@
 # Justin's complete portable AI profile
 
-Profile version: 1.0.2 · Reviewed: 10-20-2026 · America/New_York
+Profile version: 1.0.2 · Reviewed: 10-24-2026 · America/New_York
 
-Self-contained behavior/profile import. All 210 canonical records follow; supporting provenance and unknowns are linked at the repository. This is not a full private chat archive, installer or live-system attestation.
+Self-contained behavior/profile import. All 211 canonical records follow; supporting provenance and unknowns are linked at the repository. This is not a full private chat archive, installer or live-system attestation.
 
 Canonical: https://github.com/Cucklord420/ai-personalization/blob/main/profile.json
 
@@ -290,6 +290,12 @@ TCO: reading these Markdown/JSON files requires no new paid software, API key, r
 - **buy-employee-prices** — Employee discounts, store credits, price matches and return windows can matter when actually applicable. Do not assume a discount, guarantee a free replacement or publish private employee terms; verify exact current terms privately.
 
   required; active; sources: S10
+
+<a id="record-buy-mature-open"></a>
+
+- **buy-mature-open** — Across all recommendations and projects, favor open-source, open hardware, open standards, privacy, interoperability, local/offline operation, repairability, exportable data and ownership when practical, but prioritize polished, mature, reliable, supported, ready-to-use and low-maintenance solutions. Do not infer from technical skill that Justin wants DIY assembly, soldering, firmware flashing, debugging or constant maintenance; he is generally not an early adopter. Evaluate setup friction, daily usability, independent tests, negative failure reports, warranty, parts, security updates, five-year ownership cost and exit/restore path. Classify candidates as ready now, promising but watch-only, or experimental. A dependable proprietary option can beat unfinished open alternatives; keeping owned equipment or buying nothing may be best. Apply contextually to every domain, without forcing irrelevant open-source criteria onto cookware or other ordinary goods.
+
+  required; active; sources: S20
 
 ## Collaboration and task execution
 

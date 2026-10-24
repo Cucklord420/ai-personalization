@@ -1,6 +1,6 @@
 {
   "version": "1.0.2",
-  "reviewed_on": "10-20-2026",
+  "reviewed_on": "10-24-2026",
   "canonical": "profile.json",
   "compact_character_budget": 1500,
   "outputs": [
@@ -196,6 +196,7 @@
         "buy-stock",
         "buy-value",
         "buy-tco",
+        "buy-mature-open",
         "work-do-it",
         "work-persist",
         "work-real-status",
