@@ -377,12 +377,12 @@ fn validate_markdown_links(root: &Path, source: &Path, content: &str) -> Vec<Str
             continue;
         }
 
-        let resolved = if resolved.is_dir() {
+        let resolved = if resolved.is_dir() && !fragment.is_empty() {
             let readme = resolved.join("README.md");
             if readme.is_file() {
                 readme
             } else {
-                findings.push(format!("broken local link in {source_text}"));
+                findings.push(format!("broken local anchor in {source_text}"));
                 continue;
             }
         } else {
@@ -493,9 +493,17 @@ fn is_safe_fixture(category: &str, value: &str, source: &str) -> bool {
 fn scan_privacy_text(content: &str, source: &str) -> Vec<PrivacyFinding> {
     let mut findings = Vec::new();
     for (category, pattern) in privacy_patterns() {
-        let has_match = pattern
-            .find_iter(content)
-            .any(|matched| !is_safe_fixture(category, matched.as_str(), source));
+        let has_match = pattern.find_iter(content).any(|matched| {
+            let embedded_phone = category == "phone"
+                && ((matched.start() > 0
+                    && content.as_bytes()[matched.start() - 1].is_ascii_digit())
+                    || content
+                        .as_bytes()
+                        .get(matched.end())
+                        .map(u8::is_ascii_digit)
+                        .unwrap_or(false));
+            !embedded_phone && !is_safe_fixture(category, matched.as_str(), source)
+        });
         if has_match {
             findings.push(PrivacyFinding {
                 category: category.clone(),
@@ -1332,6 +1340,12 @@ mod tests {
             "[broken](missing.md#not-here)\n[bad anchor](README.md#not-here)\n",
         );
         assert!(findings.len() >= 2);
+        let valid_directory_link = validate_markdown_links(
+            root.path(),
+            Path::new("README.md"),
+            "[context](context/)\n",
+        );
+        assert!(valid_directory_link.is_empty());
         let valid_parent_link = validate_markdown_links(
             root.path(),
             Path::new("context/topic.md"),
