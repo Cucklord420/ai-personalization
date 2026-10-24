@@ -1340,11 +1340,8 @@ mod tests {
             "[broken](missing.md#not-here)\n[bad anchor](README.md#not-here)\n",
         );
         assert!(findings.len() >= 2);
-        let valid_directory_link = validate_markdown_links(
-            root.path(),
-            Path::new("README.md"),
-            "[context](context/)\n",
-        );
+        let valid_directory_link =
+            validate_markdown_links(root.path(), Path::new("README.md"), "[context](context/)\n");
         assert!(valid_directory_link.is_empty());
         let valid_parent_link = validate_markdown_links(
             root.path(),
