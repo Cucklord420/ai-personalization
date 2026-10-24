@@ -229,8 +229,8 @@
     },
     {
       "path": "validation/src/lib.rs",
-      "bytes": 52433,
-      "sha256": "8bf605494c747595096ffc7b6a878c6b47e76f143aee1ead1ae1230ce1ba5b85"
+      "bytes": 52577,
+      "sha256": "3c84231d7040eb93a3e2b654c27078a6f96e132b7eb07fa93c4fe265432fbf36"
     },
     {
       "path": "validation/src/main.rs",
