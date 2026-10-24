@@ -987,35 +987,3 @@ name = "zmij"
 version = "1.0.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "29666d0abbfad1e3dc4dcf6144730dd3a3ab225bbbdac83319345b1b44ccfc1b"
-Post job cleanup.
-[command]/usr/bin/git version
-git version 2.55.0
-Temporarily overriding HOME='/home/runner/work/_temp/aaa548b1-28af-4a43-8a89-3cb9e7266342' before making global git config changes
-Adding repository directory to the temporary git global config as a safe directory
-[command]/usr/bin/git config --global --add safe.directory /home/runner/work/ai-personalization/ai-personalization
-Removing SSH command configuration
-[command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
-[command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
-Removing HTTP extra header
-[command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
-[command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
-Removing includeIf entries pointing to credentials config files
-[command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
-includeif.gitdir:/home/runner/work/ai-personalization/ai-personalization/.git.path
-includeif.gitdir:/home/runner/work/ai-personalization/ai-personalization/.git/worktrees/*.path
-includeif.gitdir:/github/workspace/.git.path
-includeif.gitdir:/github/workspace/.git/worktrees/*.path
-[command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/ai-personalization/ai-personalization/.git.path
-/home/runner/work/_temp/git-credentials-503c4ff9-b647-4f8a-a5f1-072d8bc15ce2.config
-[command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/ai-personalization/ai-personalization/.git.path /home/runner/work/_temp/git-credentials-503c4ff9-b647-4f8a-a5f1-072d8bc15ce2.config
-[command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/ai-personalization/ai-personalization/.git/worktrees/*.path
-/home/runner/work/_temp/git-credentials-503c4ff9-b647-4f8a-a5f1-072d8bc15ce2.config
-[command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/ai-personalization/ai-personalization/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-503c4ff9-b647-4f8a-a5f1-072d8bc15ce2.config
-[command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
-/github/runner_temp/git-credentials-503c4ff9-b647-4f8a-a5f1-072d8bc15ce2.config
-[command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-503c4ff9-b647-4f8a-a5f1-072d8bc15ce2.config
-[command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
-/github/runner_temp/git-credentials-503c4ff9-b647-4f8a-a5f1-072d8bc15ce2.config
-[command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-503c4ff9-b647-4f8a-a5f1-072d8bc15ce2.config
-[command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
-Removing credentials config '/home/runner/work/_temp/git-credentials-503c4ff9-b647-4f8a-a5f1-072d8bc15ce2.config'
