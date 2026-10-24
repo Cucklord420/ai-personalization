@@ -60,7 +60,10 @@ mod tests {
             " 02-29-2024",
         ] {
             assert!(!pattern.is_match(value), "schema should reject {value}");
-            assert!(!is_valid_gregorian_date(value), "Rust should reject {value}");
+            assert!(
+                !is_valid_gregorian_date(value),
+                "Rust should reject {value}"
+            );
         }
     }
 
