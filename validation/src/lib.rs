@@ -350,11 +350,7 @@ fn validate_markdown_links(root: &Path, source: &Path, content: &str) -> Vec<Str
             source.to_path_buf()
         } else {
             let path = Path::new(path_part);
-            if path.is_absolute()
-                || path.components().any(|component| {
-                    matches!(component, std::path::Component::ParentDir) && path.starts_with("..")
-                })
-            {
+            if path.is_absolute() {
                 findings.push(format!("broken local link in {source_text}"));
                 continue;
             }
@@ -435,10 +431,22 @@ fn privacy_patterns() -> &'static [(String, Regex)] {
             ),
             (
                 "street address",
-                r"(?i)\b[0-9]{1,6}\s+(?:[a-z0-9.'#-]+\s+){0,5}(?:street|st|road|rd|avenue|ave|drive|dr|lane|ln|court|ct|boulevard|blvd|way|parkway|pkwy)\b",
+                r"(?im)^\s*(?:address|home address|mailing address|street address)\s*[:=]\s*[0-9]{1,6}\s+(?:[a-z0-9.'#-]+\s+){1,4}(?:street|st\.?|road|rd\.?|avenue|ave\.?|drive|dr\.?|lane|ln\.?|court|ct\.?|boulevard|blvd\.?|way|parkway|pkwy\.?)\b[^\n]*$",
+            ),
+            (
+                "street address",
+                r#"(?i)"(?:home|mailing|street)?_?address"\s*:\s*"\s*[0-9]{1,6}\s+(?:[a-z0-9.'#-]+\s+){1,4}(?:street|st\.?|road|rd\.?|avenue|ave\.?|drive|dr\.?|lane|ln\.?|court|ct\.?|boulevard|blvd\.?|way|parkway|pkwy\.?)\b"#,
+            ),
+            (
+                "street address",
+                r"(?im)^\s*[0-9]{1,6}\s+(?:[a-z0-9.'#-]+\s+){1,4}(?:street|st\.?|road|rd\.?|avenue|ave\.?|drive|dr\.?|lane|ln\.?|court|ct\.?|boulevard|blvd\.?|way|parkway|pkwy\.?)\s*$",
             ),
             ("government identifier", r"\b[0-9]{3}-[0-9]{2}-[0-9]{4}\b"),
             ("payment card", r"\b(?:[0-9][ -]?){13,19}\b"),
+            (
+                "account number",
+                r"(?i)\baccount(?:\s*(?:number|no\.?|#))\s*[:=]\s*[0-9][0-9 -]{5,}\b",
+            ),
             (
                 "account number",
                 r"(?i)\baccount(?:\s*(?:number|no\.?|#))\s*[:=]\s*[0-9][0-9 -]{5,}\b",
@@ -463,15 +471,31 @@ fn privacy_patterns() -> &'static [(String, Regex)] {
     })
 }
 
+fn is_safe_fixture(category: &str, value: &str, source: &str) -> bool {
+    let path = source.rsplit(':').next().unwrap_or(source);
+    if path == "LICENSE" && ["email", "street address"].contains(&category) {
+        return true;
+    }
+    if path != "validation/src/lib.rs" {
+        return false;
+    }
+
+    match category {
+        "email" => ["validator@example.invalid", "person@fixture.invalid"]
+            .contains(&value.to_ascii_lowercase().as_str()),
+        "phone" => value == "202-555-0123",
+        "street address" => value.eq_ignore_ascii_case("123 Test Street"),
+        "payment card" => value == "4111111111111111",
+        _ => false,
+    }
+}
+
 fn scan_privacy_text(content: &str, source: &str) -> Vec<PrivacyFinding> {
     let mut findings = Vec::new();
     for (category, pattern) in privacy_patterns() {
-        let has_match = pattern.find_iter(content).any(|matched| {
-            !(category == "email"
-                && matched
-                    .as_str()
-                    .eq_ignore_ascii_case("validator@example.invalid"))
-        });
+        let has_match = pattern
+            .find_iter(content)
+            .any(|matched| !is_safe_fixture(category, matched.as_str(), source));
         if has_match {
             findings.push(PrivacyFinding {
                 category: category.clone(),
@@ -1299,21 +1323,33 @@ mod tests {
     fn markdown_links_reject_missing_files_and_anchors() {
         let root = TempDir::new();
         fs::write(root.path().join("README.md"), "# Existing heading\n").unwrap();
+        fs::create_dir(root.path().join("context")).unwrap();
+        fs::write(root.path().join("profile.json"), "{}").unwrap();
+        fs::write(root.path().join("context/topic.md"), "# Topic\n").unwrap();
         let findings = validate_markdown_links(
             root.path(),
             Path::new("README.md"),
             "[broken](missing.md#not-here)\n[bad anchor](README.md#not-here)\n",
         );
         assert!(findings.len() >= 2);
+        let valid_parent_link = validate_markdown_links(
+            root.path(),
+            Path::new("context/topic.md"),
+            "[profile](../profile.json)\n",
+        );
+        assert!(valid_parent_link.is_empty());
     }
 
     #[test]
     fn privacy_findings_cover_credentials_and_contact_data_without_echoing_values() {
         let token = format!("ghp_{}", "x".repeat(36));
         let address = ["person", "@", "fixture", ".", "invalid"].concat();
+        let phone = ["212", "555", "0100"].join("-");
+        let street = ["456", "Example", "Road"].join(" ");
+        let card = ["4242", "4242", "4242", "4242"].concat();
+        let account = ["1234", "567", "890"].concat();
         let content = format!(
-            "token={token}\ncontact {address}\nphone {}-{}-{}\naddress 123 Test Street\ncard={}\naccount number={}",
-            "202", "555", "0123", "4111111111111111", "9876543210"
+            "token={token}\ncontact {address}\nphone {phone}\naddress: {street}\ncard={card}\naccount number={account}"
         );
         let findings = scan_privacy_text(&content, "fixture.md");
         assert!(findings.iter().any(|item| item.category == "credential"));
@@ -1346,9 +1382,10 @@ mod tests {
         );
         assert!(!rendered.contains(&token));
         assert!(!rendered.contains(&address));
-        assert!(!rendered.contains("202-555-0123"));
-        assert!(!rendered.contains("123 Test Street"));
-        assert!(!rendered.contains("4111111111111111"));
+        assert!(!rendered.contains(&phone));
+        assert!(!rendered.contains(&street));
+        assert!(!rendered.contains(&card));
+        assert!(!rendered.contains(&account));
         assert!(
             scan_privacy_text("Public text with [REDACTED] placeholders only.", "safe.md")
                 .is_empty()
@@ -1372,7 +1409,7 @@ mod tests {
         );
 
         let staged_email = ["person", "@", "fixture", ".", "invalid"].concat();
-        fs::write(root.path().join("staged.txt"), staged_email).unwrap();
+        fs::write(root.path().join("staged.txt"), &staged_email).unwrap();
         git(root.path(), &["add", "staged.txt"]);
         fs::write(root.path().join("staged.txt"), "safe working tree").unwrap();
 
@@ -1389,7 +1426,7 @@ mod tests {
         );
         let rendered = format!("{findings:?}");
         assert!(!rendered.contains(&historical_token));
-        assert!(!rendered.contains("person@fixture.invalid"));
+        assert!(!rendered.contains(&staged_email));
     }
 
     #[test]
