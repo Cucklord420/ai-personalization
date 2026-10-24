@@ -1,9 +1,45 @@
 use regex::Regex;
 use serde_json::Value;
-use std::collections::HashSet;
+use sha2::{Digest, Sha256};
+use std::{
+    collections::{HashMap, HashSet},
+    fs,
+    io::Write,
+    path::Path,
+    process::{Command, Stdio},
+    sync::OnceLock,
+};
 
-pub fn is_valid_gregorian_date(_value: &str) -> bool {
-    false
+pub fn is_valid_gregorian_date(value: &str) -> bool {
+    let bytes = value.as_bytes();
+    if bytes.len() != 10
+        || bytes[2] != b'-'
+        || bytes[5] != b'-'
+        || !bytes[..2].iter().chain(bytes[3..5].iter()).chain(bytes[6..].iter()).all(u8::is_ascii_digit)
+    {
+        return false;
+    }
+
+    let month = usize::from(bytes[0] - b'0') * 10 + usize::from(bytes[1] - b'0');
+    let day = usize::from(bytes[3] - b'0') * 10 + usize::from(bytes[4] - b'0');
+    let year = u32::from(bytes[6] - b'0') * 1000
+        + u32::from(bytes[7] - b'0') * 100
+        + u32::from(bytes[8] - b'0') * 10
+        + u32::from(bytes[9] - b'0');
+
+    if year == 0 || !(1..=12).contains(&month) || day == 0 {
+        return false;
+    }
+
+    let leap = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+    let days_in_month = match month {
+        1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
+        4 | 6 | 9 | 11 => 30,
+        2 if leap => 29,
+        2 => 28,
+        _ => return false,
+    };
+    day <= days_in_month
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -12,43 +48,919 @@ struct PrivacyFinding {
     source: String,
 }
 
-fn validate_profile_structure(_profile: &Value) -> Vec<String> {
-    Vec::new()
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ValidationSummary {
+    pub records: usize,
+    pub groups: usize,
+    pub sources: usize,
+    pub files: usize,
+}
+
+fn validate_dates(value: &Value, path: &str, findings: &mut Vec<String>) {
+    const DATE_FIELDS: [&str; 3] = ["reviewed_on", "source_date", "last_supported_on"];
+    match value {
+        Value::Array(items) => {
+            for (index, child) in items.iter().enumerate() {
+                validate_dates(child, &format!("{path}[{index}]"), findings);
+            }
+        }
+        Value::Object(object) => {
+            for (key, child) in object {
+                let child_path = format!("{path}.{key}");
+                if DATE_FIELDS.contains(&key.as_str()) && !child.is_null() {
+                    match child.as_str() {
+                        Some(date) if is_valid_gregorian_date(date) => {}
+                        _ => findings.push(format!("invalid Gregorian date at {child_path}")),
+                    }
+                }
+                validate_dates(child, &child_path, findings);
+            }
+        }
+        _ => {}
+    }
+}
+
+fn validate_profile_structure(profile: &Value) -> Vec<String> {
+    let mut findings = Vec::new();
+    validate_dates(profile, "$", &mut findings);
+
+    let mut group_ids = HashSet::new();
+    if let Some(groups) = profile.get("groups").and_then(Value::as_array) {
+        for group in groups {
+            if let Some(id) = group.get("id").and_then(Value::as_str) {
+                if !group_ids.insert(id.to_owned()) {
+                    findings.push("duplicate group id".to_string());
+                }
+            }
+        }
+    }
+
+    let mut source_ids = HashSet::new();
+    if let Some(sources) = profile.get("sources").and_then(Value::as_array) {
+        for source in sources {
+            if let Some(id) = source.get("id").and_then(Value::as_str) {
+                if !source_ids.insert(id.to_owned()) {
+                    findings.push("duplicate source id".to_string());
+                }
+            }
+        }
+    }
+
+    let mut record_ids = HashSet::new();
+    if let Some(records) = profile.get("records").and_then(Value::as_array) {
+        for record in records {
+            if let Some(id) = record.get("id").and_then(Value::as_str) {
+                if !record_ids.insert(id.to_owned()) {
+                    findings.push("duplicate record id".to_string());
+                }
+            }
+
+            if let Some(group) = record.get("group").and_then(Value::as_str) {
+                if !group_ids.contains(group) {
+                    findings.push("record references unknown group".to_string());
+                }
+            }
+
+            if let Some(ids) = record.get("source_ids").and_then(Value::as_array) {
+                let mut seen = HashSet::new();
+                for source in ids.iter().filter_map(Value::as_str) {
+                    if !seen.insert(source) {
+                        findings.push("duplicate record source reference".to_string());
+                    }
+                    if !source_ids.contains(source) {
+                        findings.push("record references unknown source".to_string());
+                    }
+                }
+            }
+        }
+    }
+
+    findings
+}
+
+fn sha256_hex(bytes: &[u8]) -> String {
+    format!("{:x}", Sha256::digest(bytes))
 }
 
 fn verify_manifest_entries(
-    _manifest: &Value,
-    _files: &std::collections::HashMap<String, Vec<u8>>,
+    manifest: &Value,
+    files: &HashMap<String, Vec<u8>>,
 ) -> Vec<String> {
-    Vec::new()
+    let mut findings = Vec::new();
+    let Some(entries) = manifest.get("files").and_then(Value::as_array) else {
+        return vec!["manifest has no file inventory".to_string()];
+    };
+
+    let mut listed = HashSet::new();
+    for entry in entries {
+        let Some(path) = entry.get("path").and_then(Value::as_str) else {
+            findings.push("manifest has an invalid file path".to_string());
+            continue;
+        };
+        if path == "manifest.json" {
+            findings.push("manifest must not list itself".to_string());
+        }
+        if !listed.insert(path.to_owned()) {
+            findings.push(format!("duplicate manifest path: {path}"));
+            continue;
+        }
+
+        let Some(expected_bytes) = entry.get("bytes").and_then(Value::as_u64) else {
+            findings.push(format!("manifest has invalid byte count: {path}"));
+            continue;
+        };
+        let Some(expected_hash) = entry.get("sha256").and_then(Value::as_str) else {
+            findings.push(format!("manifest has invalid SHA-256: {path}"));
+            continue;
+        };
+        match files.get(path) {
+            Some(actual) => {
+                if actual.len() as u64 != expected_bytes {
+                    findings.push(format!("byte count mismatch: {path}"));
+                }
+                if sha256_hex(actual) != expected_hash {
+                    findings.push(format!("SHA-256 mismatch: {path}"));
+                }
+            }
+            None => findings.push(format!("missing manifest file: {path}")),
+        }
+    }
+
+    for path in files.keys() {
+        if !listed.contains(path) {
+            findings.push(format!("unlisted file: {path}"));
+        }
+    }
+
+    findings
 }
 
 fn validate_rendered_records(
-    _content: &str,
-    _records: &Value,
-    _selected_ids: &[&str],
+    content: &str,
+    records: &Value,
+    selected_ids: &[&str],
 ) -> Vec<String> {
-    Vec::new()
+    let mut findings = Vec::new();
+    let Some(records) = records.as_array() else {
+        return vec!["profile records are not an array".to_string()];
+    };
+
+    let mut seen = HashSet::new();
+    let mut record_text = HashMap::new();
+    for record in records {
+        if let (Some(id), Some(text)) = (
+            record.get("id").and_then(Value::as_str),
+            record.get("text").and_then(Value::as_str),
+        ) {
+            record_text.insert(id, text);
+        }
+    }
+
+    for id in selected_ids {
+        if !seen.insert(*id) {
+            findings.push("render selection contains a duplicate record".to_string());
+            continue;
+        }
+        let Some(text) = record_text.get(id) else {
+            findings.push("render selection references an unknown record".to_string());
+            continue;
+        };
+
+        let expected = format!(
+            "<a id=\"record-{id}\"></a>\n\n- **{id}** — {text}"
+        );
+        if content.matches(&expected).count() != 1 {
+            findings.push(format!("rendered record is missing or duplicated: {id}"));
+        }
+    }
+
+    let actual_ids: Vec<&str> = content
+        .lines()
+        .filter_map(|line| {
+            line.strip_prefix("<a id=\"record-")
+                .and_then(|rest| rest.strip_suffix("\"></a>"))
+        })
+        .collect();
+    if actual_ids != selected_ids {
+        findings.push("rendered record selection is incomplete, duplicated, or out of order".to_string());
+    }
+
+    findings
 }
 
-fn validate_markdown_links(
-    _root: &std::path::Path,
-    _source: &std::path::Path,
-    _content: &str,
+fn collect_markdown_anchors(content: &str) -> HashSet<String> {
+    let mut anchors = HashSet::new();
+    let explicit = Regex::new(r#"(?i)<a\s+id=["']([^"']+)["']"#).expect("static anchor regex");
+    for capture in explicit.captures_iter(content) {
+        if let Some(id) = capture.get(1) {
+            anchors.insert(id.as_str().to_owned());
+        }
+    }
+
+    let mut slug_counts: HashMap<String, usize> = HashMap::new();
+    for line in content.lines() {
+        let heading = line.trim_start();
+        let level = heading.chars().take_while(|character| *character == '#').count();
+        if !(1..=6).contains(&level)
+            || !heading
+                .chars()
+                .nth(level)
+                .map(char::is_whitespace)
+                .unwrap_or(false)
+        {
+            continue;
+        }
+
+        let mut title = heading[level..].trim().trim_end_matches('#').trim().to_lowercase();
+        title = title
+            .chars()
+            .filter(|character| character.is_alphanumeric() || *character == '-' || character.is_whitespace())
+            .collect::<String>();
+        let slug = title.split_whitespace().collect::<Vec<_>>().join("-");
+        if slug.is_empty() {
+            continue;
+        }
+        let count = slug_counts.entry(slug.clone()).or_insert(0);
+        let final_slug = if *count == 0 {
+            slug
+        } else {
+            format!("{slug}-{}", *count)
+        };
+        *count += 1;
+        anchors.insert(final_slug);
+    }
+
+    anchors
+}
+
+fn normalize_markdown_links(content: &str) -> String {
+    Regex::new(r"\[([^\]]+)\]\([^)]+\)")
+        .expect("static link regex")
+        .replace_all(content, "[$1]")
+        .into_owned()
+}
+
+fn validate_markdown_links(root: &Path, source: &Path, content: &str) -> Vec<String> {
+    let mut findings = Vec::new();
+    let links = Regex::new(r"!?\[[^\]]*\]\(([^)]+)\)").expect("static Markdown link regex");
+    let source_text = source.to_string_lossy().replace('\\', "/");
+
+    for capture in links.captures_iter(content) {
+        let Some(raw) = capture.get(1).map(|item| item.as_str().trim()) else {
+            continue;
+        };
+        let target = if raw.starts_with('<') {
+            raw.split('>').next().unwrap_or(raw).trim_start_matches('<')
+        } else {
+            raw.split_whitespace().next().unwrap_or(raw)
+        };
+        if target.is_empty()
+            || target.starts_with("//")
+            || Regex::new(r"^[A-Za-z][A-Za-z0-9+.-]*:")
+                .expect("static URL regex")
+                .is_match(target)
+        {
+            continue;
+        }
+
+        let (path_part, fragment) = target.split_once('#').unwrap_or((target, ""));
+        let path_part = path_part.split('?').next().unwrap_or(path_part);
+        let target_path = if path_part.is_empty() {
+            source.to_path_buf()
+        } else {
+            let path = Path::new(path_part);
+            if path.is_absolute()
+                || path
+                    .components()
+                    .any(|component| matches!(component, std::path::Component::ParentDir) && path.starts_with(".."))
+            {
+                findings.push(format!("broken local link in {source_text}"));
+                continue;
+            }
+            source.parent().unwrap_or(Path::new("")).join(path)
+        };
+
+        let root_canonical = match root.canonicalize() {
+            Ok(path) => path,
+            Err(_) => {
+                findings.push("repository root is unavailable during link validation".to_string());
+                return findings;
+            }
+        };
+        let candidate = root.join(&target_path);
+        let resolved = match candidate.canonicalize() {
+            Ok(path) => path,
+            Err(_) => {
+                findings.push(format!("broken local link in {source_text}"));
+                continue;
+            }
+        };
+        if !resolved.starts_with(&root_canonical) {
+            findings.push(format!("broken local link in {source_text}"));
+            continue;
+        }
+
+        let resolved = if resolved.is_dir() {
+            let readme = resolved.join("README.md");
+            if readme.is_file() {
+                readme
+            } else {
+                findings.push(format!("broken local link in {source_text}"));
+                continue;
+            }
+        } else {
+            resolved
+        };
+
+        if !fragment.is_empty() {
+            let linked_content = match fs::read_to_string(&resolved) {
+                Ok(text) => text,
+                Err(_) => {
+                    findings.push(format!("broken local anchor in {source_text}"));
+                    continue;
+                }
+            };
+            if !collect_markdown_anchors(&linked_content).contains(fragment) {
+                findings.push(format!("broken local anchor in {source_text}"));
+            }
+        }
+    }
+
+    findings
+}
+
+fn privacy_patterns() -> &'static [(String, Regex)] {
+    static PATTERNS: OnceLock<Vec<(String, Regex)>> = OnceLock::new();
+    PATTERNS.get_or_init(|| {
+        [
+            (
+                "credential",
+                r"(?i)\b(?:ghp|gho|ghu|ghs|ghr|github_pat)_[a-z0-9_]{20,}\b",
+            ),
+            ("credential", r"(?i)\bsk-[a-z0-9_-]{20,}\b"),
+            ("credential", r"\bAKIA[0-9A-Z]{16}\b"),
+            ("credential", r"(?i)\bxox[baprs]-[a-z0-9-]{20,}\b"),
+            (
+                "credential",
+                r#"(?i)\b(?:api[_-]?key|access[_-]?token|client[_-]?secret|password|passwd)\s*[:=]\s*["']?[a-z0-9_./+=-]{12,}"#,
+            ),
+            (
+                "email",
+                r"(?i)\b[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}\b",
+            ),
+            (
+                "phone",
+                r"\b(?:\+?1[\s.-]?)?(?:\(?[2-9][0-9]{2}\)?[\s.-]?)[2-9][0-9]{2}[\s.-]?[0-9]{4}\b",
+            ),
+            (
+                "street address",
+                r"(?i)\b[0-9]{1,6}\s+(?:[a-z0-9.'#-]+\s+){0,5}(?:street|st|road|rd|avenue|ave|drive|dr|lane|ln|court|ct|boulevard|blvd|way|parkway|pkwy)\b",
+            ),
+            ("government identifier", r"\b[0-9]{3}-[0-9]{2}-[0-9]{4}\b"),
+            ("payment card", r"\b(?:[0-9][ -]?){13,19}\b"),
+            (
+                "raw transcript",
+                r"(?im)^\s*(?:begin (?:private )?chat|raw (?:chat|conversation) (?:export|transcript)|chat transcript)\s*$",
+            ),
+        ]
+        .into_iter()
+        .map(|(category, pattern)| {
+            (
+                category.to_string(),
+                Regex::new(pattern).expect("static privacy regex"),
+            )
+        })
+        .collect()
+    })
+}
+
+fn scan_privacy_text(content: &str, source: &str) -> Vec<PrivacyFinding> {
+    let mut findings = Vec::new();
+    for (category, pattern) in privacy_patterns() {
+        let has_match = pattern.find_iter(content).any(|matched| {
+            !(category == "email"
+                && matched
+                    .as_str()
+                    .eq_ignore_ascii_case("validator@example.invalid"))
+        });
+        if has_match {
+            findings.push(PrivacyFinding {
+                category: category.clone(),
+                source: source.to_owned(),
+            });
+        }
+    }
+    findings
+}
+
+fn git_output(root: &Path, arguments: &[&str]) -> Option<Vec<u8>> {
+    let output = Command::new("git")
+        .args(arguments)
+        .current_dir(root)
+        .stdin(Stdio::null())
+        .stderr(Stdio::null())
+        .output()
+        .ok()?;
+    output.status.success().then_some(output.stdout)
+}
+
+fn scan_batch_objects(root: &Path, object_ids: &[String], source: &str) -> Vec<PrivacyFinding> {
+    let unique_ids: Vec<String> = object_ids
+        .iter()
+        .filter(|id| !id.is_empty())
+        .cloned()
+        .collect::<HashSet<_>>()
+        .into_iter()
+        .collect();
+    if unique_ids.is_empty() {
+        return Vec::new();
+    }
+
+    let mut child = match Command::new("git")
+        .args(["cat-file", "--batch"])
+        .current_dir(root)
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::null())
+        .spawn()
+    {
+        Ok(child) => child,
+        Err(_) => {
+            return vec![PrivacyFinding {
+                category: "git-scan-unavailable".to_string(),
+                source: source.to_string(),
+            }]
+        }
+    };
+
+    if let Some(mut input) = child.stdin.take() {
+        for id in &unique_ids {
+            if input.write_all(id.as_bytes()).is_err() || input.write_all(b"\n").is_err() {
+                return vec![PrivacyFinding {
+                    category: "git-scan-unavailable".to_string(),
+                    source: source.to_string(),
+                }];
+            }
+        }
+    }
+    let output = match child.wait_with_output() {
+        Ok(output) if output.status.success() => output.stdout,
+        _ => {
+            return vec![PrivacyFinding {
+                category: "git-scan-unavailable".to_string(),
+                source: source.to_string(),
+            }]
+        }
+    };
+
+    let mut findings = Vec::new();
+    let mut cursor = 0usize;
+    while cursor < output.len() {
+        let Some(relative_end) = output[cursor..].iter().position(|byte| *byte == b'\n') else {
+            break;
+        };
+        let header_end = cursor + relative_end;
+        let header = String::from_utf8_lossy(&output[cursor..header_end]);
+        cursor = header_end + 1;
+
+        let mut parts = header.split_whitespace();
+        let _object_id = parts.next();
+        let object_type = parts.next();
+        let size = parts.next().and_then(|value| value.parse::<usize>().ok());
+        let (Some(object_type), Some(size)) = (object_type, size) else {
+            continue;
+        };
+        let end = cursor.saturating_add(size);
+        if end > output.len() {
+            break;
+        }
+        if object_type == "blob" {
+            let text = String::from_utf8_lossy(&output[cursor..end]);
+            findings.extend(scan_privacy_text(&text, source));
+        }
+        cursor = end;
+        if output.get(cursor) == Some(&b'\n') {
+            cursor += 1;
+        }
+    }
+
+    findings
+}
+
+fn scan_git_privacy(root: &Path) -> Vec<PrivacyFinding> {
+    let mut findings = Vec::new();
+    let Some(paths) = git_output(root, &["ls-files", "--cached", "--others", "--exclude-standard", "-z"]) else {
+        return vec![PrivacyFinding {
+            category: "git-scan-unavailable".to_string(),
+            source: "worktree".to_string(),
+        }];
+    };
+
+    for raw_path in paths.split(|byte| *byte == 0).filter(|path| !path.is_empty()) {
+        let path = String::from_utf8_lossy(raw_path).into_owned();
+        if let Ok(bytes) = fs::read(root.join(&path)) {
+            let text = String::from_utf8_lossy(&bytes);
+            findings.extend(scan_privacy_text(&text, &format!("worktree:{path}")));
+        }
+    }
+
+    if let Some(index) = git_output(root, &["ls-files", "--stage", "-z"]) {
+        let staged_ids: Vec<String> = index
+            .split(|byte| *byte == 0)
+            .filter_map(|entry| {
+                let metadata = entry.split(|byte| *byte == b'\t').next()?;
+                let metadata = String::from_utf8_lossy(metadata);
+                metadata.split_whitespace().nth(1).map(str::to_owned)
+            })
+            .collect();
+        findings.extend(scan_batch_objects(root, &staged_ids, "staged:index"));
+    } else {
+        findings.push(PrivacyFinding {
+            category: "git-scan-unavailable".to_string(),
+            source: "staged:index".to_string(),
+        });
+    }
+
+    if let Some(history) = git_output(root, &["rev-list", "--objects", "--all"]) {
+        let history_ids: Vec<String> = history
+            .split(|byte| *byte == b'\n')
+            .filter_map(|line| {
+                String::from_utf8_lossy(line)
+                    .split_whitespace()
+                    .next()
+                    .map(str::to_owned)
+            })
+            .collect();
+        findings.extend(scan_batch_objects(root, &history_ids, "history:reachable"));
+    } else {
+        findings.push(PrivacyFinding {
+            category: "git-scan-unavailable".to_string(),
+            source: "history:reachable".to_string(),
+        });
+    }
+
+    let mut unique = HashSet::new();
+    findings.retain(|finding| unique.insert((finding.category.clone(), finding.source.clone())));
+    findings
+}
+
+fn schema_uses_only_local_references(schema: &Value) -> bool {
+    fn visit(value: &Value) -> bool {
+        match value {
+            Value::Array(items) => items.iter().all(visit),
+            Value::Object(object) => object.iter().all(|(key, child)| {
+                if ["$ref", "$dynamicRef", "$recursiveRef"].contains(&key.as_str()) {
+                    child
+                        .as_str()
+                        .map(|reference| reference.starts_with('#'))
+                        .unwrap_or(false)
+                } else {
+                    visit(child)
+                }
+            }),
+            _ => true,
+        }
+    }
+    visit(schema)
+}
+
+fn parse_json_file(bytes: &[u8], path: &str) -> Result<Value, String> {
+    serde_json::from_slice(bytes).map_err(|_| format!("invalid JSON: {path}"))
+}
+
+fn git_tracked_and_unignored_paths(root: &Path) -> Result<Vec<String>, String> {
+    let paths = git_output(
+        root,
+        &["ls-files", "--cached", "--others", "--exclude-standard", "-z"],
+    )
+    .ok_or_else(|| "unable to enumerate repository files".to_string())?;
+    Ok(paths
+        .split(|byte| *byte == 0)
+        .filter(|path| !path.is_empty())
+        .map(|path| String::from_utf8_lossy(path).into_owned())
+        .collect())
+}
+
+fn validate_render_spec(
+    spec: &Value,
+    profile: &Value,
+    files: &HashMap<String, Vec<u8>>,
 ) -> Vec<String> {
-    Vec::new()
+    let mut findings = Vec::new();
+    let records = profile.get("records").unwrap_or(&Value::Null);
+    let profile_groups = profile
+        .get("groups")
+        .and_then(Value::as_array)
+        .cloned()
+        .unwrap_or_default();
+    let group_ids: HashSet<String> = profile_groups
+        .iter()
+        .filter_map(|group| group.get("id").and_then(Value::as_str).map(str::to_owned))
+        .collect();
+    let mut group_paths = HashMap::new();
+    for group in &profile_groups {
+        if let (Some(id), Some(path)) = (
+            group.get("id").and_then(Value::as_str),
+            group.get("path").and_then(Value::as_str),
+        ) {
+            group_paths.insert(id.to_owned(), path.to_owned());
+        }
+    }
+
+    let Some(outputs) = spec.get("outputs").and_then(Value::as_array) else {
+        return vec!["render specification has no outputs".to_string()];
+    };
+    if spec.get("canonical").and_then(Value::as_str) != Some("profile.json")
+        || spec.get("version") != profile.get("version")
+        || spec.get("reviewed_on") != profile.get("reviewed_on")
+    {
+        findings.push("render specification metadata is stale".to_string());
+    }
+
+    let mut output_paths = HashSet::new();
+    let mut detailed_group_counts: HashMap<String, usize> = HashMap::new();
+    let mut complete_paths = Vec::new();
+
+    for output in outputs {
+        let Some(path) = output.get("path").and_then(Value::as_str) else {
+            findings.push("render output has no path".to_string());
+            continue;
+        };
+        if !output_paths.insert(path.to_owned()) {
+            findings.push(format!("duplicate render output path: {path}"));
+        }
+        let Some(bytes) = files.get(path) else {
+            findings.push(format!("render output is missing: {path}"));
+            continue;
+        };
+        let content = String::from_utf8_lossy(bytes);
+        let version = profile.get("version").and_then(Value::as_str).unwrap_or("");
+        let reviewed = profile.get("reviewed_on").and_then(Value::as_str).unwrap_or("");
+        if !content.contains(&format!("Profile version: {version} · Reviewed: {reviewed}")) {
+            findings.push(format!("render metadata is stale: {path}"));
+        }
+
+        let selected_groups: Vec<String> = output
+            .get("groups")
+            .and_then(Value::as_array)
+            .into_iter()
+            .flatten()
+            .filter_map(Value::as_str)
+            .map(str::to_owned)
+            .collect();
+        for group in &selected_groups {
+            if !group_ids.contains(group) {
+                findings.push(format!("render output references an unknown group: {path}"));
+            }
+        }
+
+        let Some(mode) = output.get("mode").and_then(Value::as_str) else {
+            findings.push(format!("render output has no mode: {path}"));
+            continue;
+        };
+
+        let selected_ids: Vec<String> = match mode {
+            "detailed" => {
+                for group in &selected_groups {
+                    *detailed_group_counts.entry(group.clone()).or_insert(0) += 1;
+                    if group_paths.get(group).map(String::as_str) != Some(path) {
+                        findings.push(format!("detailed group path mismatch: {path}"));
+                    }
+                }
+                records
+                    .as_array()
+                    .into_iter()
+                    .flatten()
+                    .filter(|record| {
+                        record
+                            .get("group")
+                            .and_then(Value::as_str)
+                            .map(|group| selected_groups.iter().any(|selected| selected == group))
+                            .unwrap_or(false)
+                    })
+                    .filter_map(|record| record.get("id").and_then(Value::as_str).map(str::to_owned))
+                    .collect()
+            }
+            "complete_with_contract" => {
+                let selected: HashSet<&str> = selected_groups.iter().map(String::as_str).collect();
+                if selected.len() != group_ids.len()
+                    || !group_ids.iter().all(|group| selected.contains(group.as_str()))
+                {
+                    findings.push(format!("complete export omits a profile group: {path}"));
+                }
+                complete_paths.push(path.to_owned());
+                records
+                    .as_array()
+                    .into_iter()
+                    .flatten()
+                    .filter_map(|record| record.get("id").and_then(Value::as_str).map(str::to_owned))
+                    .collect()
+            }
+            "selected_records" => {
+                let ids: Vec<String> = output
+                    .get("record_ids")
+                    .and_then(Value::as_array)
+                    .into_iter()
+                    .flatten()
+                    .filter_map(Value::as_str)
+                    .map(str::to_owned)
+                    .collect();
+                for id in &ids {
+                    let record = records
+                        .as_array()
+                        .into_iter()
+                        .flatten()
+                        .find(|record| record.get("id").and_then(Value::as_str) == Some(id));
+                    if record
+                        .and_then(|record| record.get("group"))
+                        .and_then(Value::as_str)
+                        .map(|group| selected_groups.iter().any(|selected| selected == group))
+                        != Some(true)
+                    {
+                        findings.push(format!("compact record is outside its selected groups: {path}"));
+                    }
+                }
+                ids
+            }
+            _ => {
+                findings.push(format!("unknown render mode: {path}"));
+                continue;
+            }
+        };
+
+        let selected_refs: Vec<&str> = selected_ids.iter().map(String::as_str).collect();
+        findings.extend(validate_rendered_records(&content, records, &selected_refs));
+    }
+
+    for group in group_ids {
+        if detailed_group_counts.get(&group) != Some(&1) {
+            findings.push("each profile group must have exactly one detailed output".to_string());
+        }
+    }
+
+    if complete_paths.len() != 2 {
+        findings.push("render specification must define two complete exports".to_string());
+    } else if files.get(&complete_paths[0]) != files.get(&complete_paths[1]) {
+        findings.push("complete exports are not byte-identical".to_string());
+    }
+
+    if let (Some(contract), Some(exports)) = (files.get("AI.md"), complete_paths.first()) {
+        if let Some(full_export) = files.get(exports) {
+            let contract = normalize_markdown_links(&String::from_utf8_lossy(contract));
+            let full_export = normalize_markdown_links(&String::from_utf8_lossy(full_export));
+            if !full_export.contains(&contract) {
+                findings.push("complete export does not contain the current AI contract".to_string());
+            }
+        }
+    } else {
+        findings.push("AI contract or complete export is missing".to_string());
+    }
+
+    let budget = spec
+        .get("compact_character_budget")
+        .and_then(Value::as_u64)
+        .unwrap_or(0) as usize;
+    match files.get("exports/custom-instructions.txt") {
+        Some(bytes) if String::from_utf8_lossy(bytes).chars().count() <= budget => {}
+        Some(_) => findings.push("custom instructions exceed the compact character budget".to_string()),
+        None => findings.push("custom instructions file is missing".to_string()),
+    }
+
+    findings
 }
 
-fn scan_privacy_text(_content: &str, _source: &str) -> Vec<PrivacyFinding> {
-    Vec::new()
+fn validate_manifest_metadata(manifest: &Value, profile: &Value) -> Vec<String> {
+    let mut findings = Vec::new();
+    for key in ["profile_id", "version", "reviewed_on"] {
+        if manifest.get(key) != profile.get(key) {
+            findings.push(format!("manifest metadata is stale: {key}"));
+        }
+    }
+    if manifest.get("canonical").and_then(Value::as_str) != Some("profile.json") {
+        findings.push("manifest canonical file is incorrect".to_string());
+    }
+    if manifest.get("required_paid_dependencies").and_then(Value::as_u64) != Some(0) {
+        findings.push("manifest paid dependency count is not zero".to_string());
+    }
+    findings
 }
 
-fn scan_git_privacy(_root: &std::path::Path) -> Vec<PrivacyFinding> {
-    Vec::new()
-}
+pub fn validate_repository(root: &Path) -> Result<ValidationSummary, Vec<String>> {
+    let root = root
+        .canonicalize()
+        .map_err(|_| vec!["repository root is unavailable".to_string()])?;
+    let paths = git_tracked_and_unignored_paths(&root).map_err(|error| vec![error])?;
+    let mut files = HashMap::new();
+    let mut findings = Vec::new();
 
-fn schema_uses_only_local_references(_schema: &Value) -> bool {
-    true
+    for path in &paths {
+        if path == "manifest.json" {
+            continue;
+        }
+        let relative = Path::new(path);
+        if relative.is_absolute()
+            || relative
+                .components()
+                .any(|component| matches!(component, std::path::Component::ParentDir))
+        {
+            findings.push("repository contains an unsafe file path".to_string());
+            continue;
+        }
+        match fs::read(root.join(relative)) {
+            Ok(bytes) => {
+                files.insert(path.clone(), bytes);
+            }
+            Err(_) => findings.push(format!("tracked or unignored file is unreadable: {path}")),
+        }
+    }
+
+    let manifest = fs::read(root.join("manifest.json"))
+        .map_err(|_| vec!["manifest.json is missing or unreadable".to_string()])?;
+    let manifest = parse_json_file(&manifest, "manifest.json").map_err(|error| vec![error])?;
+    let profile = files
+        .get("profile.json")
+        .ok_or_else(|| vec!["profile.json is missing".to_string()])?;
+    let profile = parse_json_file(profile, "profile.json").map_err(|error| vec![error])?;
+    let schema = files
+        .get("schema/profile.schema.json")
+        .ok_or_else(|| vec!["profile schema is missing".to_string()])?;
+    let schema = parse_json_file(schema, "schema/profile.schema.json")
+        .map_err(|error| vec![error])?;
+
+    findings.extend(verify_manifest_entries(&manifest, &files));
+    findings.extend(validate_profile_structure(&profile));
+    findings.extend(validate_manifest_metadata(&manifest, &profile));
+
+    if !schema_uses_only_local_references(&schema) {
+        findings.push("profile schema contains an external reference".to_string());
+    } else {
+        match jsonschema::validator_for(&schema) {
+            Ok(validator) => {
+                if validator.validate(&profile).is_err() {
+                    findings.push("profile.json does not match the committed JSON Schema".to_string());
+                }
+            }
+            Err(_) => findings.push("committed JSON Schema could not be compiled".to_string()),
+        }
+    }
+
+    let render_spec = files
+        .get("render-spec.json")
+        .ok_or_else(|| vec!["render-spec.json is missing".to_string()])?;
+    let render_spec = parse_json_file(render_spec, "render-spec.json")
+        .map_err(|error| vec![error])?;
+    findings.extend(validate_render_spec(&render_spec, &profile, &files));
+
+    let record_count = profile
+        .get("records")
+        .and_then(Value::as_array)
+        .map(Vec::len)
+        .unwrap_or(0);
+    let group_count = profile
+        .get("groups")
+        .and_then(Value::as_array)
+        .map(Vec::len)
+        .unwrap_or(0);
+    let source_count = profile
+        .get("sources")
+        .and_then(Value::as_array)
+        .map(Vec::len)
+        .unwrap_or(0);
+    if let Some(readme) = files.get("README.md") {
+        let readme = String::from_utf8_lossy(readme);
+        if !readme.contains(&format!("{record_count} sourced records across {group_count} topics")) {
+            findings.push("README profile counts are stale".to_string());
+        }
+    } else {
+        findings.push("README.md is missing".to_string());
+    }
+
+    for (path, bytes) in &files {
+        if path.ends_with(".md") {
+            let content = String::from_utf8_lossy(bytes);
+            findings.extend(validate_markdown_links(&root, Path::new(path), &content));
+        }
+    }
+
+    for finding in scan_git_privacy(&root) {
+        findings.push(format!(
+            "privacy finding ({}) in {}",
+            finding.category, finding.source
+        ));
+    }
+
+    if findings.is_empty() {
+        Ok(ValidationSummary {
+            records: record_count,
+            groups: group_count,
+            sources: source_count,
+            files: paths.len(),
+        })
+    } else {
+        findings.sort();
+        findings.dedup();
+        Err(findings)
+    }
 }
 
 #[cfg(test)]

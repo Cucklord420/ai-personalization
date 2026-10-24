@@ -1,5 +1,9 @@
 # Changelog
 
+## 10-24-2026 — Offline Rust profile validator
+
+Replaced the JavaScript calendar-date check with a Rust validator and locked dependencies. The validator checks schema and Gregorian dates, ID/reference integrity, rendered selections and exports, local links, manifest hashes, privacy patterns in the worktree/staged blobs/reachable history, and emits diagnostics without matched content. Added regression tests and CI validation. Canonical profile data and rendered preference text are unchanged.
+
 ## 10-24-2026 — Mature open technology preference and derived-file synchronization
 
 Propagated the canonical `buy-mature-open` preference and direct-user source S20 into the core profile, complete imports, source registry and compact selection. The preference favors openness and ownership where practical while prioritizing mature, dependable, supported, ready-to-use and low-maintenance options across domains. Technical experience does not imply a willingness to tinker.

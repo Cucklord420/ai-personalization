@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  validation:
+  profile-validation:
     name: profile-validation
     runs-on: ubuntu-24.04
     steps:
@@ -20,12 +20,11 @@ jobs:
           fetch-depth: 0
       - name: Show Rust toolchain
         run: rustc --version && cargo --version
-      - name: Generate dependency lock for this test run
-        run: cargo generate-lockfile --manifest-path validation/Cargo.toml
       - name: Check Rust formatting
         run: cargo fmt --manifest-path validation/Cargo.toml -- --check
-      - name: Run regression tests
-        run: cargo test --manifest-path validation/Cargo.toml
-      - name: Emit temporary lockfile for review
-        if: always()
-        run: cat validation/Cargo.lock
+      - name: Run Rust regression tests
+        run: cargo test --manifest-path validation/Cargo.toml --locked
+      - name: Validate repository offline
+        env:
+          CARGO_NET_OFFLINE: "true"
+        run: cargo run --offline --manifest-path validation/Cargo.toml --locked -- .

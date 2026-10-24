@@ -1,6 +1,6 @@
 # Maintain the profile
 
-This is a text/data repository with no required installer, application, API, scheduler or executable dependency.
+This is a Markdown/JSON profile repository. Reading it needs no installer, API, scheduler or executable. Maintenance validation uses a Rust command-line tool; its committed lockfile pins the dependency versions.
 
 profile.json is canonical; schema/profile.schema.json describes its shape. render-spec.json identifies each rendering and selection. PROFILE/topic files and complete exports are derived views, not independent sources of truth.
 
@@ -13,15 +13,21 @@ profile.json is canonical; schema/profile.schema.json describes its shape. rende
 5. Compact exports explicitly say they are partial. Keep custom-instructions.txt within the declared repository character budget; this is our budget, not an asserted platform limit.
 6. Update README counts, manifest inventory/checksums, changelog and coverage/conflict/unknown notes when underlying evidence changes.
 
-Any capable editing agent can render this using its own tools; reading the profile needs no script. Rust-first applies to suitable executable projects, not these appropriate Markdown/JSON formats.
+The profile and its exports remain Markdown/JSON. Rust is used for the repository's executable validator, not to replace those data formats.
 
 ## Validation
 
-Check JSON/schema shape, unique IDs, valid dates, resolved source/group references, allowed statuses and nonempty sourced text. Review contradictory active requirements, unsupported claims, privacy and stale dates.
+From the repository root, run:
 
-For focused regression coverage of custom MM-DD-YYYY calendar dates, run `node --test validation/profile-date.test.mjs`. The test exercises the schema date pattern against leap-year and month-boundary cases and scans every non-null date in `profile.json`. GitHub Actions runs it for relevant pull requests and pushes to `main`; this focused check does not replace the remaining validation steps here.
+```sh
+cargo fmt --manifest-path validation/Cargo.toml -- --check
+cargo test --manifest-path validation/Cargo.toml --locked
+cargo run --offline --manifest-path validation/Cargo.toml --locked -- .
+```
 
-Verify exact canonical record text appears once in its assigned core/topic file and each complete export. Check local links/anchors, compact character budget and manifest hashes. Behavior cases in validation/acceptance-cases.json support review/future model evaluation; static file checks do not prove live AI behavior.
+The validator checks the committed JSON Schema without following external references, Gregorian dates, unique IDs and resolved group/source references, every render selection and exact record coverage, both complete exports and their AI contract, local Markdown links/anchors, README counts, compact instructions length, and the exact manifest inventory, byte counts and SHA-256 hashes. It scans the worktree, staged blobs and reachable Git history for credential, contact, address, account and raw-transcript patterns. Findings report only a category and source path, never matched content.
+
+The validator makes no network requests. Build dependencies may need to be downloaded once; the committed Cargo.lock makes that build reproducible. Git history checks require a Git checkout with the relevant history available. Acceptance cases in validation/acceptance-cases.json are review scenarios, not live model test results; static checks do not prove assistant behavior.
 
 Read the latest branch head, preserve unrelated edits/history/license, make one coherent update and verify remote commit/files. Never force-push a stale head or publish private source material merely to improve traceability.
 

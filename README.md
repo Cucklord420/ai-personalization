@@ -29,6 +29,6 @@ Canonical data lives in profile.json. The Markdown exports make importing easy. 
 
 ## Cost/TCO
 
-Required additional paid software/services: **$0**. This introduces no API key, database, cloud service, scheduled job or executable dependency. Existing assistant/account usage, hosting and maintenance time remain environment-dependent and are not included in a verified dollar total.
+Required additional paid software/services: **$0**. A Rust maintenance validator runs locally and in GitHub Actions; reading the Markdown and JSON profile does not require Rust, an API key, database, cloud service or scheduled job. Existing assistant/account usage, hosting and maintenance time remain environment-dependent and are not included in a verified dollar total.
 
 Reviewed: 10-24-2026, America/New_York. Existing repository license preserved.

@@ -9,8 +9,8 @@
   "files": [
     {
       "path": ".github/workflows/profile-date-validation.yml",
-      "bytes": 903,
-      "sha256": "b4ca5fa8947f138bf4c9d7ee54fdb60f6cef0876fb7c201295351d225b7f7bd0"
+      "bytes": 850,
+      "sha256": "fd6850b2cb4e12b05be381b3b37314759135bfea15502c0011ff0baac961fffc"
     },
     {
       "path": ".gitignore",
@@ -34,8 +34,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 3265,
-      "sha256": "c6ba0feff88573293e5f72290521c240f15ccab32e01d5a73b70ec0f60ed1a05"
+      "bytes": 3764,
+      "sha256": "83d452883548d680be937525900e0e1fb271ef3cf29b395e71bd8d2d9542952e"
     },
     {
       "path": "CLAUDE.md",
@@ -64,8 +64,8 @@
     },
     {
       "path": "MAINTAINING.md",
-      "bytes": 2773,
-      "sha256": "b7409e88597bfd4caa06f11d7bf8c7738c6536fc504af0bdfa4a35fb72f9789d"
+      "bytes": 3081,
+      "sha256": "787d07f43e8e7e0cc20669dc4b32f19eb09b3628befe29dae588a3b06a547403"
     },
     {
       "path": "PROFILE.md",
@@ -79,8 +79,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 2531,
-      "sha256": "a31628f6b46feb464102c904c9dd04fb17e65b74741b3ce1b6b1f2415091523e"
+      "bytes": 2618,
+      "sha256": "6c07869640cf5eab065c76c0c9a379caa90d90877fec5f87b8f788d0ba3ec645"
     },
     {
       "path": "SOURCES.md",
@@ -208,14 +208,29 @@
       "sha256": "8c49e26c82dc8b4d28be2eb052aa16e225fadd57d22e0450e03432ea15984ad9"
     },
     {
+      "path": "validation/Cargo.lock",
+      "bytes": 25174,
+      "sha256": "bac17cc786b2dece31a119a8e08ba492f2306eea2e774d1c4e0f5d7f0b2ddc35"
+    },
+    {
+      "path": "validation/Cargo.toml",
+      "bytes": 239,
+      "sha256": "1fd4959f7ff0fe8ce7a1f00343042204e43c6ccfa43b8b81a78c3f3bb0f421b3"
+    },
+    {
       "path": "validation/acceptance-cases.json",
       "bytes": 7594,
       "sha256": "3f7abc0bc73beb0a2fa5fc9ff69c276da8032da194e22b30b8ca273c366a404a"
     },
     {
-      "path": "validation/profile-date.test.mjs",
-      "bytes": 2134,
-      "sha256": "e94a87769673a4463c478ba0b205a72c6f037cebe02dd5ad0d934f1efc53a41c"
+      "path": "validation/src/lib.rs",
+      "bytes": 45690,
+      "sha256": "34492e1405ec20ee7091f992e576da0d30a2e09358c3130752b679c83ccce6af"
+    },
+    {
+      "path": "validation/src/main.rs",
+      "bytes": 896,
+      "sha256": "43a9cc8ecdd8ebc9d4ad164fbd4002791ed393fa72b5668220cb19ebc66d1b66"
     }
   ]
 }
