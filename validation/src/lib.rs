@@ -15,7 +15,11 @@ pub fn is_valid_gregorian_date(value: &str) -> bool {
     if bytes.len() != 10
         || bytes[2] != b'-'
         || bytes[5] != b'-'
-        || !bytes[..2].iter().chain(bytes[3..5].iter()).chain(bytes[6..].iter()).all(u8::is_ascii_digit)
+        || !bytes[..2]
+            .iter()
+            .chain(bytes[3..5].iter())
+            .chain(bytes[6..].iter())
+            .all(u8::is_ascii_digit)
     {
         return false;
     }
@@ -142,10 +146,7 @@ fn sha256_hex(bytes: &[u8]) -> String {
     format!("{:x}", Sha256::digest(bytes))
 }
 
-fn verify_manifest_entries(
-    manifest: &Value,
-    files: &HashMap<String, Vec<u8>>,
-) -> Vec<String> {
+fn verify_manifest_entries(manifest: &Value, files: &HashMap<String, Vec<u8>>) -> Vec<String> {
     let mut findings = Vec::new();
     let Some(entries) = manifest.get("files").and_then(Value::as_array) else {
         return vec!["manifest has no file inventory".to_string()];
@@ -226,10 +227,21 @@ fn validate_rendered_records(
             continue;
         };
 
-        let expected = format!(
-            "<a id=\"record-{id}\"></a>\n\n- **{id}** — {text}"
-        );
-        if content.matches(&expected).count() != 1 {
+        let anchor = format!("<a id=\"record-{id}\"></a>");
+        let line = format!("- **{id}** — {text}");
+        let anchor_position = content.find(&anchor);
+        let line_position = content.find(&line);
+        let exactly_once = content.matches(&anchor).count() == 1
+            && content.matches(&line).count() == 1;
+        let contiguous = match (anchor_position, line_position) {
+            (Some(anchor_position), Some(line_position))
+                if line_position >= anchor_position + anchor.len() =>
+            {
+                content[anchor_position + anchor.len()..line_position].trim().is_empty()
+            }
+            _ => false,
+        };
+        if !exactly_once || !contiguous {
             findings.push(format!("rendered record is missing or duplicated: {id}"));
         }
     }
@@ -242,7 +254,9 @@ fn validate_rendered_records(
         })
         .collect();
     if actual_ids != selected_ids {
-        findings.push("rendered record selection is incomplete, duplicated, or out of order".to_string());
+        findings.push(
+            "rendered record selection is incomplete, duplicated, or out of order".to_string(),
+        );
     }
 
     findings
@@ -260,7 +274,10 @@ fn collect_markdown_anchors(content: &str) -> HashSet<String> {
     let mut slug_counts: HashMap<String, usize> = HashMap::new();
     for line in content.lines() {
         let heading = line.trim_start();
-        let level = heading.chars().take_while(|character| *character == '#').count();
+        let level = heading
+            .chars()
+            .take_while(|character| *character == '#')
+            .count();
         if !(1..=6).contains(&level)
             || !heading
                 .chars()
@@ -271,10 +288,16 @@ fn collect_markdown_anchors(content: &str) -> HashSet<String> {
             continue;
         }
 
-        let mut title = heading[level..].trim().trim_end_matches('#').trim().to_lowercase();
+        let mut title = heading[level..]
+            .trim()
+            .trim_end_matches('#')
+            .trim()
+            .to_lowercase();
         title = title
             .chars()
-            .filter(|character| character.is_alphanumeric() || *character == '-' || character.is_whitespace())
+            .filter(|character| {
+                character.is_alphanumeric() || *character == '-' || character.is_whitespace()
+            })
             .collect::<String>();
         let slug = title.split_whitespace().collect::<Vec<_>>().join("-");
         if slug.is_empty() {
@@ -330,9 +353,9 @@ fn validate_markdown_links(root: &Path, source: &Path, content: &str) -> Vec<Str
         } else {
             let path = Path::new(path_part);
             if path.is_absolute()
-                || path
-                    .components()
-                    .any(|component| matches!(component, std::path::Component::ParentDir) && path.starts_with(".."))
+                || path.components().any(|component| {
+                    matches!(component, std::path::Component::ParentDir) && path.starts_with("..")
+                })
             {
                 findings.push(format!("broken local link in {source_text}"));
                 continue;
@@ -464,18 +487,16 @@ fn git_output(root: &Path, arguments: &[&str]) -> Option<Vec<u8>> {
     output.status.success().then_some(output.stdout)
 }
 
-fn scan_batch_objects(root: &Path, object_ids: &[String], source: &str) -> Vec<PrivacyFinding> {
-    let unique_ids: Vec<String> = object_ids
-        .iter()
-        .filter(|id| !id.is_empty())
-        .cloned()
-        .collect::<HashSet<_>>()
-        .into_iter()
-        .collect();
-    if unique_ids.is_empty() {
+fn scan_batch_objects(
+    root: &Path,
+    objects: &[(String, String)],
+    fallback_source: &str,
+) -> Vec<PrivacyFinding> {
+    if objects.is_empty() {
         return Vec::new();
     }
 
+    let object_ids: Vec<String> = objects.iter().map(|(id, _)| id.clone()).collect();
     let mut child = match Command::new("git")
         .args(["cat-file", "--batch"])
         .current_dir(root)
@@ -488,17 +509,17 @@ fn scan_batch_objects(root: &Path, object_ids: &[String], source: &str) -> Vec<P
         Err(_) => {
             return vec![PrivacyFinding {
                 category: "git-scan-unavailable".to_string(),
-                source: source.to_string(),
-            }]
+                source: fallback_source.to_string(),
+            }];
         }
     };
 
     if let Some(mut input) = child.stdin.take() {
-        for id in &unique_ids {
+        for id in &object_ids {
             if input.write_all(id.as_bytes()).is_err() || input.write_all(b"\n").is_err() {
                 return vec![PrivacyFinding {
                     category: "git-scan-unavailable".to_string(),
-                    source: source.to_string(),
+                    source: fallback_source.to_string(),
                 }];
             }
         }
@@ -508,13 +529,14 @@ fn scan_batch_objects(root: &Path, object_ids: &[String], source: &str) -> Vec<P
         _ => {
             return vec![PrivacyFinding {
                 category: "git-scan-unavailable".to_string(),
-                source: source.to_string(),
-            }]
+                source: fallback_source.to_string(),
+            }];
         }
     };
 
     let mut findings = Vec::new();
     let mut cursor = 0usize;
+    let mut object_index = 0usize;
     while cursor < output.len() {
         let Some(relative_end) = output[cursor..].iter().position(|byte| *byte == b'\n') else {
             break;
@@ -527,6 +549,12 @@ fn scan_batch_objects(root: &Path, object_ids: &[String], source: &str) -> Vec<P
         let _object_id = parts.next();
         let object_type = parts.next();
         let size = parts.next().and_then(|value| value.parse::<usize>().ok());
+        let source = objects
+            .get(object_index)
+            .map(|(_, source)| source.as_str())
+            .unwrap_or(fallback_source);
+        object_index += 1;
+
         let (Some(object_type), Some(size)) = (object_type, size) else {
             continue;
         };
@@ -549,14 +577,26 @@ fn scan_batch_objects(root: &Path, object_ids: &[String], source: &str) -> Vec<P
 
 fn scan_git_privacy(root: &Path) -> Vec<PrivacyFinding> {
     let mut findings = Vec::new();
-    let Some(paths) = git_output(root, &["ls-files", "--cached", "--others", "--exclude-standard", "-z"]) else {
+    let Some(paths) = git_output(
+        root,
+        &[
+            "ls-files",
+            "--cached",
+            "--others",
+            "--exclude-standard",
+            "-z",
+        ],
+    ) else {
         return vec![PrivacyFinding {
             category: "git-scan-unavailable".to_string(),
             source: "worktree".to_string(),
         }];
     };
 
-    for raw_path in paths.split(|byte| *byte == 0).filter(|path| !path.is_empty()) {
+    for raw_path in paths
+        .split(|byte| *byte == 0)
+        .filter(|path| !path.is_empty())
+    {
         let path = String::from_utf8_lossy(raw_path).into_owned();
         if let Ok(bytes) = fs::read(root.join(&path)) {
             let text = String::from_utf8_lossy(&bytes);
@@ -565,15 +605,21 @@ fn scan_git_privacy(root: &Path) -> Vec<PrivacyFinding> {
     }
 
     if let Some(index) = git_output(root, &["ls-files", "--stage", "-z"]) {
-        let staged_ids: Vec<String> = index
+        let staged_objects: Vec<(String, String)> = index
             .split(|byte| *byte == 0)
             .filter_map(|entry| {
-                let metadata = entry.split(|byte| *byte == b'\t').next()?;
-                let metadata = String::from_utf8_lossy(metadata);
-                metadata.split_whitespace().nth(1).map(str::to_owned)
+                let separator = entry.iter().position(|byte| *byte == b'\t')?;
+                let metadata = String::from_utf8_lossy(&entry[..separator]);
+                let path = String::from_utf8_lossy(&entry[separator + 1..]);
+                let object_id = metadata.split_whitespace().nth(1)?;
+                Some((object_id.to_owned(), format!("staged:{path}")))
             })
             .collect();
-        findings.extend(scan_batch_objects(root, &staged_ids, "staged:index"));
+        findings.extend(scan_batch_objects(
+            root,
+            &staged_objects,
+            "staged:index",
+        ));
     } else {
         findings.push(PrivacyFinding {
             category: "git-scan-unavailable".to_string(),
@@ -582,16 +628,21 @@ fn scan_git_privacy(root: &Path) -> Vec<PrivacyFinding> {
     }
 
     if let Some(history) = git_output(root, &["rev-list", "--objects", "--all"]) {
-        let history_ids: Vec<String> = history
+        let history_objects: Vec<(String, String)> = history
             .split(|byte| *byte == b'\n')
+            .filter(|line| !line.is_empty())
             .filter_map(|line| {
-                String::from_utf8_lossy(line)
-                    .split_whitespace()
-                    .next()
-                    .map(str::to_owned)
+                let separator = line.iter().position(|byte| *byte == b' ')?;
+                let object_id = String::from_utf8_lossy(&line[..separator]);
+                let path = String::from_utf8_lossy(&line[separator + 1..]);
+                Some((object_id.into_owned(), format!("history:{path}")))
             })
             .collect();
-        findings.extend(scan_batch_objects(root, &history_ids, "history:reachable"));
+        findings.extend(scan_batch_objects(
+            root,
+            &history_objects,
+            "history:reachable",
+        ));
     } else {
         findings.push(PrivacyFinding {
             category: "git-scan-unavailable".to_string(),
@@ -695,8 +746,13 @@ fn validate_render_spec(
         };
         let content = String::from_utf8_lossy(bytes);
         let version = profile.get("version").and_then(Value::as_str).unwrap_or("");
-        let reviewed = profile.get("reviewed_on").and_then(Value::as_str).unwrap_or("");
-        if !content.contains(&format!("Profile version: {version} · Reviewed: {reviewed}")) {
+        let reviewed = profile
+            .get("reviewed_on")
+            .and_then(Value::as_str)
+            .unwrap_or("");
+        if !content.contains(&format!(
+            "Profile version: {version} · Reviewed: {reviewed}"
+        )) {
             findings.push(format!("render metadata is stale: {path}"));
         }
 
@@ -738,13 +794,17 @@ fn validate_render_spec(
                             .map(|group| selected_groups.iter().any(|selected| selected == group))
                             .unwrap_or(false)
                     })
-                    .filter_map(|record| record.get("id").and_then(Value::as_str).map(str::to_owned))
+                    .filter_map(|record| {
+                        record.get("id").and_then(Value::as_str).map(str::to_owned)
+                    })
                     .collect()
             }
             "complete_with_contract" => {
                 let selected: HashSet<&str> = selected_groups.iter().map(String::as_str).collect();
                 if selected.len() != group_ids.len()
-                    || !group_ids.iter().all(|group| selected.contains(group.as_str()))
+                    || !group_ids
+                        .iter()
+                        .all(|group| selected.contains(group.as_str()))
                 {
                     findings.push(format!("complete export omits a profile group: {path}"));
                 }
@@ -753,7 +813,9 @@ fn validate_render_spec(
                     .as_array()
                     .into_iter()
                     .flatten()
-                    .filter_map(|record| record.get("id").and_then(Value::as_str).map(str::to_owned))
+                    .filter_map(|record| {
+                        record.get("id").and_then(Value::as_str).map(str::to_owned)
+                    })
                     .collect()
             }
             "selected_records" => {
@@ -777,7 +839,9 @@ fn validate_render_spec(
                         .map(|group| selected_groups.iter().any(|selected| selected == group))
                         != Some(true)
                     {
-                        findings.push(format!("compact record is outside its selected groups: {path}"));
+                        findings.push(format!(
+                            "compact record is outside its selected groups: {path}"
+                        ));
                     }
                 }
                 ids
@@ -809,7 +873,8 @@ fn validate_render_spec(
             let contract = normalize_markdown_links(&String::from_utf8_lossy(contract));
             let full_export = normalize_markdown_links(&String::from_utf8_lossy(full_export));
             if !full_export.contains(&contract) {
-                findings.push("complete export does not contain the current AI contract".to_string());
+                findings
+                    .push("complete export does not contain the current AI contract".to_string());
             }
         }
     } else {
@@ -822,7 +887,9 @@ fn validate_render_spec(
         .unwrap_or(0) as usize;
     match files.get("exports/custom-instructions.txt") {
         Some(bytes) if String::from_utf8_lossy(bytes).chars().count() <= budget => {}
-        Some(_) => findings.push("custom instructions exceed the compact character budget".to_string()),
+        Some(_) => {
+            findings.push("custom instructions exceed the compact character budget".to_string())
+        }
         None => findings.push("custom instructions file is missing".to_string()),
     }
 
@@ -839,7 +906,11 @@ fn validate_manifest_metadata(manifest: &Value, profile: &Value) -> Vec<String> 
     if manifest.get("canonical").and_then(Value::as_str) != Some("profile.json") {
         findings.push("manifest canonical file is incorrect".to_string());
     }
-    if manifest.get("required_paid_dependencies").and_then(Value::as_u64) != Some(0) {
+    if manifest
+        .get("required_paid_dependencies")
+        .and_then(Value::as_u64)
+        != Some(0)
+    {
         findings.push("manifest paid dependency count is not zero".to_string());
     }
     findings
@@ -884,8 +955,8 @@ pub fn validate_repository(root: &Path) -> Result<ValidationSummary, Vec<String>
     let schema = files
         .get("schema/profile.schema.json")
         .ok_or_else(|| vec!["profile schema is missing".to_string()])?;
-    let schema = parse_json_file(schema, "schema/profile.schema.json")
-        .map_err(|error| vec![error])?;
+    let schema =
+        parse_json_file(schema, "schema/profile.schema.json").map_err(|error| vec![error])?;
 
     findings.extend(verify_manifest_entries(&manifest, &files));
     findings.extend(validate_profile_structure(&profile));
@@ -897,7 +968,8 @@ pub fn validate_repository(root: &Path) -> Result<ValidationSummary, Vec<String>
         match jsonschema::validator_for(&schema) {
             Ok(validator) => {
                 if validator.validate(&profile).is_err() {
-                    findings.push("profile.json does not match the committed JSON Schema".to_string());
+                    findings
+                        .push("profile.json does not match the committed JSON Schema".to_string());
                 }
             }
             Err(_) => findings.push("committed JSON Schema could not be compiled".to_string()),
@@ -907,8 +979,8 @@ pub fn validate_repository(root: &Path) -> Result<ValidationSummary, Vec<String>
     let render_spec = files
         .get("render-spec.json")
         .ok_or_else(|| vec!["render-spec.json is missing".to_string()])?;
-    let render_spec = parse_json_file(render_spec, "render-spec.json")
-        .map_err(|error| vec![error])?;
+    let render_spec =
+        parse_json_file(render_spec, "render-spec.json").map_err(|error| vec![error])?;
     findings.extend(validate_render_spec(&render_spec, &profile, &files));
 
     let record_count = profile
@@ -928,7 +1000,9 @@ pub fn validate_repository(root: &Path) -> Result<ValidationSummary, Vec<String>
         .unwrap_or(0);
     if let Some(readme) = files.get("README.md") {
         let readme = String::from_utf8_lossy(readme);
-        if !readme.contains(&format!("{record_count} sourced records across {group_count} topics")) {
+        if !readme.contains(&format!(
+            "{record_count} sourced records across {group_count} topics"
+        )) {
             findings.push("README profile counts are stale".to_string());
         }
     } else {
@@ -966,7 +1040,7 @@ pub fn validate_repository(root: &Path) -> Result<ValidationSummary, Vec<String>
 #[cfg(test)]
 mod tests {
     use regex::Regex;
-    use serde_json::{json, Value};
+    use serde_json::{Value, json};
     use std::{
         collections::{HashMap, HashSet},
         fs,
@@ -977,8 +1051,8 @@ mod tests {
 
     use super::{
         is_valid_gregorian_date, scan_git_privacy, scan_privacy_text,
-        schema_uses_only_local_references, validate_markdown_links,
-        validate_profile_structure, validate_rendered_records, verify_manifest_entries,
+        schema_uses_only_local_references, validate_markdown_links, validate_profile_structure,
+        validate_rendered_records, verify_manifest_entries,
     };
 
     const SCHEMA: &str = include_str!("../../schema/profile.schema.json");
@@ -990,10 +1064,8 @@ mod tests {
     impl TempDir {
         fn new() -> Self {
             let id = NEXT_TEMP_ID.fetch_add(1, Ordering::Relaxed);
-            let path = std::env::temp_dir().join(format!(
-                "profile-validation-{}-{id}",
-                std::process::id()
-            ));
+            let path = std::env::temp_dir()
+                .join(format!("profile-validation-{}-{id}", std::process::id()));
             fs::create_dir(&path).expect("create isolated test directory");
             Self(path)
         }
@@ -1150,8 +1222,16 @@ mod tests {
         });
         let findings = validate_profile_structure(&profile);
         assert!(findings.iter().any(|item| item.contains("duplicate group")));
-        assert!(findings.iter().any(|item| item.contains("duplicate source")));
-        assert!(findings.iter().any(|item| item.contains("duplicate record")));
+        assert!(
+            findings
+                .iter()
+                .any(|item| item.contains("duplicate source"))
+        );
+        assert!(
+            findings
+                .iter()
+                .any(|item| item.contains("duplicate record"))
+        );
         assert!(findings.iter().any(|item| item.contains("unknown group")));
         assert!(findings.iter().any(|item| item.contains("unknown source")));
     }
@@ -1170,7 +1250,11 @@ mod tests {
             ("extra.md".to_string(), b"unexpected".to_vec()),
         ]);
         let findings = verify_manifest_entries(&manifest, &files);
-        assert!(findings.iter().any(|item| item.contains("SHA-256 mismatch")));
+        assert!(
+            findings
+                .iter()
+                .any(|item| item.contains("SHA-256 mismatch"))
+        );
         assert!(findings.iter().any(|item| item.contains("unlisted file")));
     }
 
@@ -1192,6 +1276,15 @@ mod tests {
         );
         let findings = validate_rendered_records(stale, &records, &["rule-a", "rule-b"]);
         assert!(!findings.is_empty());
+
+        let missing = "<a id=\"record-rule-a\"></a>\n- **rule-a** — first rule\n";
+        assert!(!validate_rendered_records(missing, &records, &["rule-a", "rule-b"]).is_empty());
+
+        let duplicate = concat!(
+            "<a id=\"record-rule-a\"></a>\n- **rule-a** — first rule\n",
+            "<a id=\"record-rule-a\"></a>\n- **rule-a** — first rule\n"
+        );
+        assert!(!validate_rendered_records(duplicate, &records, &["rule-a", "rule-b"]).is_empty());
     }
 
     #[test]
@@ -1201,22 +1294,35 @@ mod tests {
         let findings = validate_markdown_links(
             root.path(),
             Path::new("README.md"),
-            "[broken](missing.md#not-here)\n",
+            "[broken](missing.md#not-here)\n[bad anchor](README.md#not-here)\n",
         );
-        assert!(!findings.is_empty());
+        assert!(findings.len() >= 2);
     }
 
     #[test]
     fn privacy_findings_cover_credentials_and_contact_data_without_echoing_values() {
         let token = format!("ghp_{}", "x".repeat(36));
         let address = ["person", "@", "fixture", ".", "invalid"].concat();
-        let content = format!("token={token}\ncontact {address}\n");
+        let content = format!(
+            "token={token}\ncontact {address}\nphone {}-{}-{}\naddress 123 Test Street\ncard={}",
+            "202", "555", "0123", "4111111111111111"
+        );
         let findings = scan_privacy_text(&content, "fixture.md");
         assert!(findings.iter().any(|item| item.category == "credential"));
         assert!(findings.iter().any(|item| item.category == "email"));
         let rendered = format!("{findings:?}");
+        assert!(findings.iter().any(|item| item.category == "phone"));
+        assert!(findings.iter().any(|item| item.category == "street address"));
+        assert!(findings.iter().any(|item| item.category == "payment card"));
         assert!(!rendered.contains(&token));
         assert!(!rendered.contains(&address));
+        assert!(!rendered.contains("202-555-0123"));
+        assert!(!rendered.contains("123 Test Street"));
+        assert!(!rendered.contains("4111111111111111"));
+        assert!(
+            scan_privacy_text("Public text with [REDACTED] placeholders only.", "safe.md")
+                .is_empty()
+        );
     }
 
     #[test]
@@ -1230,7 +1336,10 @@ mod tests {
         git(root.path(), &["commit", "-q", "-m", "synthetic fixture"]);
         fs::write(root.path().join("history.txt"), "safe current content").unwrap();
         git(root.path(), &["add", "history.txt"]);
-        git(root.path(), &["commit", "-q", "-m", "remove synthetic fixture"]);
+        git(
+            root.path(),
+            &["commit", "-q", "-m", "remove synthetic fixture"],
+        );
 
         let staged_email = ["person", "@", "fixture", ".", "invalid"].concat();
         fs::write(root.path().join("staged.txt"), staged_email).unwrap();
@@ -1238,8 +1347,16 @@ mod tests {
         fs::write(root.path().join("staged.txt"), "safe working tree").unwrap();
 
         let findings = scan_git_privacy(root.path());
-        assert!(findings.iter().any(|item| item.source.starts_with("history:")));
-        assert!(findings.iter().any(|item| item.source.starts_with("staged:")));
+        assert!(
+            findings
+                .iter()
+                .any(|item| item.source.starts_with("history:"))
+        );
+        assert!(
+            findings
+                .iter()
+                .any(|item| item.source.starts_with("staged:"))
+        );
         let rendered = format!("{findings:?}");
         assert!(!rendered.contains(&historical_token));
         assert!(!rendered.contains("person@fixture.invalid"));
