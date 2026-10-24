@@ -10,7 +10,7 @@ One place for Justin's preferences, working rules, reported setup, project decis
 
 ## Contents
 
-- 210 sourced records across 21 topics in [profile.json](profile.json), with scope, status, dates, confidence and provenance.
+- 211 sourced records across 21 topics in [profile.json](profile.json), with scope, status, dates, confidence and provenance.
 - Readable topic files in [context/](context/), plus [native adapters](ADAPTERS.md), compact instructions and a complete agent import.
 - [Learning rules](LEARN.md), [corrections](CONFLICTS.md), [unknowns](UNKNOWNS.md), [coverage](COVERAGE.md) and [sources](SOURCES.md).
 - [Maintenance rules](MAINTAINING.md), JSON schema, render contract and behavior acceptance cases.
@@ -31,4 +31,4 @@ Canonical data lives in profile.json. The Markdown exports make importing easy. 
 
 Required additional paid software/services: **$0**. This introduces no API key, database, cloud service, scheduled job or executable dependency. Existing assistant/account usage, hosting and maintenance time remain environment-dependent and are not included in a verified dollar total.
 
-Reviewed: 10-20-2026, America/New_York. Existing repository license preserved.
+Reviewed: 10-24-2026, America/New_York. Existing repository license preserved.

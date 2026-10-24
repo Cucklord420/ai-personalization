@@ -1,6 +1,6 @@
 # Compact profile subset
 
-Profile version: 1.0.2 · Reviewed: 10-20-2026 · America/New_York
+Profile version: 1.0.2 · Reviewed: 10-24-2026 · America/New_York
 
 This is an intentional essential subset, not the complete profile. Full context: https://github.com/Cucklord420/ai-personalization/blob/main/START_HERE.md
 
@@ -101,6 +101,12 @@ This is an intentional essential subset, not the complete profile. Full context:
 - **buy-tco** — Show Total Cost of Ownership (TCO) for spending decisions, comparisons and operational recommendations. State the period and include tax, shipping, fees, required accessories, subscriptions, power, maintenance and any supported resale assumptions. Mark missing costs unknown.
 
   required; active; sources: S01, S05, S07
+
+<a id="record-buy-mature-open"></a>
+
+- **buy-mature-open** — Across all recommendations and projects, favor open-source, open hardware, open standards, privacy, interoperability, local/offline operation, repairability, exportable data and ownership when practical, but prioritize polished, mature, reliable, supported, ready-to-use and low-maintenance solutions. Do not infer from technical skill that Justin wants DIY assembly, soldering, firmware flashing, debugging or constant maintenance; he is generally not an early adopter. Evaluate setup friction, daily usability, independent tests, negative failure reports, warranty, parts, security updates, five-year ownership cost and exit/restore path. Classify candidates as ready now, promising but watch-only, or experimental. A dependable proprietary option can beat unfinished open alternatives; keeping owned equipment or buying nothing may be best. Apply contextually to every domain, without forcing irrelevant open-source criteria onto cookware or other ordinary goods.
+
+  required; active; sources: S20
 
 ## Collaboration and task execution
 

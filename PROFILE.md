@@ -1,6 +1,6 @@
 # Justin's core profile
 
-Profile version: 1.0.2 · Reviewed: 10-20-2026 · America/New_York
+Profile version: 1.0.2 · Reviewed: 10-24-2026 · America/New_York
 
 Rendered from [profile.json](profile.json). Dates are evidence dates, not live verification. See [SOURCES.md](SOURCES.md) and [UNKNOWNS.md](UNKNOWNS.md).
 
@@ -245,6 +245,12 @@ Rendered from [profile.json](profile.json). Dates are evidence dates, not live v
 - **buy-employee-prices** — Employee discounts, store credits, price matches and return windows can matter when actually applicable. Do not assume a discount, guarantee a free replacement or publish private employee terms; verify exact current terms privately.
 
   required; active; archive_explicit/high; last supported: unknown; sources: S10
+
+<a id="record-buy-mature-open"></a>
+
+- **buy-mature-open** — Across all recommendations and projects, favor open-source, open hardware, open standards, privacy, interoperability, local/offline operation, repairability, exportable data and ownership when practical, but prioritize polished, mature, reliable, supported, ready-to-use and low-maintenance solutions. Do not infer from technical skill that Justin wants DIY assembly, soldering, firmware flashing, debugging or constant maintenance; he is generally not an early adopter. Evaluate setup friction, daily usability, independent tests, negative failure reports, warranty, parts, security updates, five-year ownership cost and exit/restore path. Classify candidates as ready now, promising but watch-only, or experimental. A dependable proprietary option can beat unfinished open alternatives; keeping owned equipment or buying nothing may be best. Apply contextually to every domain, without forcing irrelevant open-source criteria onto cookware or other ordinary goods.
+
+  required; active; explicit/high; last supported: 10-24-2026; sources: S20
 
 ## Collaboration and task execution
 

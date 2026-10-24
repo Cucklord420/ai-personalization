@@ -1,5 +1,11 @@
 # Changelog
 
+## 10-24-2026 — Mature open technology preference and derived-file synchronization
+
+Propagated the canonical `buy-mature-open` preference and direct-user source S20 into the core profile, complete imports, source registry and compact selection. The preference favors openness and ownership where practical while prioritizing mature, dependable, supported, ready-to-use and low-maintenance options across domains. Technical experience does not imply a willingness to tinker.
+
+Updated the 211-record count, render metadata and all derived review banners; retained each record's original evidence date and wording. Refreshed the manifest inventory and checksums, including the existing AGENTS.md responsibility split. No account settings, purchases, deployments or other agents' installed instructions were changed.
+
 ## 10-23-2026 — Gregorian profile date validation (issue #7)
 
 The date schema now accepts only real Gregorian MM-DD-YYYY dates. Added dependency-free Node tests for leap years, month boundaries, year-zero rejection, malformed values, and all non-null dates in the current profile; added a focused CI job for relevant changes. Profile data and rendered outputs were unchanged. Broader profile/export validation remains tracked in #3.

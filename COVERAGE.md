@@ -16,6 +16,10 @@ The additional current/source project review ingested **177 text files**: 67 Tec
 
 Read the complete public issue #1 and Justin's explicit instruction to apply what Muse knows because parts of the existing profile were wrong. Added five records and corrected desktop, Model 3 commuter and wearable-reference wording. The issue's reported original correction dates are distinguished from the current confirmation date; S17/S18 record this provenance. The live Muse USER/AGENTS files were not accessed or claimed read in this follow-up. The focused Car timing was rechecked and retained.
 
+## Derived-file synchronization — 10-24-2026
+
+Reviewed the existing PR's canonical `buy-mature-open` record and source S20, current repository instructions, rendering recipe, schema, manifest and derived files. The profile now contains 211 records across 21 topics with 20 source entries. Synchronized the core, full and compact projections, source registry, counts and review metadata while retaining existing record wording and evidence dates. This focused maintenance did not re-ingest historical archives or establish live account, device or other-agent state.
+
 ## Review method
 
 Full reachable text was ingested and fingerprinted before extraction. User turns were separated from assistant responses. Duplicate messages and truncated reader prefixes were reconciled with readable full-message supplements; explicit preference candidates were reviewed in context.
