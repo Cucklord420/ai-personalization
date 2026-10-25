@@ -771,6 +771,49 @@ fn expected_record_ids_for(
     selected_ids
 }
 
+fn validate_required_render_outputs(
+    outputs: &[Value],
+    group_paths: &HashMap<String, String>,
+    output_paths: &HashSet<String>,
+) -> Vec<String> {
+    let complete_paths: HashSet<String> = outputs
+        .iter()
+        .filter(|output| output.get("mode").and_then(Value::as_str) == Some("complete_with_contract"))
+        .filter_map(|output| output.get("path").and_then(Value::as_str).map(str::to_owned))
+        .collect();
+    let required_complete_paths = HashSet::from([
+        "START_HERE.md".to_string(),
+        "exports/agent-instructions.md".to_string(),
+    ]);
+    let mut findings = Vec::new();
+    if complete_paths != required_complete_paths {
+        findings.push(
+            "render specification must include both required complete exports".to_string(),
+        );
+    }
+
+    let compact_paths: HashSet<String> = outputs
+        .iter()
+        .filter(|output| output.get("mode").and_then(Value::as_str) == Some("selected_records"))
+        .filter_map(|output| output.get("path").and_then(Value::as_str).map(str::to_owned))
+        .collect();
+    if compact_paths != HashSet::from(["exports/compact-profile.md".to_string()]) {
+        findings.push("render specification must include the required compact export".to_string());
+    }
+
+    let mut required_paths: HashSet<String> = group_paths.values().cloned().collect();
+    required_paths.extend([
+        "START_HERE.md".to_string(),
+        "exports/agent-instructions.md".to_string(),
+        "exports/compact-profile.md".to_string(),
+    ]);
+    if output_paths != &required_paths {
+        findings.push("render specification does not cover the exact required output paths".to_string());
+    }
+
+    findings
+}
+
 fn validate_render_spec(
     spec: &Value,
     profile: &Value,
@@ -935,6 +978,12 @@ fn validate_render_spec(
         let selected_refs: Vec<&str> = selected_ids.iter().map(String::as_str).collect();
         findings.extend(validate_rendered_records(&content, records, &selected_refs));
     }
+
+    findings.extend(validate_required_render_outputs(
+        outputs,
+        &group_paths,
+        &output_paths,
+    ));
 
     for group in group_ids {
         if detailed_group_counts.get(&group) != Some(&1) {
@@ -1365,6 +1414,68 @@ mod tests {
             "<a id=\"record-rule-a\"></a>\n- **rule-a** — first rule\n"
         );
         assert!(!validate_rendered_records(duplicate, &records, &["rule-a", "rule-b"]).is_empty());
+    }
+
+    #[test]
+    fn render_spec_requires_all_detailed_full_and_compact_outputs() {
+        let spec = json!({
+            "outputs": [
+                {"path": "PROFILE.md", "mode": "detailed"},
+                {"path": "START_HERE.md", "mode": "complete_with_contract"},
+                {"path": "exports/agent-instructions.md", "mode": "complete_with_contract"},
+                {"path": "exports/compact-profile.md", "mode": "selected_records"}
+            ]
+        });
+        let outputs = spec["outputs"].as_array().unwrap();
+        let group_paths = HashMap::from([("core".to_string(), "PROFILE.md".to_string())]);
+        let output_paths: HashSet<String> = outputs
+            .iter()
+            .filter_map(|output| output.get("path").and_then(Value::as_str).map(str::to_owned))
+            .collect();
+        assert!(
+            super::validate_required_render_outputs(outputs, &group_paths, &output_paths).is_empty()
+        );
+
+        let missing_compact: Vec<Value> = outputs
+            .iter()
+            .filter(|output| output.get("mode").and_then(Value::as_str) != Some("selected_records"))
+            .cloned()
+            .collect();
+        let missing_paths: HashSet<String> = missing_compact
+            .iter()
+            .filter_map(|output| output.get("path").and_then(Value::as_str).map(str::to_owned))
+            .collect();
+        assert!(
+            !super::validate_required_render_outputs(
+                &missing_compact,
+                &group_paths,
+                &missing_paths
+            )
+            .is_empty()
+        );
+
+        let renamed_full: Vec<Value> = outputs
+            .iter()
+            .map(|output| {
+                let mut output = output.clone();
+                if output.get("path").and_then(Value::as_str) == Some("START_HERE.md") {
+                    output["path"] = Value::String("renamed-full.md".to_string());
+                }
+                output
+            })
+            .collect();
+        let renamed_paths: HashSet<String> = renamed_full
+            .iter()
+            .filter_map(|output| output.get("path").and_then(Value::as_str).map(str::to_owned))
+            .collect();
+        assert!(
+            !super::validate_required_render_outputs(
+                &renamed_full,
+                &group_paths,
+                &renamed_paths
+            )
+            .is_empty()
+        );
     }
 
     #[test]
