@@ -778,8 +778,15 @@ fn validate_required_render_outputs(
 ) -> Vec<String> {
     let complete_paths: HashSet<String> = outputs
         .iter()
-        .filter(|output| output.get("mode").and_then(Value::as_str) == Some("complete_with_contract"))
-        .filter_map(|output| output.get("path").and_then(Value::as_str).map(str::to_owned))
+        .filter(|output| {
+            output.get("mode").and_then(Value::as_str) == Some("complete_with_contract")
+        })
+        .filter_map(|output| {
+            output
+                .get("path")
+                .and_then(Value::as_str)
+                .map(str::to_owned)
+        })
         .collect();
     let required_complete_paths = HashSet::from([
         "START_HERE.md".to_string(),
@@ -787,15 +794,19 @@ fn validate_required_render_outputs(
     ]);
     let mut findings = Vec::new();
     if complete_paths != required_complete_paths {
-        findings.push(
-            "render specification must include both required complete exports".to_string(),
-        );
+        findings
+            .push("render specification must include both required complete exports".to_string());
     }
 
     let compact_paths: HashSet<String> = outputs
         .iter()
         .filter(|output| output.get("mode").and_then(Value::as_str) == Some("selected_records"))
-        .filter_map(|output| output.get("path").and_then(Value::as_str).map(str::to_owned))
+        .filter_map(|output| {
+            output
+                .get("path")
+                .and_then(Value::as_str)
+                .map(str::to_owned)
+        })
         .collect();
     if compact_paths != HashSet::from(["exports/compact-profile.md".to_string()]) {
         findings.push("render specification must include the required compact export".to_string());
@@ -808,7 +819,9 @@ fn validate_required_render_outputs(
         "exports/compact-profile.md".to_string(),
     ]);
     if output_paths != &required_paths {
-        findings.push("render specification does not cover the exact required output paths".to_string());
+        findings.push(
+            "render specification does not cover the exact required output paths".to_string(),
+        );
     }
 
     findings
@@ -1430,10 +1443,16 @@ mod tests {
         let group_paths = HashMap::from([("core".to_string(), "PROFILE.md".to_string())]);
         let output_paths: HashSet<String> = outputs
             .iter()
-            .filter_map(|output| output.get("path").and_then(Value::as_str).map(str::to_owned))
+            .filter_map(|output| {
+                output
+                    .get("path")
+                    .and_then(Value::as_str)
+                    .map(str::to_owned)
+            })
             .collect();
         assert!(
-            super::validate_required_render_outputs(outputs, &group_paths, &output_paths).is_empty()
+            super::validate_required_render_outputs(outputs, &group_paths, &output_paths)
+                .is_empty()
         );
 
         let missing_compact: Vec<Value> = outputs
@@ -1443,7 +1462,12 @@ mod tests {
             .collect();
         let missing_paths: HashSet<String> = missing_compact
             .iter()
-            .filter_map(|output| output.get("path").and_then(Value::as_str).map(str::to_owned))
+            .filter_map(|output| {
+                output
+                    .get("path")
+                    .and_then(Value::as_str)
+                    .map(str::to_owned)
+            })
             .collect();
         assert!(
             !super::validate_required_render_outputs(
@@ -1466,15 +1490,16 @@ mod tests {
             .collect();
         let renamed_paths: HashSet<String> = renamed_full
             .iter()
-            .filter_map(|output| output.get("path").and_then(Value::as_str).map(str::to_owned))
+            .filter_map(|output| {
+                output
+                    .get("path")
+                    .and_then(Value::as_str)
+                    .map(str::to_owned)
+            })
             .collect();
         assert!(
-            !super::validate_required_render_outputs(
-                &renamed_full,
-                &group_paths,
-                &renamed_paths
-            )
-            .is_empty()
+            !super::validate_required_render_outputs(&renamed_full, &group_paths, &renamed_paths)
+                .is_empty()
         );
     }
 
