@@ -1380,7 +1380,7 @@ mod tests {
         ]);
         let selected = HashSet::from(["first".to_string(), "second".to_string()]);
         assert_eq!(
-            super::expected_record_ids_for(&groups, &records, &selected, None),
+            super::expected_record_ids_for(groups.as_array().unwrap(), &records, &selected, None),
             vec![
                 "a-one".to_string(),
                 "a-two".to_string(),
