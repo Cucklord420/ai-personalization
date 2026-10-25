@@ -736,6 +736,41 @@ fn git_tracked_and_unignored_paths(root: &Path) -> Result<Vec<String>, String> {
         .collect())
 }
 
+fn expected_record_ids_for(
+    profile_groups: &[Value],
+    records: &Value,
+    selected_groups: &HashSet<String>,
+    selected_records: Option<&HashSet<String>>,
+) -> Vec<String> {
+    let Some(records) = records.as_array() else {
+        return Vec::new();
+    };
+    let mut selected_ids = Vec::new();
+
+    for group in profile_groups {
+        let Some(group_id) = group.get("id").and_then(Value::as_str) else {
+            continue;
+        };
+        if !selected_groups.contains(group_id) {
+            continue;
+        }
+        for record in records {
+            let Some(record_id) = record.get("id").and_then(Value::as_str) else {
+                continue;
+            };
+            if record.get("group").and_then(Value::as_str) == Some(group_id)
+                && selected_records
+                    .map(|explicit| explicit.contains(record_id))
+                    .unwrap_or(true)
+            {
+                selected_ids.push(record_id.to_owned());
+            }
+        }
+    }
+
+    selected_ids
+}
+
 fn validate_render_spec(
     spec: &Value,
     profile: &Value,
@@ -814,6 +849,20 @@ fn validate_render_spec(
             }
         }
 
+        let selected_group_set: HashSet<String> = selected_groups.iter().cloned().collect();
+        if selected_group_set.len() != selected_groups.len() {
+            findings.push(format!("render output repeats a group: {path}"));
+        }
+        let canonical_selected_groups: Vec<String> = profile_groups
+            .iter()
+            .filter_map(|group| group.get("id").and_then(Value::as_str))
+            .filter(|group| selected_group_set.contains(*group))
+            .map(str::to_owned)
+            .collect();
+        if selected_groups != canonical_selected_groups {
+            findings.push(format!("render groups are out of canonical order: {path}"));
+        }
+
         let Some(mode) = output.get("mode").and_then(Value::as_str) else {
             findings.push(format!("render output has no mode: {path}"));
             continue;
@@ -827,40 +876,23 @@ fn validate_render_spec(
                         findings.push(format!("detailed group path mismatch: {path}"));
                     }
                 }
-                records
-                    .as_array()
-                    .into_iter()
-                    .flatten()
-                    .filter(|record| {
-                        record
-                            .get("group")
-                            .and_then(Value::as_str)
-                            .map(|group| selected_groups.iter().any(|selected| selected == group))
-                            .unwrap_or(false)
-                    })
-                    .filter_map(|record| {
-                        record.get("id").and_then(Value::as_str).map(str::to_owned)
-                    })
-                    .collect()
+                expected_record_ids_for(
+                    &profile_groups,
+                    records,
+                    &selected_group_set,
+                    None,
+                )
             }
             "complete_with_contract" => {
-                let selected: HashSet<&str> = selected_groups.iter().map(String::as_str).collect();
-                if selected.len() != group_ids.len()
+                if selected_group_set.len() != group_ids.len()
                     || !group_ids
                         .iter()
-                        .all(|group| selected.contains(group.as_str()))
+                        .all(|group| selected_group_set.contains(group))
                 {
                     findings.push(format!("complete export omits a profile group: {path}"));
                 }
                 complete_paths.push(path.to_owned());
-                records
-                    .as_array()
-                    .into_iter()
-                    .flatten()
-                    .filter_map(|record| {
-                        record.get("id").and_then(Value::as_str).map(str::to_owned)
-                    })
-                    .collect()
+                expected_record_ids_for(&profile_groups, records, &group_ids, None)
             }
             "selected_records" => {
                 let ids: Vec<String> = output
@@ -871,6 +903,10 @@ fn validate_render_spec(
                     .filter_map(Value::as_str)
                     .map(str::to_owned)
                     .collect();
+                let explicit_records: HashSet<String> = ids.iter().cloned().collect();
+                if explicit_records.len() != ids.len() {
+                    findings.push(format!("compact render selection repeats a record: {path}"));
+                }
                 for id in &ids {
                     let record = records
                         .as_array()
@@ -888,7 +924,12 @@ fn validate_render_spec(
                         ));
                     }
                 }
-                ids
+                expected_record_ids_for(
+                    &profile_groups,
+                    records,
+                    &selected_group_set,
+                    Some(&explicit_records),
+                )
             }
             _ => {
                 findings.push(format!("unknown render mode: {path}"));
@@ -1329,6 +1370,28 @@ mod tests {
             "<a id=\"record-rule-a\"></a>\n- **rule-a** — first rule\n"
         );
         assert!(!validate_rendered_records(duplicate, &records, &["rule-a", "rule-b"]).is_empty());
+    }
+
+    #[test]
+    fn render_selection_follows_canonical_group_order() {
+        let groups = json!([
+            {"id": "first"},
+            {"id": "second"}
+        ]);
+        let records = json!([
+            {"id": "a-one", "group": "first"},
+            {"id": "b-one", "group": "second"},
+            {"id": "a-two", "group": "first"}
+        ]);
+        let selected = HashSet::from(["first".to_string(), "second".to_string()]);
+        assert_eq!(
+            super::expected_record_ids_for(&groups, &records, &selected, None),
+            vec![
+                "a-one".to_string(),
+                "a-two".to_string(),
+                "b-one".to_string()
+            ]
+        );
     }
 
     #[test]
