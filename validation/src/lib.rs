@@ -876,12 +876,7 @@ fn validate_render_spec(
                         findings.push(format!("detailed group path mismatch: {path}"));
                     }
                 }
-                expected_record_ids_for(
-                    &profile_groups,
-                    records,
-                    &selected_group_set,
-                    None,
-                )
+                expected_record_ids_for(&profile_groups, records, &selected_group_set, None)
             }
             "complete_with_contract" => {
                 if selected_group_set.len() != group_ids.len()
