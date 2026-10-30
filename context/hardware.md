@@ -1,6 +1,6 @@
 # Reported equipment and ownership boundaries
 
-Profile version: 1.0.2 · Reviewed: 10-24-2026 · America/New_York
+Profile version: 1.0.2 · Reviewed: 10-30-2026 · America/New_York
 
 Rendered from [../profile.json](../profile.json). Dates are evidence dates, not live verification. See [../SOURCES.md](../SOURCES.md) and [../UNKNOWNS.md](../UNKNOWNS.md).
 
