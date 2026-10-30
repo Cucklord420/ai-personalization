@@ -39,8 +39,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 4329,
-      "sha256": "9f1fd1ce5bb17b6a50814b96a71d4d6a4a55409e2bcf0e02aa8f75e929a36a34"
+      "bytes": 4387,
+      "sha256": "42e88419c2de6455798437c72d30a7dde0d07e6468707451a75e9dc91ab22ae5"
     },
     {
       "path": "CLAUDE.md",
@@ -129,18 +129,18 @@
     },
     {
       "path": "exports/agent-instructions.md",
-      "bytes": 76247,
-      "sha256": "5d54c6964152b541c715f2435de5c16e0d6963e0396ccbbf256eb4c7a0880947"
+      "bytes": 76478,
+      "sha256": "8cb7e1fa4d59b8a0623270457bb1cdb7a1a3abef20e6f9148be6d4282852b0d2"
     },
     {
       "path": "exports/compact-profile.md",
-      "bytes": 8424,
-      "sha256": "63ca84448fb84d63eccaf51ec3427766d6de28e6c411ac1898257f610739df6b"
+      "bytes": 8520,
+      "sha256": "a2e4c951dcf77b1fc943992ee6967c8e21e8680d85905d53be770010f90fa818"
     },
     {
       "path": "exports/custom-instructions.txt",
-      "bytes": 1497,
-      "sha256": "00e59d77b9ba5eb20dd61e4bb910664058c836c2f298f8cac1ba8f716343833e"
+      "bytes": 1496,
+      "sha256": "2cba124b78ea9b4668bf4a989cc7466d64732938a9361b4e238b22995076563e"
     },
     {
       "path": "GEMINI.md",
@@ -169,13 +169,13 @@
     },
     {
       "path": "profile.json",
-      "bytes": 128312,
-      "sha256": "5bf80ba23897500523a81746851a3c9ce45602ab72027beded48510400d0dca7"
+      "bytes": 128598,
+      "sha256": "630651abeb439eeb514e6929ac688a15fea9e1d2cb3c1918d256f52b4b6bb1b0"
     },
     {
       "path": "PROFILE.md",
-      "bytes": 22356,
-      "sha256": "aa48e0193f677e885951c6303ad4f59f333c0745ec7ac9b1a06fe8900da79b9c"
+      "bytes": 22587,
+      "sha256": "cc6f3ee25e8926830ebe880dcbb5cbf9cdc4f993e988d72fca4ab96055532931"
     },
     {
       "path": "PROMPT.md",
@@ -184,8 +184,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 3024,
-      "sha256": "a3099ad49f735d5dcc712c35e2ee3391034f21ecc146c3cc427db969be870aa7"
+      "bytes": 3121,
+      "sha256": "49119f887fc09637d802cf054dfc328be78f360959e4b351d9f9ca0a420c6276"
     },
     {
       "path": "render-spec.json",
@@ -199,13 +199,13 @@
     },
     {
       "path": "SOURCES.md",
-      "bytes": 7887,
-      "sha256": "757c2cabfe6a879f01c6c6efd39e1a0d4f9ae5d536db142c6ce322b774078334"
+      "bytes": 7979,
+      "sha256": "eac528aee677dda40ce97d08e60660fa752cb89b4e142ac5eda575abc7efca8c"
     },
     {
       "path": "START_HERE.md",
-      "bytes": 76247,
-      "sha256": "5d54c6964152b541c715f2435de5c16e0d6963e0396ccbbf256eb4c7a0880947"
+      "bytes": 76478,
+      "sha256": "8cb7e1fa4d59b8a0623270457bb1cdb7a1a3abef20e6f9148be6d4282852b0d2"
     },
     {
       "path": "UNKNOWNS.md",
@@ -214,8 +214,8 @@
     },
     {
       "path": "validation/acceptance-cases.json",
-      "bytes": 8837,
-      "sha256": "59c40a20841451364ea3a9c32fa32b80a6306982906637c9ae1c8e90b81a80bf"
+      "bytes": 9736,
+      "sha256": "cb11fa5f04ad3840e26ae60f563acb3cb6b48a5cf6fdf439061ee8d6ff72fa3d"
     },
     {
       "path": "validation/Cargo.lock",
