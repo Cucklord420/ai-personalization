@@ -1,6 +1,6 @@
 # Compact profile subset
 
-Profile version: 1.0.2 · Reviewed: 10-24-2026 · America/New_York
+Profile version: 1.0.2 · Reviewed: 10-30-2026 · America/New_York
 
 This is an intentional essential subset, not the complete profile. Full context: https://github.com/Cucklord420/ai-personalization/blob/main/START_HERE.md
 
@@ -92,9 +92,9 @@ This is an intentional essential subset, not the complete profile. Full context:
 
 <a id="record-buy-stock"></a>
 
-- **buy-stock** — Before suggesting any product, verify the exact model, variant, configuration and credible seller are currently available to purchase in the relevant region. A family page, different SKU or old stock claim is insufficient.
+- **buy-stock** — Before suggesting any product, verify the exact model, variant, configuration and credible seller are currently available to purchase in the relevant region. A family page, different SKU or old stock claim is insufficient. For local pickup, use the user's authorized shopping area and time zone, identify a practically reachable named store, and verify the exact SKU is actually purchasable at that branch. Chain-wide listings, unknown branch stock and remote-store inventory do not prove nearby availability; do not make the user repeat known location or exclusions.
 
-  required; active; sources: S01, S05
+  required; active; sources: S01, S05, S21
 
 <a id="record-buy-tco"></a>
 
