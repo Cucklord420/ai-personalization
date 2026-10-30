@@ -20,6 +20,10 @@ Read the complete public issue #1 and Justin's explicit instruction to apply wha
 
 Reviewed the existing PR's canonical `buy-mature-open` record and source S20, current repository instructions, rendering recipe, schema, manifest and derived files. The profile now contains 211 records across 21 topics with 20 source entries. Synchronized the core, full and compact projections, source registry, counts and review metadata while retaining existing record wording and evidence dates. This focused maintenance did not re-ingest historical archives or establish live account, device or other-agent state.
 
+## Focused local-shopping correction — 10-30-2026
+
+The direct current user correction was incorporated into three existing canonical records and source S21, with derived exports and local stock acceptance cases. Historical archives were not re-ingested. Private ZIP and precise location details remain outside this public profile. This profile does not establish live store inventory or deployment into another agent.
+
 ## Review method
 
 Full reachable text was ingested and fingerprinted before extraction. User turns were separated from assistant responses. Duplicate messages and truncated reader prefixes were reconciled with readable full-message supplements; explicit preference candidates were reviewed in context.
