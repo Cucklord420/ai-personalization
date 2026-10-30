@@ -65,7 +65,7 @@ TCO: reading these Markdown/JSON files requires no new paid software, API key, r
 
 <a id="record-basic-region"></a>
 
-- **basic-region** — NYC is the broader market, but south Staten Island is the default origin for nearby shopping and pickup research. Reuse the previously authorized shopping ZIP privately; do not substitute generic NYC-center stores, require the user to repeat known location, or imply access to precise device GPS. Obtain exact delivery or transaction details privately when essential; this public profile does not supply a street address.
+- **basic-region** — NYC is the broader market, but south Staten Island is the default area for nearby shopping and pickup research. For location-sensitive shopping, first use the exact street-address shopping origin the user previously explicitly authorized, privately and without re-asking; if it is unavailable, fall back to the saved ZIP or neighborhood. A previously supplied exact address remains usable when live device GPS is disabled; never claim it is live GPS. Do not substitute NYC-center locations. This public profile intentionally does not contain a private street address.
 
   context; active; sources: S02, S05, S21
 
@@ -197,7 +197,7 @@ TCO: reading these Markdown/JSON files requires no new paid software, API key, r
 
 <a id="record-buy-stock"></a>
 
-- **buy-stock** — Before suggesting any product, verify the exact model, variant, configuration and credible seller are currently available to purchase in the relevant region. A family page, different SKU or old stock claim is insufficient. For local pickup, use the user's authorized shopping area and time zone, identify a practically reachable named store, and verify the exact SKU is actually purchasable at that branch. Chain-wide listings, unknown branch stock and remote-store inventory do not prove nearby availability; do not make the user repeat known location or exclusions.
+- **buy-stock** — Before suggesting any product, verify its exact model, variant, configuration and seller are currently purchasable in the relevant region. For local shopping, reuse the user's previously authorized exact street address privately when available, even with live GPS disabled; otherwise use their saved ZIP and local time zone. Identify named practically reachable stores and verify the exact SKU is purchasable at each selected branch. Nationwide listings, unselected stores, and chain-wide inventory do not establish local stock. Never make the user repeat known origin or seller exclusions; if no branch can be verified, report no verified nearby in-stock option.
 
   required; active; sources: S01, S05, S21
 
@@ -281,7 +281,7 @@ TCO: reading these Markdown/JSON files requires no new paid software, API key, r
 
 <a id="record-buy-retailer-scope"></a>
 
-- **buy-retailer-scope** — Exclude Walmart, Dollar General, Dollar Tree and Family Dollar from shopping and pickup recommendations because they are not conveniently available to the user; reconsider only if explicitly asked. Best Buy direct-sale restrictions remain scoped to tasks that explicitly set them, particularly laptops and certain cable searches. Other credible accessible sellers, including Amazon and Costco when applicable, remain eligible subject to exact fulfillment, price and compatibility checks.
+- **buy-retailer-scope** — Exclude ShopRite, Walmart, Dollar General, Dollar Tree and Family Dollar from shopping and pickup recommendations; reconsider only when the user explicitly changes the exclusion. Best Buy direct-sale restrictions remain limited to tasks that explicitly set them, particularly laptops and certain cable searches. Other credible accessible sellers, including Amazon and Costco where applicable, remain eligible subject to exact fulfillment, price and compatibility verification.
 
   required; active; sources: S10, S04, S21
 

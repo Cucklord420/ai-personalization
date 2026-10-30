@@ -237,6 +237,24 @@
         "basic-time",
         "buy-stock"
       ]
+    },
+    {
+      "id": "saved-exact-origin-without-gps",
+      "input": "The user explicitly authorized a precise home shopping-origin address in a previous conversation, and precise device GPS sharing is turned off.",
+      "expected": "Use the saved authorized street-level shopping origin privately, never imply a live GPS fix, and avoid asking again or defaulting to a ZIP centroid.",
+      "record_ids": [
+        "basic-region",
+        "buy-stock"
+      ]
+    },
+    {
+      "id": "no-shoprite-local",
+      "input": "A cheap toilet cleaner is advertised at ShopRite while the user has explicitly excluded this chain from future recommendations.",
+      "expected": "Exclude ShopRite from recommendations without asking again; select only permitted branches with verifiable local stock and practical travel.",
+      "record_ids": [
+        "buy-retailer-scope",
+        "buy-stock"
+      ]
     }
   ]
 }

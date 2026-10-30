@@ -92,7 +92,7 @@ This is an intentional essential subset, not the complete profile. Full context:
 
 <a id="record-buy-stock"></a>
 
-- **buy-stock** — Before suggesting any product, verify the exact model, variant, configuration and credible seller are currently available to purchase in the relevant region. A family page, different SKU or old stock claim is insufficient. For local pickup, use the user's authorized shopping area and time zone, identify a practically reachable named store, and verify the exact SKU is actually purchasable at that branch. Chain-wide listings, unknown branch stock and remote-store inventory do not prove nearby availability; do not make the user repeat known location or exclusions.
+- **buy-stock** — Before suggesting any product, verify its exact model, variant, configuration and seller are currently purchasable in the relevant region. For local shopping, reuse the user's previously authorized exact street address privately when available, even with live GPS disabled; otherwise use their saved ZIP and local time zone. Identify named practically reachable stores and verify the exact SKU is purchasable at each selected branch. Nationwide listings, unselected stores, and chain-wide inventory do not establish local stock. Never make the user repeat known origin or seller exclusions; if no branch can be verified, report no verified nearby in-stock option.
 
   required; active; sources: S01, S05, S21
 

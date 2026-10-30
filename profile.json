@@ -195,7 +195,7 @@
       "source_date": "10-30-2026",
       "reviewed_on": "10-30-2026",
       "access": "current_session",
-      "notes": "The user explicitly requires remembered Staten Island shopping context and local time zone, named-branch inventory verification and no irrelevant discount-chain recommendations. Walmart exclusion was already directly requested earlier and remains in force. No private postal or street address is published."
+      "notes": "The user explicitly requires their previously authorized exact street address for nearby shopping lookups, even if live GPS permission is disabled, and excludes ShopRite as well as Walmart, Dollar General, Dollar Tree and Family Dollar. Use the address only privately for relevant proximity and delivery checks. No private postal or street address is published."
     }
   ],
   "groups": [
@@ -337,7 +337,7 @@
     {
       "id": "basic-region",
       "group": "basics",
-      "text": "NYC is the broader market, but south Staten Island is the default origin for nearby shopping and pickup research. Reuse the previously authorized shopping ZIP privately; do not substitute generic NYC-center stores, require the user to repeat known location, or imply access to precise device GPS. Obtain exact delivery or transaction details privately when essential; this public profile does not supply a street address.",
+      "text": "NYC is the broader market, but south Staten Island is the default area for nearby shopping and pickup research. For location-sensitive shopping, first use the exact street-address shopping origin the user previously explicitly authorized, privately and without re-asking; if it is unavailable, fall back to the saved ZIP or neighborhood. A previously supplied exact address remains usable when live device GPS is disabled; never claim it is live GPS. Do not substitute NYC-center locations. This public profile intentionally does not contain a private street address.",
       "kind": "fact",
       "strength": "context",
       "status": "active",
@@ -605,7 +605,7 @@
     {
       "id": "buy-stock",
       "group": "buying",
-      "text": "Before suggesting any product, verify the exact model, variant, configuration and credible seller are currently available to purchase in the relevant region. A family page, different SKU or old stock claim is insufficient. For local pickup, use the user's authorized shopping area and time zone, identify a practically reachable named store, and verify the exact SKU is actually purchasable at that branch. Chain-wide listings, unknown branch stock and remote-store inventory do not prove nearby availability; do not make the user repeat known location or exclusions.",
+      "text": "Before suggesting any product, verify its exact model, variant, configuration and seller are currently purchasable in the relevant region. For local shopping, reuse the user's previously authorized exact street address privately when available, even with live GPS disabled; otherwise use their saved ZIP and local time zone. Identify named practically reachable stores and verify the exact SKU is purchasable at each selected branch. Nationwide listings, unselected stores, and chain-wide inventory do not establish local stock. Never make the user repeat known origin or seller exclusions; if no branch can be verified, report no verified nearby in-stock option.",
       "kind": "preference",
       "strength": "required",
       "status": "active",
@@ -2217,7 +2217,7 @@
     {
       "id": "buy-retailer-scope",
       "group": "buying",
-      "text": "Exclude Walmart, Dollar General, Dollar Tree and Family Dollar from shopping and pickup recommendations because they are not conveniently available to the user; reconsider only if explicitly asked. Best Buy direct-sale restrictions remain scoped to tasks that explicitly set them, particularly laptops and certain cable searches. Other credible accessible sellers, including Amazon and Costco when applicable, remain eligible subject to exact fulfillment, price and compatibility checks.",
+      "text": "Exclude ShopRite, Walmart, Dollar General, Dollar Tree and Family Dollar from shopping and pickup recommendations; reconsider only when the user explicitly changes the exclusion. Best Buy direct-sale restrictions remain limited to tasks that explicitly set them, particularly laptops and certain cable searches. Other credible accessible sellers, including Amazon and Costco where applicable, remain eligible subject to exact fulfillment, price and compatibility verification.",
       "kind": "preference",
       "strength": "required",
       "status": "active",

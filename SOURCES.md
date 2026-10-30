@@ -73,7 +73,7 @@ Reviewed: 10-30-2026, America/New_York. Source dates can be unknown; review is n
 
 **S20**: Direct user instruction recorded in the canonical profile on 10-24-2026: favor openness, privacy, ownership and portability where practical, while prioritizing mature, supported, ready-to-use, low-maintenance options across domains. Technical experience is not a request for DIY upkeep; a proven proprietary option or keeping existing equipment may be preferable. This preference grants no purchase, deployment or account-change authority.
 
-**S21**: Direct instruction on 10-30-2026: apply the previously authorized Staten Island shopping area and America/New_York time zone, omit unusable discount chains, and do not represent a generic product listing as verified in stock at a nearby branch. The ZIP and any private address remain outside the public profile.
+**S21**: Direct instruction on 10-30-2026: use the previously explicitly authorized exact shopping-origin street address privately even when live device GPS is disabled, apply America/New_York, exclude ShopRite and the previously excluded discount chains, and never treat a generic product listing as verified in stock at a nearby branch. The private postal and street address remain outside this public profile.
 
 ## Official adapter documentation
 
