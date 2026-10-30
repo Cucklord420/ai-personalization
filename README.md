@@ -23,7 +23,7 @@ Seek credible negative experiences, recurring failures, complaints, export/trans
 
 ## Local shopping
 
-Use remembered south Staten Island shopping context and America/New_York, not generic NYC results. Exclude Walmart, Dollar General, Dollar Tree, and Family Dollar unless the user explicitly changes the restriction. A local recommendation requires exact-variant stock at a named practical store; generic chain availability does not qualify. Keep personal ZIP and street details private.
+Use the exact saved street address previously authorized for local shopping and America/New_York, even when device GPS sharing is disabled. Use the coarse area only if the precise saved address is unavailable. Exclude ShopRite, Walmart, Dollar General, Dollar Tree, and Family Dollar unless explicitly reversed. A local recommendation requires exact-variant stock at a named practical store; generic chain availability does not qualify. Keep personal ZIP and street details private.
 
 ## Application and persistence
 
