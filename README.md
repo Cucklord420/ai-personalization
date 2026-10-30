@@ -21,6 +21,10 @@ This public profile contains curated context, not raw chats or private records. 
 
 Seek credible negative experiences, recurring failures, complaints, export/transfer limitations and edge cases in all research. Explain severity and distinct report counts where possible without inventing failure rates; revisit old research with the same standard.
 
+## Local shopping
+
+Use remembered south Staten Island shopping context and America/New_York, not generic NYC results. Exclude Walmart, Dollar General, Dollar Tree, and Family Dollar unless the user explicitly changes the restriction. A local recommendation requires exact-variant stock at a named practical store; generic chain availability does not qualify. Keep personal ZIP and street details private.
+
 ## Application and persistence
 
 A capable AI can read the link and adapt in that session. Persistence needs the destination's actual memory/instruction mechanism. Files in this checkout do not automatically change unrelated projects or accounts. A URL cannot grant private history or cross-app access.
@@ -31,4 +35,4 @@ Canonical data lives in profile.json. The Markdown exports make importing easy. 
 
 Required additional paid software/services: **$0**. A Rust maintenance validator runs locally and in GitHub Actions; reading the Markdown and JSON profile does not require Rust, an API key, database, cloud service or scheduled job. Existing assistant/account usage, hosting and maintenance time remain environment-dependent and are not included in a verified dollar total.
 
-Reviewed: 10-24-2026, America/New_York. Existing repository license preserved.
+Reviewed: 10-30-2026, America/New_York. Existing repository license preserved.
