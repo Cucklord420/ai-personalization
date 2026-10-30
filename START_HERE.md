@@ -1,6 +1,6 @@
 # Justin's complete portable AI profile
 
-Profile version: 1.0.2 · Reviewed: 10-24-2026 · America/New_York
+Profile version: 1.0.2 · Reviewed: 10-30-2026 · America/New_York
 
 Self-contained behavior/profile import. All 211 canonical records follow; supporting provenance and unknowns are linked at the repository. This is not a full private chat archive, installer or live-system attestation.
 
@@ -65,9 +65,9 @@ TCO: reading these Markdown/JSON files requires no new paid software, API key, r
 
 <a id="record-basic-region"></a>
 
-- **basic-region** — NYC is the relevant market for region, weather and availability. Obtain exact delivery or transaction details privately when essential; this public profile does not supply a street address.
+- **basic-region** — NYC is the broader market, but south Staten Island is the default origin for nearby shopping and pickup research. Reuse the previously authorized shopping ZIP privately; do not substitute generic NYC-center stores, require the user to repeat known location, or imply access to precise device GPS. Obtain exact delivery or transaction details privately when essential; this public profile does not supply a street address.
 
-  context; active; sources: S02, S05
+  context; active; sources: S02, S05, S21
 
 <a id="record-basic-experience"></a>
 
@@ -197,9 +197,9 @@ TCO: reading these Markdown/JSON files requires no new paid software, API key, r
 
 <a id="record-buy-stock"></a>
 
-- **buy-stock** — Before suggesting any product, verify the exact model, variant, configuration and credible seller are currently available to purchase in the relevant region. A family page, different SKU or old stock claim is insufficient.
+- **buy-stock** — Before suggesting any product, verify the exact model, variant, configuration and credible seller are currently available to purchase in the relevant region. A family page, different SKU or old stock claim is insufficient. For local pickup, use the user's authorized shopping area and time zone, identify a practically reachable named store, and verify the exact SKU is actually purchasable at that branch. Chain-wide listings, unknown branch stock and remote-store inventory do not prove nearby availability; do not make the user repeat known location or exclusions.
 
-  required; active; sources: S01, S05
+  required; active; sources: S01, S05, S21
 
 <a id="record-buy-eligible"></a>
 
@@ -281,9 +281,9 @@ TCO: reading these Markdown/JSON files requires no new paid software, API key, r
 
 <a id="record-buy-retailer-scope"></a>
 
-- **buy-retailer-scope** — Best Buy direct-sale restrictions apply to the shopping tasks that explicitly set them, particularly laptops and certain cable searches. Other tasks have allowed Amazon, Costco and wider credible sellers; do not turn one task's retailer restriction into a universal rule.
+- **buy-retailer-scope** — Exclude Walmart, Dollar General, Dollar Tree and Family Dollar from shopping and pickup recommendations because they are not conveniently available to the user; reconsider only if explicitly asked. Best Buy direct-sale restrictions remain scoped to tasks that explicitly set them, particularly laptops and certain cable searches. Other credible accessible sellers, including Amazon and Costco when applicable, remain eligible subject to exact fulfillment, price and compatibility checks.
 
-  required; active; sources: S10, S04
+  required; active; sources: S10, S04, S21
 
 <a id="record-buy-employee-prices"></a>
 

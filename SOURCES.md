@@ -1,6 +1,6 @@
 # Source registry
 
-Reviewed: 10-24-2026, America/New_York. Source dates can be unknown; review is not reconfirmation. Private sources are not bundled and their private locators are not published. Coverage is detailed in [COVERAGE.md](COVERAGE.md).
+Reviewed: 10-30-2026, America/New_York. Source dates can be unknown; review is not reconfirmation. Private sources are not bundled and their private locators are not published. Coverage is detailed in [COVERAGE.md](COVERAGE.md).
 
 | ID | Source | Evidence class | Source date | Access |
 |---|---|---|---|---|
@@ -31,6 +31,7 @@ Reviewed: 10-24-2026, America/New_York. Source dates can be unknown; review is n
 
 | S19 | Justin explicitly requires negative-evidence research | direct_user | 10-20-2026 | current_session |
 | S20 | Direct user instruction: mature open technology preference across all domains | direct_user | 10-24-2026 | current_session |
+| S21 | Direct user correction: personalized local shopping and excluded retail chains | direct_user | 10-30-2026 | current_session |
 
 **S01**: Explicit standing instructions and the request to populate this repository.
 
@@ -71,6 +72,8 @@ Reviewed: 10-24-2026, America/New_York. Source dates can be unknown; review is n
 **S19**: Justin explicitly prioritizes finding negative experiences, failures, edge cases and complaint quantities in all future research and older research when revisited; requires this behavior in the portable AI profile. This is a user preference, not an externally measured product failure rate.
 
 **S20**: Direct user instruction recorded in the canonical profile on 10-24-2026: favor openness, privacy, ownership and portability where practical, while prioritizing mature, supported, ready-to-use, low-maintenance options across domains. Technical experience is not a request for DIY upkeep; a proven proprietary option or keeping existing equipment may be preferable. This preference grants no purchase, deployment or account-change authority.
+
+**S21**: Direct instruction on 10-30-2026: apply the previously authorized Staten Island shopping area and America/New_York time zone, omit unusable discount chains, and do not represent a generic product listing as verified in stock at a nearby branch. The ZIP and any private address remain outside the public profile.
 
 ## Official adapter documentation
 

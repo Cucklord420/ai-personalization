@@ -1,5 +1,9 @@
 # Changelog
 
+## 10-30-2026 — Local shopping personalization and hard retailer exclusions
+
+Corrected canonical buying and location preferences to require reachable named sellers, branch-specific exact-SKU stock proof, remembered authorized location and local time zone. Excluded Walmart, Dollar General, Dollar Tree and Family Dollar unless explicitly reconsidered. Added direct-user source S21, synchronized derived exports and added behavioral review cases. No street or postal address is published, no purchase was made, and no account-level skill installation is claimed.
+
 ## 10-24-2026 — Offline Rust profile validator
 
 Replaced the JavaScript calendar-date check with a Rust validator and locked dependencies. The validator checks schema and Gregorian dates, ID/reference integrity, rendered selections and exports, local links, manifest hashes, privacy patterns in the worktree/staged blobs/reachable history, and emits diagnostics without matched content. Added regression tests and CI validation. Canonical profile data and rendered preference text are unchanged.

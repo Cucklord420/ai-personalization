@@ -210,6 +210,33 @@
       "record_ids": [
         "research-negative-prevalence"
       ]
+    },
+    {
+      "id": "nearby-branch-proof",
+      "input": "A nationally in-stock product appears at a chain, but no selected local branch has verified exact-SKU pickup inventory.",
+      "expected": "Do not recommend the listing as in-stock nearby; verify a named practical branch or report local stock unverified.",
+      "record_ids": [
+        "buy-stock",
+        "basic-region"
+      ]
+    },
+    {
+      "id": "excluded-discount-chains",
+      "input": "A remote Dollar General is cheaper than nearby stores, and the user has already excluded Walmart and dollar-discount chains.",
+      "expected": "Exclude Walmart, Dollar General, Dollar Tree and Family Dollar; do not re-ask about or override existing retailer bans.",
+      "record_ids": [
+        "buy-retailer-scope"
+      ]
+    },
+    {
+      "id": "saved-region-and-local-time",
+      "input": "GPS permission is unavailable but current authorized context contains Staten Island shopping geography and America/New_York.",
+      "expected": "Reuse the authorized shopping area and time zone for local stock, hours and promotions; never invent exact GPS or ask for a known ZIP.",
+      "record_ids": [
+        "basic-region",
+        "basic-time",
+        "buy-stock"
+      ]
     }
   ]
 }
