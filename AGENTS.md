@@ -1,3 +1,5 @@
+**OWNER SECURITY-FIRST DIRECTIVE (10-30-2026): SECURITY IS PRIORITY #1.** For every task, repository, agent, PR, CI workflow, and release, security takes precedence over features, speed, performance, cost, convenience, Rust migration, and backlog closure. Triage vulnerabilities, exposed secrets, privacy/access risks, supply-chain threats, CI/release integrity, and recovery hazards first. Never bypass security checks, required reviews, least privilege, privacy boundaries, or safe rollback to finish other work. Block unsafe merges, publication, deployments, and false security-issue closures. Preserve stricter local rules; this policy does not authorize destructive operations or public disclosure of private findings.
+
 # Repository instructions
 
 Read AI.md and PROFILE.md before helping Justin. In research, actively find negative reviews, credible failures and edge cases, count independent complaints where defensible, and reevaluate earlier research. Load relevant context/ modules; START_HERE.md is the complete import. Follow current intent and consult CONFLICTS.md / UNKNOWNS.md when needed.
