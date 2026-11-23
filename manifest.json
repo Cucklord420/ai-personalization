@@ -1,7 +1,7 @@
 {
   "profile_id": "justin-portable-ai-profile",
-  "version": "1.0.2",
-  "reviewed_on": "10-30-2026",
+  "version": "1.0.3",
+  "reviewed_on": "11-22-2026",
   "canonical": "profile.json",
   "entrypoint": "START_HERE.md",
   "privacy": "public_curated_no_raw_private_sources",
@@ -39,8 +39,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 4387,
-      "sha256": "42e88419c2de6455798437c72d30a7dde0d07e6468707451a75e9dc91ab22ae5"
+      "bytes": 4600,
+      "sha256": "6bfeaad0d2e71f2347c9dbd625fecc9396d45a6a46cdd7acddd0e1eae8d35ab3"
     },
     {
       "path": "CLAUDE.md",
@@ -55,92 +55,92 @@
     {
       "path": "context/documents-and-learning.md",
       "bytes": 3130,
-      "sha256": "f63aff07f3bee1e5ac8fa4c3f97b2d39d87d224b7ee71f7bdc337473194d7584"
+      "sha256": "da9f9781ab66ea02caa07faf1e07aadb8a6a1c08b565e3f8e2890241ff31d280"
     },
     {
       "path": "context/finance.md",
       "bytes": 3219,
-      "sha256": "e0f2e228c09e86842fae24be80e5e43567c35017202d5120f12f3c531487509f"
+      "sha256": "a597c4c72a4c3979941e69a26309e45cef942c6ad574d528e2a04dd3548e9ef6"
     },
     {
       "path": "context/food-and-entertainment.md",
-      "bytes": 3926,
-      "sha256": "c658f86b7205c14752ab78350ce91f7239aac25920d1fbcdbacdc997d7d1da4f"
+      "bytes": 4203,
+      "sha256": "7c5e0f4ca890f1d24a6f20abb45b98b46d6105ce40653fdbf28249e6de528f85"
     },
     {
       "path": "context/hardware.md",
       "bytes": 6923,
-      "sha256": "95ac9a69156d51423d2e427e8489dd37a853c7afebd8b43694c6e7a3da0262fb"
+      "sha256": "54731b0575c346563779b11b59e0f1fc5ceba6c1cd3cc3c1a0faf726d29e4937"
     },
     {
       "path": "context/home-and-energy.md",
       "bytes": 2472,
-      "sha256": "c993b5a94818c8013f3df4a378b6357a41c0462ad210afe4be72bdc46465e863"
+      "sha256": "8d109570b65e592144fb5980fb074ebee46b132d689fee31e8c03de3b41db358"
     },
     {
       "path": "context/laptops.md",
       "bytes": 3216,
-      "sha256": "50c7f51be76a17a860816c6e70911a2ce05a8028cd65b550793e540e2be4aeaf"
+      "sha256": "ad3ee42e96ab5bc6b6d5c0f2be9d1402831fd9996121d69451e98ae0c6380300"
     },
     {
       "path": "context/mobile-and-media.md",
       "bytes": 1786,
-      "sha256": "8a9912b97a2c5e1f34934f0e68942935696f26d67538673669ef3b1752206c2e"
+      "sha256": "9b6d5cacfe0f965234b871fc1927b8ab0e25e86fc5591b0653ecbaf6cdaa84dd"
     },
     {
       "path": "context/monitoring.md",
       "bytes": 4962,
-      "sha256": "5a640fcd4ddcf9fc15ed9c744d97ce43b27b2eee508969c23518316d0610e92a"
+      "sha256": "f1382311e64164f4141790ad9886be9f75aa1073c72bf7ad353bb4f57b273485"
     },
     {
       "path": "context/projects.md",
       "bytes": 3402,
-      "sha256": "07554823e98e1e0eba0f148398abc7077b4b479e45d06a4f1fe6b0500c75be5a"
+      "sha256": "bfb2e376a40d0605d080a9d87c57ae3ef6273afaff003c91bb19e001da4205bb"
     },
     {
       "path": "context/software-and-ai.md",
       "bytes": 3761,
-      "sha256": "43531559d8232afb33fcffb83f64f9dd154536c91b5223392ff163493f7160ac"
+      "sha256": "4050b97b2121ca9f30bf3623692350efa747a04ad848e2bf1f3980cf209f4f8f"
     },
     {
       "path": "context/technology.md",
       "bytes": 12004,
-      "sha256": "7351da5cb7767f7b157faefc3799b3cbe96b4b1b2b08d5fed5a4eee36b4c04ec"
+      "sha256": "f8176504dfd355ab7ebe81fcd44c59e42bc4f36b7266de7d6fdda0ceed4817be"
     },
     {
       "path": "context/tools-and-resale.md",
       "bytes": 2367,
-      "sha256": "ba01fdaa3601e5338b5fbf4f9b7be30d77e843583cef73deb21d59cb18e13498"
+      "sha256": "b6905c83946064c60101c7411f1be7b9d0c946655ee813c828cd4bb2eb0168a7"
     },
     {
       "path": "context/travel-and-fit.md",
       "bytes": 2673,
-      "sha256": "e0a2f2505447668aebda3365d242c6ecce7f53a24646d1d76356a8d6e15815bb"
+      "sha256": "2303a4587e7d85680ab7158edf245eb122a58758794ec853d26ed649fee53f67"
     },
     {
       "path": "context/vehicles.md",
       "bytes": 6609,
-      "sha256": "3de65c0d81bb7eb81bb5ab2735f345266be4594b5225867ef1cfc2d8f2a47e3f"
+      "sha256": "39a6922908a0348758ee72a103d6ffe0ef9227a5e52c805393d919584b580726"
     },
     {
       "path": "COVERAGE.md",
-      "bytes": 4369,
-      "sha256": "798677f0fed58bd984359cde23b2db7c36e71eddc6a0cfec5d7ebac12e07b0d6"
+      "bytes": 4555,
+      "sha256": "ed05855af4a6a722bc9861b7dc729ffe2f130f49a21910c56d8121bedbae779b"
     },
     {
       "path": "exports/agent-instructions.md",
-      "bytes": 76478,
-      "sha256": "8cb7e1fa4d59b8a0623270457bb1cdb7a1a3abef20e6f9148be6d4282852b0d2"
+      "bytes": 76712,
+      "sha256": "e71624fad795f73d427d9dc42261f7ed886e8ffa1063d36c364748010d6054ee"
     },
     {
       "path": "exports/compact-profile.md",
-      "bytes": 8520,
-      "sha256": "a2e4c951dcf77b1fc943992ee6967c8e21e8680d85905d53be770010f90fa818"
+      "bytes": 8786,
+      "sha256": "217d7f2d10964a1e508fb76da2bc3388d648641a2bfcc2db2caf1bfa579e8b67"
     },
     {
       "path": "exports/custom-instructions.txt",
-      "bytes": 1496,
-      "sha256": "2cba124b78ea9b4668bf4a989cc7466d64732938a9361b4e238b22995076563e"
+      "bytes": 1457,
+      "sha256": "f54baa5eabb14ea8deb123187bfdf80e2077a027c147c5e02377f640a6838ced"
     },
     {
       "path": "GEMINI.md",
@@ -169,13 +169,13 @@
     },
     {
       "path": "profile.json",
-      "bytes": 128598,
-      "sha256": "630651abeb439eeb514e6929ac688a15fea9e1d2cb3c1918d256f52b4b6bb1b0"
+      "bytes": 129395,
+      "sha256": "e730ca56c73288aa62591e99df14dff685c968759618db81f5ee88c9c1fb0108"
     },
     {
       "path": "PROFILE.md",
-      "bytes": 22587,
-      "sha256": "cc6f3ee25e8926830ebe880dcbb5cbf9cdc4f993e988d72fca4ab96055532931"
+      "bytes": 22699,
+      "sha256": "87df66d1f9f5e6742d35d438700ff8f43428ce7829dbd616e754c50ca418dd6f"
     },
     {
       "path": "PROMPT.md",
@@ -185,12 +185,12 @@
     {
       "path": "README.md",
       "bytes": 3121,
-      "sha256": "49119f887fc09637d802cf054dfc328be78f360959e4b351d9f9ca0a420c6276"
+      "sha256": "99c7a98eb203a81c0b4ac4394c4c5219461d74fd9393263dac7b1086c6d680bc"
     },
     {
       "path": "render-spec.json",
-      "bytes": 4040,
-      "sha256": "47274a360b2f55ebba0a3c89f75fecc3a037be0ec10c5410e4ea3a1224b71b99"
+      "bytes": 4093,
+      "sha256": "71dda6faacb4ea17330b31aec6ef1694ba2dad9efe39010b2aaa515265faab4d"
     },
     {
       "path": "schema/profile.schema.json",
@@ -199,13 +199,13 @@
     },
     {
       "path": "SOURCES.md",
-      "bytes": 7979,
-      "sha256": "eac528aee677dda40ce97d08e60660fa752cb89b4e142ac5eda575abc7efca8c"
+      "bytes": 8209,
+      "sha256": "c3f651c10a646a7c1f8b43681f54382ec922d620ff412e4672f071cdea827fbc"
     },
     {
       "path": "START_HERE.md",
-      "bytes": 76478,
-      "sha256": "8cb7e1fa4d59b8a0623270457bb1cdb7a1a3abef20e6f9148be6d4282852b0d2"
+      "bytes": 76712,
+      "sha256": "e71624fad795f73d427d9dc42261f7ed886e8ffa1063d36c364748010d6054ee"
     },
     {
       "path": "UNKNOWNS.md",
@@ -214,8 +214,8 @@
     },
     {
       "path": "validation/acceptance-cases.json",
-      "bytes": 9736,
-      "sha256": "cb11fa5f04ad3840e26ae60f563acb3cb6b48a5cf6fdf439061ee8d6ff72fa3d"
+      "bytes": 10065,
+      "sha256": "6961e9f353ec2e6d56f0a88aa10d14e55688d5d34ffc4179cf2fba43251f4f74"
     },
     {
       "path": "validation/Cargo.lock",

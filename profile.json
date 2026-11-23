@@ -1,8 +1,8 @@
 {
   "$schema": "./schema/profile.schema.json",
   "profile_id": "justin-portable-ai-profile",
-  "version": "1.0.2",
-  "reviewed_on": "10-30-2026",
+  "version": "1.0.3",
+  "reviewed_on": "11-22-2026",
   "timezone": "America/New_York",
   "visibility": "public",
   "source_of_truth": "profile.json",
@@ -196,6 +196,15 @@
       "reviewed_on": "10-30-2026",
       "access": "current_session",
       "notes": "The user explicitly requires their previously authorized exact street address for nearby shopping lookups, even if live GPS permission is disabled, and excludes ShopRite as well as Walmart, Dollar General, Dollar Tree and Family Dollar. Use the address only privately for relevant proximity and delivery checks. No private postal or street address is published."
+    },
+    {
+      "id": "S22",
+      "title": "Direct user preference for motion blur off in games",
+      "kind": "direct_user",
+      "source_date": "11-22-2026",
+      "reviewed_on": "11-22-2026",
+      "access": "current_session",
+      "notes": "The user explicitly asked to remember and apply this gaming preference across platforms."
     }
   ],
   "groups": [
@@ -1775,6 +1784,20 @@
       "source_ids": [
         "S02",
         "S07"
+      ]
+    },
+    {
+      "id": "game-motion-blur",
+      "group": "entertainment",
+      "text": "Set in-game motion blur to Off or 0 on every platform whenever available. If it cannot be disabled, use the lowest available setting.",
+      "kind": "preference",
+      "strength": "required",
+      "status": "active",
+      "evidence": "explicit",
+      "confidence": "high",
+      "last_supported_on": "11-22-2026",
+      "source_ids": [
+        "S22"
       ]
     },
     {

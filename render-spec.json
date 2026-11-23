@@ -1,6 +1,6 @@
 {
-  "version": "1.0.2",
-  "reviewed_on": "10-30-2026",
+  "version": "1.0.3",
+  "reviewed_on": "11-22-2026",
   "canonical": "profile.json",
   "compact_character_budget": 1500,
   "outputs": [
@@ -177,7 +177,8 @@
         "research",
         "buying",
         "execution",
-        "coding"
+        "coding",
+        "entertainment"
       ],
       "mode": "selected_records",
       "record_ids": [
@@ -202,7 +203,8 @@
         "work-real-status",
         "work-stop-scope",
         "work-memory",
-        "code-rust"
+        "code-rust",
+        "game-motion-blur"
       ]
     }
   ]

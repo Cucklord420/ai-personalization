@@ -1,6 +1,6 @@
 # Source registry
 
-Reviewed: 10-30-2026, America/New_York. Source dates can be unknown; review is not reconfirmation. Private sources are not bundled and their private locators are not published. Coverage is detailed in [COVERAGE.md](COVERAGE.md).
+Reviewed: 11-22-2026, America/New_York. Source dates can be unknown; review is not reconfirmation. Private sources are not bundled and their private locators are not published. Coverage is detailed in [COVERAGE.md](COVERAGE.md).
 
 | ID | Source | Evidence class | Source date | Access |
 |---|---|---|---|---|
@@ -32,6 +32,7 @@ Reviewed: 10-30-2026, America/New_York. Source dates can be unknown; review is n
 | S19 | Justin explicitly requires negative-evidence research | direct_user | 10-20-2026 | current_session |
 | S20 | Direct user instruction: mature open technology preference across all domains | direct_user | 10-24-2026 | current_session |
 | S21 | Direct user correction: personalized local shopping and excluded retail chains | direct_user | 10-30-2026 | current_session |
+| S22 | Direct user preference for motion blur off in games | direct_user | 11-22-2026 | current_session |
 
 **S01**: Explicit standing instructions and the request to populate this repository.
 
@@ -74,6 +75,8 @@ Reviewed: 10-30-2026, America/New_York. Source dates can be unknown; review is n
 **S20**: Direct user instruction recorded in the canonical profile on 10-24-2026: favor openness, privacy, ownership and portability where practical, while prioritizing mature, supported, ready-to-use, low-maintenance options across domains. Technical experience is not a request for DIY upkeep; a proven proprietary option or keeping existing equipment may be preferable. This preference grants no purchase, deployment or account-change authority.
 
 **S21**: Direct instruction on 10-30-2026: use the previously explicitly authorized exact shopping-origin street address privately even when live device GPS is disabled, apply America/New_York, exclude ShopRite and the previously excluded discount chains, and never treat a generic product listing as verified in stock at a nearby branch. The private postal and street address remain outside this public profile.
+
+**S22**: On 11-22-2026 Justin asked to remember and apply his preference to disable in-game motion blur across platforms.
 
 ## Official adapter documentation
 

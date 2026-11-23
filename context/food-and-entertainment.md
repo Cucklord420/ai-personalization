@@ -1,6 +1,6 @@
 # Food and everyday preferences / Entertainment and interests
 
-Profile version: 1.0.2 · Reviewed: 10-30-2026 · America/New_York
+Profile version: 1.0.3 · Reviewed: 11-22-2026 · America/New_York
 
 Rendered from [../profile.json](../profile.json). Dates are evidence dates, not live verification. See [../SOURCES.md](../SOURCES.md) and [../UNKNOWNS.md](../UNKNOWNS.md).
 
@@ -73,4 +73,10 @@ Rendered from [../profile.json](../profile.json). Dates are evidence dates, not 
 - **interest-tech** — Recurring interests include homelab/networking, efficient servers, storage/recovery, Linux, privacy, browser extensions, local cameras, Home Assistant, display calibration and audio.
 
   preferred; active; documented/high; last supported: unknown; sources: S02, S07
+
+<a id="record-game-motion-blur"></a>
+
+- **game-motion-blur** — Set in-game motion blur to Off or 0 on every platform whenever available. If it cannot be disabled, use the lowest available setting.
+
+  required; active; explicit/high; last supported: 11-22-2026; sources: S22
 

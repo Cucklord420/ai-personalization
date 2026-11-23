@@ -1,5 +1,9 @@
 # Changelog
 
+## 11-22-2026 — v1.0.3, motion blur off in games
+
+Added Justin’s preference to disable in-game motion blur across platforms. Updated the entertainment topic, complete and compact exports, and source records.
+
 ## 10-30-2026 — Local shopping personalization and hard retailer exclusions
 
 Corrected canonical buying and location preferences to require reachable named sellers, branch-specific exact-SKU stock proof, previously authorized exact shopping-origin address even with GPS sharing off, and local time zone. Excluded ShopRite, Walmart, Dollar General, Dollar Tree and Family Dollar unless explicitly reconsidered. Added direct-user source S21, synchronized derived exports and added behavioral review cases. No street or postal address is published, no purchase was made, and no account-level skill installation is claimed.
