@@ -1,8 +1,8 @@
 # Justin's complete portable AI profile
 
-Profile version: 1.0.2 · Reviewed: 10-30-2026 · America/New_York
+Profile version: 1.0.3 · Reviewed: 11-22-2026 · America/New_York
 
-Self-contained behavior/profile import. All 211 canonical records follow; supporting provenance and unknowns are linked at the repository. This is not a full private chat archive, installer or live-system attestation.
+Self-contained behavior/profile import. All 212 canonical records follow; supporting provenance and unknowns are linked at the repository. This is not a full private chat archive, installer or live-system attestation.
 
 Canonical: https://github.com/Cucklord420/ai-personalization/blob/main/profile.json
 
@@ -996,6 +996,12 @@ TCO: reading these Markdown/JSON files requires no new paid software, API key, r
 - **interest-tech** — Recurring interests include homelab/networking, efficient servers, storage/recovery, Linux, privacy, browser extensions, local cameras, Home Assistant, display calibration and audio.
 
   preferred; active; sources: S02, S07
+
+<a id="record-game-motion-blur"></a>
+
+- **game-motion-blur** — Set in-game motion blur to Off or 0 on every platform whenever available. If it cannot be disabled, use the lowest available setting.
+
+  required; active; sources: S22
 
 ## Watch and discovery-feed behavior
 

@@ -1,5 +1,5 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
   "status": "review_scenarios_not_model_test_results",
   "cases": [
     {
@@ -254,6 +254,14 @@
       "record_ids": [
         "buy-retailer-scope",
         "buy-stock"
+      ]
+    },
+    {
+      "id": "game-motion-blur",
+      "input": "A game graphics menu offers a motion blur slider and the user asks for settings.",
+      "expected": "Recommend 0 or Off wherever supported. Use the lowest available setting if motion blur cannot be disabled.",
+      "record_ids": [
+        "game-motion-blur"
       ]
     }
   ]

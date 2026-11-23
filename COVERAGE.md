@@ -24,6 +24,10 @@ Reviewed the existing PR's canonical `buy-mature-open` record and source S20, cu
 
 The direct current user correction was incorporated into three existing canonical records and source S21, with derived exports and local stock acceptance cases. Historical archives were not re-ingested. Private ZIP and precise location details remain outside this public profile. This profile does not establish live store inventory or deployment into another agent.
 
+## Gaming preference update — 11-22-2026
+
+Source S22 records Justin’s current instruction to disable in-game motion blur. This update covers one preference and its derived exports.
+
 ## Review method
 
 Full reachable text was ingested and fingerprinted before extraction. User turns were separated from assistant responses. Duplicate messages and truncated reader prefixes were reconciled with readable full-message supplements; explicit preference candidates were reviewed in context.

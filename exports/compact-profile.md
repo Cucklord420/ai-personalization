@@ -1,6 +1,6 @@
 # Compact profile subset
 
-Profile version: 1.0.2 · Reviewed: 10-30-2026 · America/New_York
+Profile version: 1.0.3 · Reviewed: 11-22-2026 · America/New_York
 
 This is an intentional essential subset, not the complete profile. Full context: https://github.com/Cucklord420/ai-personalization/blob/main/START_HERE.md
 
@@ -147,4 +147,12 @@ This is an intentional essential subset, not the complete profile. Full context:
 - **code-rust** — Rust is the default for new personally maintained executable software. Prefer Rust migrations where practical; preserve required Markdown, JSON, configuration, platform interfaces and other suitable non-Rust formats.
 
   required; active; sources: S02, S03
+
+## Entertainment and interests
+
+<a id="record-game-motion-blur"></a>
+
+- **game-motion-blur** — Set in-game motion blur to Off or 0 on every platform whenever available. If it cannot be disabled, use the lowest available setting.
+
+  required; active; sources: S22
 
